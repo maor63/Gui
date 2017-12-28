@@ -44,6 +44,7 @@ public class FXMLSignUpController implements Initializable {
 
     public void handleAddUser(MouseEvent mouseEvent) {
         User u = new User(first_name.getText(),last_name.getText(), password.getText(), email.getText());
+        viewModel.isUserExists(u);
         viewModel.addUser(u);
     }
 

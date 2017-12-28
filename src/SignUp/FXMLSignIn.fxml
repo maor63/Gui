@@ -33,12 +33,12 @@
                               <Image url="@../login/User.png" />
                            </image>
                         </ImageView>
-                        <JFXTextField labelFloat="true" layoutX="75.0" layoutY="147.0" maxWidth="316.0" minWidth="233.0" prefHeight="31.0" prefWidth="316.0" promptText="Enter Username">
+                        <JFXTextField fx:id="email" labelFloat="true" layoutX="75.0" layoutY="147.0" maxWidth="316.0" minWidth="233.0" prefHeight="31.0" prefWidth="316.0" promptText="Enter Username">
                            <font>
                               <Font name="Roboto Medium" size="14.0" />
                            </font>
                         </JFXTextField>
-                        <JFXPasswordField labelFloat="true" layoutX="75.0" layoutY="195.0" maxWidth="316.0" minWidth="235.0" prefHeight="31.0" prefWidth="316.0" promptText="Enter password">
+                        <JFXPasswordField fx:id="password" labelFloat="true" layoutX="75.0" layoutY="195.0" maxWidth="316.0" minWidth="235.0" prefHeight="31.0" prefWidth="316.0" promptText="Enter password">
                            <font>
                               <Font name="Roboto Medium" size="14.0" />
                            </font>
@@ -48,7 +48,7 @@
                               <Font name="Roboto Regular" size="14.0" />
                            </font>
                         </JFXCheckBox>
-                        <JFXButton layoutX="185.0" layoutY="286.0" prefHeight="32.0" prefWidth="100.0" style="-fx-background-color: #2196f3;" text="Login" textFill="WHITE">
+                        <JFXButton onMousePressed="#goToUserView" layoutX="185.0" layoutY="286.0" prefHeight="32.0" prefWidth="100.0" style="-fx-background-color: #2196f3;" text="Login" textFill="WHITE">
                            <font>
                               <Font name="Roboto Bold" size="14.0" />
                            </font>

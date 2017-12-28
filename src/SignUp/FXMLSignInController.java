@@ -7,6 +7,10 @@ package SignUp;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import App.User;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,6 +24,8 @@ import javafx.scene.input.MouseEvent;
 public class FXMLSignInController implements Initializable {
 
     public Label btn_exit;
+    public JFXTextField email;
+    public JFXPasswordField password;
     @FXML
     private Label label;
     private ViewModel viewModel;
@@ -45,5 +51,10 @@ public class FXMLSignInController implements Initializable {
 
     public void goToSignUp(MouseEvent mouseEvent) {
         viewModel.goToSignUp();
+    }
+
+    public void goToUserView(MouseEvent mouseEvent) {
+        User u = new User(email.getText(), password.getText());
+        viewModel.goToUserView(u);
     }
 }

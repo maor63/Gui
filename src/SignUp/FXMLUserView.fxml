@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<AnchorPane id="AnchorPane" prefHeight="560.0" prefWidth="700.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SignUp.FXMLUserViewController">
+    <stylesheets>
+    </stylesheets>
+   <children>
+       <VBox>
+           <children>
+              <TableView fx:id="tableAttendance" layoutX="26.0" layoutY="61.0" prefHeight="470.0" prefWidth="840.0" styleClass="table-column" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="26.0">
+                 <columns>
+                    <TableColumn fx:id="colEmpID" text="package_id" />
+                    <TableColumn fx:id="colNames" text="price" />
+                    <TableColumn fx:id="colJob" minWidth="0.0" prefWidth="236.0" resizable="false" text="product_id" />
+                 </columns>
+
+              </TableView>
+               <Button onMousePressed="#addPackage" layoutX="303.0" layoutY="349.0" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #48A5EA;" textFill="WHITE" text="Add Package" />
+           </children>
+       </VBox>
+   </children>
+
+</AnchorPane>

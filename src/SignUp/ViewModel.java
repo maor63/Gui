@@ -5,6 +5,7 @@
  */
 package SignUp;
 
+import App.Package;
 import App.User;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -27,6 +28,11 @@ public class ViewModel extends Application {
     private Scene signUpScene;
     private Model model;
     private Stage stage;
+    private Scene userViewScene;
+    private Scene addPackageScene;
+    private FXMLAddPackageController addPackageController;
+    private FXMLUserViewController userViewController;
+    private Scene addProductScene;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -35,6 +41,15 @@ public class ViewModel extends Application {
 
         FXMLLoader signInLoader = new FXMLLoader(getClass().getResource("FXMLSignIn.fxml"));
         Parent signInRoot = (Parent) signInLoader.load();
+
+        FXMLLoader userViewLoader = new FXMLLoader(getClass().getResource("FXMLUserView.fxml"));
+        Parent userViewRoot = (Parent) userViewLoader.load();
+
+        FXMLLoader addPackageLoader = new FXMLLoader(getClass().getResource("FXMLAddPackage.fxml"));
+        Parent addPackageRoot = (Parent) addPackageLoader.load();
+
+        FXMLLoader addProductLoader = new FXMLLoader(getClass().getResource("FXMLAddProduct.fxml"));
+        Parent addProductRoot = (Parent) addProductLoader.load();
 
         this.stage = stage;
         this.stage.initStyle(StageStyle.UNDECORATED);
@@ -56,8 +71,11 @@ public class ViewModel extends Application {
             }
         });
 
-        this.signUpScene = new Scene(signUpRoot);
-        this.signInScene = new Scene(signInRoot);
+        signUpScene = new Scene(signUpRoot);
+        signInScene = new Scene(signInRoot);
+        userViewScene = new Scene(userViewRoot);
+        addPackageScene = new Scene(addPackageRoot);
+        addProductScene = new Scene(addProductRoot);
         Model model = new Model();
         setModel(model);
         FXMLSignUpController controller = signUpLoader.getController();
@@ -65,6 +83,12 @@ public class ViewModel extends Application {
 
         FXMLSignInController signInController = signInLoader.getController();
         signInController.setViewModel(this);
+
+        userViewController = userViewLoader.getController();
+        userViewController.setViewModel(this);
+
+        addPackageController = addPackageLoader.getController();
+        addPackageController.setViewModel(this);
 
         stage.setScene(signInScene);
         stage.show();
@@ -89,5 +113,31 @@ public class ViewModel extends Application {
 
     public void goToSignIn() {
         stage.setScene(signInScene);
+    }
+
+    public Boolean isUserExists(User u) {
+        return model.isUserExists(u);
+    }
+
+    public void goToUserView(User user) {
+        if(isUserExists(user)) {
+            userViewController.setUser(user);
+            stage.setScene(userViewScene);
+        }
+
+    }
+
+    public void goToAddPackage(User user) {
+        addPackageController.setUser(user);
+        stage.setScene(addPackageScene);
+    }
+
+    public void goToAddProduct(User user) {
+        addPackageController.setUser(user);
+        stage.setScene(addProductScene);
+    }
+
+    public void addPackage(Package aPackage) {
+        model.addPackage(aPackage);
     }
 }
