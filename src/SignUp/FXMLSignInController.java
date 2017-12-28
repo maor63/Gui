@@ -11,16 +11,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 
 /**
  *
  * @author danml
  */
 public class FXMLSignInController implements Initializable {
-    
+
+    public Label btn_exit;
     @FXML
     private Label label;
-    private JavaFX_BasicDetails viewModel;
+    private ViewModel viewModel;
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -33,7 +35,15 @@ public class FXMLSignInController implements Initializable {
         // TODO
     }
 
-    public void setViewModel(JavaFX_BasicDetails viewModel) {
+    public void setViewModel(ViewModel viewModel) {
         this.viewModel = viewModel;
+    }
+
+    public void exitApp(MouseEvent mouseEvent) {
+        System.exit(0);
+    }
+
+    public void goToSignUp(MouseEvent mouseEvent) {
+        viewModel.goToSignUp();
     }
 }

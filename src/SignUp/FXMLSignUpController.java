@@ -30,10 +30,10 @@ public class FXMLSignUpController implements Initializable {
     public JFXTextField email;
     public JFXButton btn_add_user;
 
-    private JavaFX_BasicDetails viewModel;
+    private ViewModel viewModel;
 
     @FXML
-    private void handleButtonAction(MouseEvent event) {
+    private void exitApp(MouseEvent event) {
       System.exit(0);
     }
     
@@ -44,9 +44,14 @@ public class FXMLSignUpController implements Initializable {
 
     public void handleAddUser(MouseEvent mouseEvent) {
         User u = new User(first_name.getText(),last_name.getText(), password.getText(), email.getText());
+        viewModel.addUser(u);
     }
 
-    public void setViewModel(JavaFX_BasicDetails viewModel) {
+    public void setViewModel(ViewModel viewModel) {
         this.viewModel = viewModel;
+    }
+
+    public void goToSignIn(MouseEvent mouseEvent) {
+        viewModel.goToSignIn();
     }
 }
