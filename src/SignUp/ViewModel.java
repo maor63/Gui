@@ -6,6 +6,7 @@
 package SignUp;
 
 import App.Package;
+import App.Product;
 import App.User;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -33,6 +34,9 @@ public class ViewModel extends Application {
     private FXMLAddPackageController addPackageController;
     private FXMLUserViewController userViewController;
     private Scene addProductScene;
+    private User user;
+    private Package aPackage;
+    private FXMLAddProductController addProductLoaderController;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -90,6 +94,10 @@ public class ViewModel extends Application {
         addPackageController = addPackageLoader.getController();
         addPackageController.setViewModel(this);
 
+        addProductLoaderController = addProductLoader.getController();
+        addProductLoaderController.setViewModel(this);
+
+
         stage.setScene(signInScene);
         stage.show();
     }
@@ -120,6 +128,8 @@ public class ViewModel extends Application {
     }
 
     public void goToUserView(User user) {
+        if(user != null)
+            this.user = user;
         if(isUserExists(user)) {
             userViewController.setUser(user);
             stage.setScene(userViewScene);
@@ -128,16 +138,34 @@ public class ViewModel extends Application {
     }
 
     public void goToAddPackage(User user) {
+        if(user != null)
+            this.user = user;
         addPackageController.setUser(user);
         stage.setScene(addPackageScene);
     }
 
     public void goToAddProduct(User user) {
-        addPackageController.setUser(user);
+        if(user != null)
+            this.user = user;
+        addProductLoaderController.setUser(user);
         stage.setScene(addProductScene);
     }
 
     public void addPackage(Package aPackage) {
         model.addPackage(aPackage);
+    }
+
+    public void createNewPackage() {
+        aPackage = new Package(user.email, 0);
+    }
+
+    public void addProductToPackage(int price, String categoryText) {
+        Product product = new Product(user.email, 0, 0, price, categoryText);
+        aPackage.addProduct(product);
+    }
+
+    public void savePackage() {
+        model.addPackage(aPackage);
+        aPackage = null;
     }
 }

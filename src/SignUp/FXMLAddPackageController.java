@@ -10,13 +10,13 @@ import javafx.scene.input.MouseEvent;
 public class FXMLAddPackageController {
     public TextField cancellation_policy;
     public TextField address;
-    public TextField Price;
-    public TextField Category;
+
     private ViewModel viewModel;
     private User user;
     private Package aPackage;
 
     public void addNewProduct(MouseEvent mouseEvent) {
+        viewModel.createNewPackage();
         viewModel.goToAddProduct(user);
     }
 
@@ -36,15 +36,9 @@ public class FXMLAddPackageController {
         this.user = user;
     }
 
-    public void addProduct(MouseEvent mouseEvent) {
-        if(aPackage == null)
-            aPackage = new Package(user.email, 0);
-        Product product = new Product(user.email, 0, 0, Integer.parseInt(Price.getText()), Category.getText());
-        aPackage.addProduct(product);
+    public void addNewPackage(MouseEvent mouseEvent) {
+        viewModel.savePackage();
+        viewModel.goToUserView(user);
     }
 
-    public void addNewPackage(MouseEvent mouseEvent) {
-        viewModel.addPackage(aPackage);
-        aPackage = null;
-    }
 }
