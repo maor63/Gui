@@ -4,6 +4,8 @@ import App.Package;
 import App.User;
 import DB.SqliteDB;
 
+import java.util.List;
+
 public class Model {
 
     private final SqliteDB db;
@@ -23,5 +25,13 @@ public class Model {
 
     public void addPackage(Package aPackage) {
         db.addPackage(aPackage);
+    }
+
+    public List<Package> getUserPackages(String email) {
+        return db.getPackageByOwnerEmail(email);
+    }
+
+    public User loadUser(User u) {
+        return db.getUserByEmail(u.email);
     }
 }

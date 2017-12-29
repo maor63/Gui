@@ -1,6 +1,5 @@
 package SignUp;
 
-import App.Product;
 import App.User;
 import App.Package;
 import javafx.event.ActionEvent;
@@ -17,7 +16,7 @@ public class FXMLAddPackageController {
 
     public void addNewProduct(MouseEvent mouseEvent) {
         viewModel.createNewPackage();
-        viewModel.goToAddProduct(user);
+        viewModel.goToAddProduct();
     }
 
     public void quitOption(ActionEvent actionEvent) {
@@ -25,7 +24,7 @@ public class FXMLAddPackageController {
     }
 
     public void goToUserView(MouseEvent mouseEvent) {
-        viewModel.goToUserView(user);
+        viewModel.goToUserView();
     }
 
     public void setViewModel(ViewModel viewModel) {
@@ -38,7 +37,7 @@ public class FXMLAddPackageController {
 
     public void addNewPackage(MouseEvent mouseEvent) {
         viewModel.savePackage();
-        viewModel.goToUserView(user);
+        viewModel.goToUserView();
     }
 
 }

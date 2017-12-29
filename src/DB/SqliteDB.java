@@ -36,23 +36,23 @@ public class SqliteDB {
     private void createTenantTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS Tenant (\n" +
                 "user_email varchar(255),\n" +
-                "package_id int,\n" +
-                "CONSTRAINT PK_Tenant PRIMARY KEY (user_email,package_id));";
+                "colPackageId int,\n" +
+                "CONSTRAINT PK_Tenant PRIMARY KEY (user_email,colPackageId));";
         execute(sql);
     }
 
     private void createRenterTable() throws SQLException {
         execute("CREATE TABLE IF NOT EXISTS Renter (\n" +
                 "user_email varchar(255),\n" +
-                "package_id int,\n" +
-                "CONSTRAINT PK_Renter PRIMARY KEY (user_email,package_id));");
+                "colPackageId int,\n" +
+                "CONSTRAINT PK_Renter PRIMARY KEY (user_email,colPackageId));");
     }
 
     private void createWorkDaysTable() throws SQLException {
         execute("CREATE TABLE IF NOT EXISTS Work_Days (\n" +
-                "package_id int ,\n" +
+                "colPackageId int ,\n" +
                 "day varchar(255),\n" +
-                "CONSTRAINT PK_Work_Days PRIMARY KEY (package_id,day));");
+                "CONSTRAINT PK_Work_Days PRIMARY KEY (colPackageId,day));");
     }
 
     private void createOrdersTable() throws SQLException {
@@ -62,7 +62,7 @@ public class SqliteDB {
                 "start_date DATETIME,\n" +
                 "end_date DATETIME,\n" +
                 "total_price int,\n" +
-                "package_id int,\n" +
+                "colPackageId int,\n" +
                 "status varchar(255),\n" +
                 "CONSTRAINT PK_Orders PRIMARY KEY (tenant_id,renter_id,start_date));");
     }
@@ -311,7 +311,7 @@ public class SqliteDB {
     }
 
     public int getNextProductIdForPackage(String email, int packageId) {
-        String query = String.format("SELECT MAX(p.product_id) FROM Products as p WHERE p.owner_email = '%s'" +
+        String query = String.format("SELECT MAX(p.package_id) FROM Products as p WHERE p.owner_email = '%s'" +
                 " AND p.package_id = %d ;",email, packageId);
         try {
             Statement st = dbConnection.createStatement();

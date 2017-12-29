@@ -22,7 +22,7 @@ public class FXMLAddProductController {
 
 
     public void goToPackageView(MouseEvent mouseEvent) {
-        viewModel.goToAddPackage(user);
+        viewModel.goToAddPackage();
     }
 
     public void setUser(User user) {

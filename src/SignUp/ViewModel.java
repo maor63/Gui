@@ -17,6 +17,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.List;
+
 /**
  * @author proxc
  */
@@ -33,10 +35,10 @@ public class ViewModel extends Application {
     private Scene addPackageScene;
     private FXMLAddPackageController addPackageController;
     private FXMLUserViewController userViewController;
+    private FXMLAddProductController addProductLoaderController;
     private Scene addProductScene;
     private User user;
     private Package aPackage;
-    private FXMLAddProductController addProductLoaderController;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -127,27 +129,17 @@ public class ViewModel extends Application {
         return model.isUserExists(u);
     }
 
-    public void goToUserView(User user) {
-        if(user != null)
-            this.user = user;
-        if(isUserExists(user)) {
-            userViewController.setUser(user);
-            stage.setScene(userViewScene);
-        }
-
+    public void goToUserView() {
+        userViewController.loadUserData(user);
+        userViewController.setUser(user);
+        stage.setScene(userViewScene);
     }
 
-    public void goToAddPackage(User user) {
-        if(user != null)
-            this.user = user;
-        addPackageController.setUser(user);
+    public void goToAddPackage() {
         stage.setScene(addPackageScene);
     }
 
-    public void goToAddProduct(User user) {
-        if(user != null)
-            this.user = user;
-        addProductLoaderController.setUser(user);
+    public void goToAddProduct() {
         stage.setScene(addProductScene);
     }
 
@@ -165,7 +157,23 @@ public class ViewModel extends Application {
     }
 
     public void savePackage() {
-        model.addPackage(aPackage);
+        if(aPackage != null)
+            model.addPackage(aPackage);
         aPackage = null;
+    }
+
+    public void loadUser(User u) {
+        user = u;
+    }
+
+    public List<Package> getPackagesOfUser() {
+        return model.getUserPackages(user.email);
+    }
+
+    public void loadUser(String email, String pass) {
+        User u = new User(email, pass);
+        if(model.isUserExists(u))
+            user = model.loadUser(u);
+
     }
 }

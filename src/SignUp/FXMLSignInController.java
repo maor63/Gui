@@ -54,7 +54,7 @@ public class FXMLSignInController implements Initializable {
     }
 
     public void goToUserView(MouseEvent mouseEvent) {
-        User u = new User(email.getText(), password.getText());
-        viewModel.goToUserView(u);
+        viewModel.loadUser(email.getText(), password.getText());
+        viewModel.goToUserView();
     }
 }
