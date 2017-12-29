@@ -253,7 +253,7 @@ public class SqliteDB {
                     "WHERE p.owner_email = '" + ownerEmail + "' AND p.package_id = " + packageId + ";");
             Package p = getPackageFromRow(resSet);
             resSet = st.executeQuery("SELECT * FROM Products as p " +
-                    "WHERE p.package_id = " + packageId + ";");
+                    "WHERE p.package_id = " + packageId + " AND p.owner_email = '"+ownerEmail + "' ;");
             while (resSet.next()) {
                 p.addProduct(getProductFromRow(resSet));
             }

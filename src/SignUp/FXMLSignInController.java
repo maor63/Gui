@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
@@ -54,7 +55,15 @@ public class FXMLSignInController implements Initializable {
     }
 
     public void goToUserView(MouseEvent mouseEvent) {
-        viewModel.loadUser(email.getText(), password.getText());
-        viewModel.goToUserView();
+        if(viewModel.loadUser(email.getText(), password.getText())) {
+            viewModel.goToUserView();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Email or password are incorrect");
+            alert.setContentText("You can sign up it free!");
+            alert.showAndWait();
+        }
     }
 }

@@ -44,16 +44,9 @@ public class FXMLUserViewController implements Initializable
         colProductId.setCellValueFactory(new PropertyValueFactory<>("productID"));
         colPackageId.setCellValueFactory(new PropertyValueFactory<>("packageID"));
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
+
         productEntries = FXCollections.observableArrayList();
-        ObservableList<ProductEntry> userList = productEntries;
-//        List<Package> packageList = viewModel.getPackagesOfUser();
-//        for (Package pack : packageList) {
-//            for (Product product : pack.getProducts()) {
-//                ProductEntry productEntry = new ProductEntry(product);
-//                userList.add(productEntry);
-//            }
-//        }
-        product_table.setItems(userList);
     }
 
     public void setUser(User user) {
@@ -61,14 +54,32 @@ public class FXMLUserViewController implements Initializable
     }
 
     public void loadUserData(User user) {
-        if(this.user == null || (this.user != null && !this.user.email.equals(user.email))) {
-            List<Package> packageList = viewModel.getPackagesOfUser();
-            for (Package pack : packageList) {
-                for (Product product : pack.getProducts()) {
-                    ProductEntry productEntry = new ProductEntry(product);
-                    productEntries.add(productEntry);
-                }
-            }
+        product_table.setItems(FXCollections.observableArrayList());
+        productEntries = FXCollections.observableArrayList();
+        List<Package> packageList = viewModel.getPackagesOfUser();
+        for (Package pack : packageList) {
+            addPackageToTable(pack);
         }
+        product_table.setItems(productEntries);
+    }
+
+
+    private void addPackageToTable(Package pack) {
+        for (Product product : pack.getProducts()) {
+            ProductEntry productEntry = new ProductEntry(product);
+            productEntries.add(productEntry);
+        }
+    }
+
+    public void addToTable(Package aPackage) {
+        System.out.println("add to table");
+        addPackageToTable(aPackage);
+    }
+
+    public void signOut(MouseEvent mouseEvent) {
+        this.user = null;
+        productEntries = FXCollections.observableArrayList();
+        product_table.setItems(productEntries);
+        viewModel.goToSignIn();
     }
 }

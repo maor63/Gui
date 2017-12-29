@@ -13,6 +13,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
@@ -44,8 +45,16 @@ public class FXMLSignUpController implements Initializable {
 
     public void handleAddUser(MouseEvent mouseEvent) {
         User u = new User(first_name.getText(),last_name.getText(), password.getText(), email.getText());
-        viewModel.isUserExists(u);
-        viewModel.addUser(u);
+        if(viewModel.isUserExists(u)) {
+            viewModel.addUser(u);
+            resetFields(mouseEvent);
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Email is in use");
+            alert.showAndWait();
+        }
     }
 
     public void setViewModel(ViewModel viewModel) {
@@ -54,5 +63,12 @@ public class FXMLSignUpController implements Initializable {
 
     public void goToSignIn(MouseEvent mouseEvent) {
         viewModel.goToSignIn();
+    }
+
+    public void resetFields(MouseEvent mouseEvent) {
+        first_name.setText("");
+        password.setText("");
+        last_name.setText("");
+        email.setText("");
     }
 }

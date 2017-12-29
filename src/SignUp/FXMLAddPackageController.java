@@ -17,6 +17,7 @@ public class FXMLAddPackageController {
     public void addNewProduct(MouseEvent mouseEvent) {
         viewModel.createNewPackage();
         viewModel.goToAddProduct();
+        System.out.println("Adding new Package");
     }
 
     public void quitOption(ActionEvent actionEvent) {
@@ -24,6 +25,7 @@ public class FXMLAddPackageController {
     }
 
     public void goToUserView(MouseEvent mouseEvent) {
+        viewModel.discartPackage();
         viewModel.goToUserView();
     }
 

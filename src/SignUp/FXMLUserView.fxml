@@ -27,7 +27,7 @@
            </children>
        </VBox>
          <JFXButton layoutX="49.0" layoutY="418.0" onMousePressed="#addPackage" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #48A5EA;" text="Add Package" textFill="WHITE" />
-      <JFXButton layoutX="180.0" layoutY="418.0" onMousePressed="#addPackage" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #48A5EA;" text="SignOut" textFill="WHITE" />
+      <JFXButton layoutX="180.0" layoutY="418.0" onMousePressed="#signOut" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #48A5EA;" text="SignOut" textFill="WHITE" />
    </children>
 
 </Pane>

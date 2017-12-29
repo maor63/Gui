@@ -18,6 +18,9 @@ public class FXMLAddProductController {
 
     public void addProduct(MouseEvent mouseEvent) {
         viewModel.addProductToPackage(Integer.parseInt(Price.getText()), Category.getText());
+        System.out.println("product added");
+        Price.setText("");
+        Category.setText("");
     }
 
 

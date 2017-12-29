@@ -22,7 +22,8 @@ import java.util.List;
 /**
  * @author proxc
  */
-public class ViewModel extends Application {
+public class ViewModel extends Application
+{
 
     //init xy offsets
     private double xOffset = 0;
@@ -61,7 +62,8 @@ public class ViewModel extends Application {
         this.stage.initStyle(StageStyle.UNDECORATED);
 
         //set mouse pressed
-        signUpRoot.setOnMousePressed(new EventHandler<MouseEvent>() {
+        signUpRoot.setOnMousePressed(new EventHandler<MouseEvent>()
+        {
             @Override
             public void handle(MouseEvent event) {
                 xOffset = event.getSceneX();
@@ -69,7 +71,8 @@ public class ViewModel extends Application {
             }
         });
         //set mouse drag
-        signUpRoot.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        signUpRoot.setOnMouseDragged(new EventHandler<MouseEvent>()
+        {
             @Override
             public void handle(MouseEvent event) {
                 stage.setX(event.getScreenX() - xOffset);
@@ -157,8 +160,10 @@ public class ViewModel extends Application {
     }
 
     public void savePackage() {
-        if(aPackage != null)
+        if (aPackage != null) {
             model.addPackage(aPackage);
+            userViewController.addToTable(aPackage);
+        }
         aPackage = null;
     }
 
@@ -170,10 +175,17 @@ public class ViewModel extends Application {
         return model.getUserPackages(user.email);
     }
 
-    public void loadUser(String email, String pass) {
+    public Boolean loadUser(String email, String pass) {
         User u = new User(email, pass);
-        if(model.isUserExists(u))
+        if (model.isUserExists(u)) {
             user = model.loadUser(u);
+            return true;
+        }
+        return false;
 
+    }
+
+    public void discartPackage() {
+        aPackage = null;
     }
 }
