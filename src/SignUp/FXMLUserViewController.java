@@ -9,8 +9,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
@@ -47,6 +49,18 @@ public class FXMLUserViewController implements Initializable
         colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
 
         productEntries = FXCollections.observableArrayList();
+
+        product_table.setRowFactory(tv -> {
+            TableRow<ProductEntry> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+
+                    ProductEntry clickedRow = row.getItem();
+                    System.out.println("double click");
+                }
+            });
+            return row;
+        });
     }
 
     public void setUser(User user) {
