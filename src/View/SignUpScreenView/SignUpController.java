@@ -1,4 +1,4 @@
-package SignUp.SignUpScreenView;/*
+package View.SignUpScreenView;/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import App.User;
-import SignUp.ViewModel;
+import Main.ViewModel;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;

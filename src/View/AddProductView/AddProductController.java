@@ -1,7 +1,7 @@
-package SignUp.AddProductView;
+package View.AddProductView;
 
 import App.User;
-import SignUp.ViewModel;
+import Main.ViewModel;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;

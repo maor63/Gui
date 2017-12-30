@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SignUp;
+package Main;
 
 import App.Package;
 import App.Product;
 import App.User;
-import SignUp.AddPackageView.AddPackageController;
-import SignUp.AddProductView.AddProductController;
-import SignUp.SignInScreenView.SignInController;
-import SignUp.SignUpScreenView.SignUpController;
-import SignUp.UserViewScreen.UserViewController;
+import Model.Model;
+import View.AddPackageView.AddPackageController;
+import View.AddProductView.AddProductController;
+import View.SignInScreenView.SignInController;
+import View.SignUpScreenView.SignUpController;
+import View.UserViewScreen.UserViewController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -49,19 +50,19 @@ public class ViewModel extends Application
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader signUpLoader = new FXMLLoader(getClass().getResource("SignUpScreenView/SignUpScreen.fxml"));
+        FXMLLoader signUpLoader = new FXMLLoader(getClass().getResource("../View/SignUpScreenView/SignUpScreen.fxml"));
         Parent signUpRoot = (Parent) signUpLoader.load();
 
-        FXMLLoader signInLoader = new FXMLLoader(getClass().getResource("SignInScreenView/SignInScreen.fxml"));
+        FXMLLoader signInLoader = new FXMLLoader(getClass().getResource("../View/SignInScreenView/SignInScreen.fxml"));
         Parent signInRoot = (Parent) signInLoader.load();
 
-        FXMLLoader userViewLoader = new FXMLLoader(getClass().getResource("UserViewScreen/UserView.fxml"));
+        FXMLLoader userViewLoader = new FXMLLoader(getClass().getResource("../View/UserViewScreen/UserView.fxml"));
         Parent userViewRoot = (Parent) userViewLoader.load();
 
-        FXMLLoader addPackageLoader = new FXMLLoader(getClass().getResource("AddPackageView/AddPackage.fxml"));
+        FXMLLoader addPackageLoader = new FXMLLoader(getClass().getResource("../View/AddPackageView/AddPackage.fxml"));
         Parent addPackageRoot = (Parent) addPackageLoader.load();
 
-        FXMLLoader addProductLoader = new FXMLLoader(getClass().getResource("AddProductView/AddProduct.fxml"));
+        FXMLLoader addProductLoader = new FXMLLoader(getClass().getResource("../View/AddProductView/AddProduct.fxml"));
         Parent addProductRoot = (Parent) addProductLoader.load();
 
         this.stage = stage;

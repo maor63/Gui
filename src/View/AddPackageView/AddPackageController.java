@@ -1,8 +1,8 @@
-package SignUp.AddPackageView;
+package View.AddPackageView;
 
 import App.User;
 import App.Package;
-import SignUp.ViewModel;
+import Main.ViewModel;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;

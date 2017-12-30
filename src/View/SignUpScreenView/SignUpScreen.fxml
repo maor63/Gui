@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: #2D3447;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SignUp.SignUpScreenView.SignUpController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: #2D3447;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.SignUpScreenView.SignUpController">
    <children>
       <Button layoutX="93.0" layoutY="627.0" mnemonicParsing="false" onMousePressed="#handleAddUser" prefHeight="35.0" prefWidth="91.0" style="-fx-background-color: #bf2e1b;" text="Sign Up" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
          <effect>

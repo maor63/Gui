@@ -1,4 +1,4 @@
-package SignUp;
+package Model;
 
 import App.Package;
 import App.Product;

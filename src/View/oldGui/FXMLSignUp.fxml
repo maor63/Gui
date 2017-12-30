@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="417.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="SignUp.SignUpScreenView.SignUpController">
+<AnchorPane id="AnchorPane" prefHeight="417.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="View.SignUpScreenView.SignUpController">
    <children>
       <JFXTextField fx:id="first_name" focusColor="#48a5ea" layoutX="133.0" layoutY="92.0" prefHeight="25.0" prefWidth="217.0" promptText="First Name" />
       <JFXTextField fx:id="email" focusColor="#48a5ea" layoutX="133.0" layoutY="157.0" prefHeight="25.0" prefWidth="217.0" promptText="Email ID" />
@@ -25,7 +25,7 @@
       </Label>
       <JFXButton onMousePressed="#resetFields" layoutX="133.0" layoutY="349.0" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #48A5EA;" textFill="WHITE" text="Reset All" />
       <JFXButton onMousePressed="#goToSignIn" layoutX="303.0" layoutY="349.0" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #48A5EA;" textFill="WHITE" text="Back" />
-      <JFXButton fx:id="btn_add_user" onMousePressed="#handleAddUser" layoutX="524.0" layoutY="349.0" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: #48A5EA;" text="SignUp" textFill="WHITE" />
+      <JFXButton fx:id="btn_add_user" onMousePressed="#handleAddUser" layoutX="524.0" layoutY="349.0" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: #48A5EA;" text="Main" textFill="WHITE" />
       <Separator layoutX="133.0" layoutY="68.0" prefHeight="1.0" prefWidth="520.0" />
       <Label id="btn_exit" fx:id="btn_exit" layoutX="675.0" layoutY="2.0" onMousePressed="#exitApp" prefHeight="25.0" prefWidth="21.0" text="X" textFill="#48a5ea">
          <font>

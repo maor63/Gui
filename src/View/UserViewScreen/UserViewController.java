@@ -1,11 +1,10 @@
-package SignUp.UserViewScreen;
+package View.UserViewScreen;
 
 import App.Product;
 import App.User;
 import App.Package;
-import SignUp.ProductDescriptionView.ProductViewController;
-import SignUp.ProductEntry;
-import SignUp.ViewModel;
+import View.ProductDescriptionView.ProductViewController;
+import Main.ViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;

@@ -1,7 +1,7 @@
-package SignUp.ProductDescriptionView;
+package View.ProductDescriptionView;
 
-import SignUp.ProductEntry;
-import SignUp.ViewModel;
+import View.UserViewScreen.ProductEntry;
+import Main.ViewModel;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;

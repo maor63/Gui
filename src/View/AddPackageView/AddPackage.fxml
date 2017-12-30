@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="363.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SignUp.AddPackageView.AddPackageController">
+<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="363.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AddPackageView.AddPackageController">
     <stylesheets>
     </stylesheets>
    <children>

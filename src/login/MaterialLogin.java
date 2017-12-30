@@ -20,7 +20,7 @@ public class MaterialLogin extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../../../untitled/src/SignUp/FXMLSignIn.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../../../untitled/src/Main/FXMLSignIn.fxml"));
         
         Scene scene = new Scene(root);
         
