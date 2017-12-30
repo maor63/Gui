@@ -1,25 +1,31 @@
-package SignUp;
+package SignUp.UserViewScreen;
 
 import App.Product;
 import App.User;
 import App.Package;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.beans.property.SimpleIntegerProperty;
+import SignUp.ProductDescriptionView.ProductViewController;
+import SignUp.ProductEntry;
+import SignUp.ViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class FXMLUserViewController implements Initializable
+public class UserViewController implements Initializable
 {
     public TableView<ProductEntry> product_table;
     public TableColumn<ProductEntry, Integer> colPrice;
@@ -48,6 +54,9 @@ public class FXMLUserViewController implements Initializable
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
 
+        colAvailability.setCellValueFactory(new PropertyValueFactory<>("availability"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+
         productEntries = FXCollections.observableArrayList();
 
         product_table.setRowFactory(tv -> {
@@ -56,11 +65,29 @@ public class FXMLUserViewController implements Initializable
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
 
                     ProductEntry clickedRow = row.getItem();
-                    System.out.println("double click");
+                    showProduct(clickedRow);
                 }
             });
             return row;
         });
+    }
+
+    private void showProduct(ProductEntry clickedRow) {
+        try {
+            Stage productWindow = new Stage();
+            FXMLLoader productViewLoader = new FXMLLoader(getClass().getResource("../ProductDescriptionView/ProductView.fxml"));
+            Parent productViewRoot = productViewLoader.load();
+            ProductViewController controller = productViewLoader.getController();
+            controller.setDataFromRow(clickedRow);
+            controller.setViewModel(viewModel);
+            controller.setWindow(productWindow);
+            viewModel.setDraggable(productWindow, productViewRoot);
+            Scene productViewScene = new Scene(productViewRoot);
+            productWindow.setScene(productViewScene);
+            productWindow.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setUser(User user) {
@@ -81,6 +108,8 @@ public class FXMLUserViewController implements Initializable
     private void addPackageToTable(Package pack) {
         for (Product product : pack.getProducts()) {
             ProductEntry productEntry = new ProductEntry(product);
+            productEntry.setAvailability("All week");
+            productEntry.setDescription("description");
             productEntries.add(productEntry);
         }
     }
@@ -95,5 +124,16 @@ public class FXMLUserViewController implements Initializable
         productEntries = FXCollections.observableArrayList();
         product_table.setItems(productEntries);
         viewModel.goToSignIn();
+    }
+
+    public void deleteProductFromTable(String owner_email, int packageID, int productID) {
+        ObservableList<ProductEntry> entries = FXCollections.observableArrayList(this.productEntries);
+        for (int i = 0; i < entries.size(); i++) {
+            ProductEntry p = entries.get(i);
+            if(p.getProductID() == productID && p.getOwnerEmail().equals(owner_email) && p.getPackageID() == packageID){
+                productEntries.remove(i);
+                break;
+            }
+        }
     }
 }

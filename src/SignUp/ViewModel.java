@@ -8,6 +8,11 @@ package SignUp;
 import App.Package;
 import App.Product;
 import App.User;
+import SignUp.AddPackageView.AddPackageController;
+import SignUp.AddProductView.AddProductController;
+import SignUp.SignInScreenView.SignInController;
+import SignUp.SignUpScreenView.SignUpController;
+import SignUp.UserViewScreen.UserViewController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,51 +40,39 @@ public class ViewModel extends Application
     private Stage stage;
     private Scene userViewScene;
     private Scene addPackageScene;
-    private FXMLAddPackageController addPackageController;
-    private FXMLUserViewController userViewController;
-    private FXMLAddProductController addProductLoaderController;
+    private AddPackageController addPackageController;
+    private UserViewController userViewController;
+    private AddProductController addProductLoaderController;
     private Scene addProductScene;
     private User user;
     private Package aPackage;
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader signUpLoader = new FXMLLoader(getClass().getResource("FXMLSignUp.fxml"));
+        FXMLLoader signUpLoader = new FXMLLoader(getClass().getResource("SignUpScreenView/SignUpScreen.fxml"));
         Parent signUpRoot = (Parent) signUpLoader.load();
 
-        FXMLLoader signInLoader = new FXMLLoader(getClass().getResource("FXMLSignIn.fxml"));
+        FXMLLoader signInLoader = new FXMLLoader(getClass().getResource("SignInScreenView/SignInScreen.fxml"));
         Parent signInRoot = (Parent) signInLoader.load();
 
-        FXMLLoader userViewLoader = new FXMLLoader(getClass().getResource("FXMLUserView.fxml"));
+        FXMLLoader userViewLoader = new FXMLLoader(getClass().getResource("UserViewScreen/UserView.fxml"));
         Parent userViewRoot = (Parent) userViewLoader.load();
 
-        FXMLLoader addPackageLoader = new FXMLLoader(getClass().getResource("FXMLAddPackage.fxml"));
+        FXMLLoader addPackageLoader = new FXMLLoader(getClass().getResource("AddPackageView/AddPackage.fxml"));
         Parent addPackageRoot = (Parent) addPackageLoader.load();
 
-        FXMLLoader addProductLoader = new FXMLLoader(getClass().getResource("FXMLAddProduct.fxml"));
+        FXMLLoader addProductLoader = new FXMLLoader(getClass().getResource("AddProductView/AddProduct.fxml"));
         Parent addProductRoot = (Parent) addProductLoader.load();
 
         this.stage = stage;
         this.stage.initStyle(StageStyle.UNDECORATED);
 
         //set mouse pressed
-        signUpRoot.setOnMousePressed(new EventHandler<MouseEvent>()
-        {
-            @Override
-            public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-            }
-        });
-        //set mouse drag
-        signUpRoot.setOnMouseDragged(new EventHandler<MouseEvent>()
-        {
-            @Override
-            public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - xOffset);
-                stage.setY(event.getScreenY() - yOffset);
-            }
-        });
+        setDraggable(stage, signUpRoot);
+        setDraggable(stage, signInRoot);
+        setDraggable(stage, userViewRoot);
+        setDraggable(stage, addPackageRoot);
+        setDraggable(stage, addProductRoot);
 
         signUpScene = new Scene(signUpRoot);
         signInScene = new Scene(signInRoot);
@@ -87,10 +81,10 @@ public class ViewModel extends Application
         addProductScene = new Scene(addProductRoot);
         Model model = new Model();
         setModel(model);
-        FXMLSignUpController controller = signUpLoader.getController();
+        SignUpController controller = signUpLoader.getController();
         controller.setViewModel(this);
 
-        FXMLSignInController signInController = signInLoader.getController();
+        SignInController signInController = signInLoader.getController();
         signInController.setViewModel(this);
 
         userViewController = userViewLoader.getController();
@@ -105,6 +99,26 @@ public class ViewModel extends Application
 
         stage.setScene(signInScene);
         stage.show();
+    }
+
+    public void setDraggable(Stage stage, Parent parent) {
+        parent.setOnMousePressed(new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
+        //set mouse drag
+        parent.setOnMouseDragged(new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setX(event.getScreenX() - xOffset);
+                stage.setY(event.getScreenY() - yOffset);
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -160,7 +174,7 @@ public class ViewModel extends Application
     }
 
     public void savePackage() {
-        if (aPackage != null) {
+        if (aPackage != null && aPackage.getProducts().size() > 0) {
             model.addPackage(aPackage);
             userViewController.addToTable(aPackage);
         }
@@ -187,5 +201,20 @@ public class ViewModel extends Application
 
     public void discartPackage() {
         aPackage = null;
+    }
+
+    public void deleteProduct(String owner_emailText, int packageID, int productID) {
+        if(aPackage != null) {
+            List<Product> products = new ArrayList<>(aPackage.getProducts());
+            for (int i = 0; i < products.size(); i++) {
+                Product p = products.get(i);
+                if (p.ownerEmail.equals(owner_emailText) && p.packageID == packageID && p.productID == productID) {
+                    aPackage.getProducts().remove(i);
+                    break;
+                }
+            }
+        }
+        model.deleteProduct(owner_emailText, packageID, productID);
+        userViewController.deleteProductFromTable(owner_emailText, packageID, productID);
     }
 }

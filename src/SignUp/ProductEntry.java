@@ -9,6 +9,8 @@ public class ProductEntry
     private int packageID;
     private int price;
     private String category;
+    private String availability;
+    private String description;
 
     public ProductEntry(Product p) {
         ownerEmail = p.ownerEmail;
@@ -17,6 +19,22 @@ public class ProductEntry
 
         price = p.price;
         category = p.category;
+    }
+
+    public String getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getOwnerEmail() {

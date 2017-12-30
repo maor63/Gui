@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SignUp;
+package SignUp.SignInScreenView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import App.User;
+import SignUp.ViewModel;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
@@ -16,17 +17,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 /**
  *
  * @author danml
  */
-public class FXMLSignInController implements Initializable {
+public class SignInController implements Initializable {
 
     public Label btn_exit;
-    public JFXTextField email;
-    public JFXPasswordField password;
+    public TextField email;
+    public PasswordField password;
     @FXML
     private Label label;
     private ViewModel viewModel;

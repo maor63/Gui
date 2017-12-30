@@ -1,6 +1,7 @@
 package SignUp;
 
 import App.Package;
+import App.Product;
 import App.User;
 import DB.SqliteDB;
 
@@ -33,5 +34,9 @@ public class Model {
 
     public User loadUser(User u) {
         return db.getUserByEmail(u.email);
+    }
+
+    public void deleteProduct(String owner_emailText, int packageID, int productID) {
+        db.deleteProduct(new Product(owner_emailText, productID, packageID, 0,"none"));
     }
 }

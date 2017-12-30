@@ -1,12 +1,14 @@
-package SignUp;
+package SignUp.AddPackageView;
 
 import App.User;
 import App.Package;
+import SignUp.ViewModel;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
-public class FXMLAddPackageController {
+public class AddPackageController
+{
     public TextField cancellation_policy;
     public TextField address;
 

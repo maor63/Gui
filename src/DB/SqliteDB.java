@@ -170,7 +170,8 @@ public class SqliteDB {
     public void deleteProduct(Product p) {
         try {
             execute("DELETE FROM Products WHERE Products.product_id = " + p.productID +
-                    " AND Products.package_id = " + p.packageID + " ;");
+                    " AND Products.package_id = " + p.packageID + " AND Products.owner_email = " +
+                    "'" + p.ownerEmail + "' ;");
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,11 +1,14 @@
-package SignUp;
+package SignUp.AddProductView;
 
 import App.User;
+import SignUp.ViewModel;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
-public class FXMLAddProductController {
+public class AddProductController
+{
 
     public TextField Price;
     public TextField Category;
@@ -18,7 +21,10 @@ public class FXMLAddProductController {
 
     public void addProduct(MouseEvent mouseEvent) {
         viewModel.addProductToPackage(Integer.parseInt(Price.getText()), Category.getText());
-        System.out.println("product added");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("New product add to package");
+        alert.showAndWait();
         Price.setText("");
         Category.setText("");
     }
