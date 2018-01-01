@@ -1,10 +1,13 @@
 package View.SignUpScreenView;/*
+
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
 import java.net.URL;
+import java.util.Date;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import App.User;
@@ -17,6 +20,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import sun.plugin2.message.Message;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -47,6 +56,7 @@ public class SignUpController implements Initializable {
         User u = new User(first_name.getText(),last_name.getText(), password.getText(), email.getText());
         if(!viewModel.isUserExists(u)) {
             viewModel.addUser(u);
+            Sendemail(email.getText());
             resetFields(mouseEvent);
         }
         else {
@@ -70,5 +80,46 @@ public class SignUpController implements Initializable {
         password.setText("");
         last_name.setText("");
         email.setText("");
+    }
+
+    private void Sendemail(String Email){
+        try {
+            String host = "smtp.gmail.com";
+            String user = "everything4rent4@gmail.com";
+            String pass = "nituz123";
+            String to = Email;
+            String from = "everything4rent4@gmail.com";
+            String subject = "Welcome to Everything4Rent";
+            String message = "the sign up succeeded";
+            boolean sessionDebug = false;
+
+
+            Properties props = System.getProperties();
+
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", "587");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.required", "true");
+
+            java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+            Session mailSession = Session.getDefaultInstance(props, null);
+            mailSession.setDebug(sessionDebug);
+            Message msg = new MimeMessage(mailSession);
+            msg.setFrom(new InternetAddress(from));
+            InternetAddress[] address = {new InternetAddress(to)};
+            msg.setRecipients(Message.RecipientType.TO, address);
+            msg.setSubject(subject); msg.setSentDate(new Date());
+            msg.setText(message);
+
+            Transport transport=mailSession.getTransport("smtp");
+            transport.connect(host, user, pass);
+            transport.sendMessage(msg, msg.getAllRecipients());
+            transport.close();
+            System.out.println("message send successfully");
+        }catch(Exception ex)
+        {
+            System.out.println(ex);
+        }
     }
 }
