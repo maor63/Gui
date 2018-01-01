@@ -95,6 +95,7 @@ public class SqliteDB {
                 "package_id int,\n" +
                 "price int,\n" +
                 "category varchar(255),\n" +
+                "description varchar(255),\n" +
                 "CONSTRAINT PK_Products PRIMARY KEY (owner_email,product_id,package_id), \n" +
                 "CONSTRAINT FK_Products1 FOREIGN KEY (owner_email) REFERENCES Users(email), \n" +
                 "CONSTRAINT FK_Products2 FOREIGN KEY (package_id) REFERENCES Packages(package_id)) \n" +
@@ -122,7 +123,7 @@ public class SqliteDB {
             Statement st = dbConnection.createStatement();
             p.productID = getNextProductIdForPackage(p.ownerEmail,p.packageID);
             String query = "INSERT INTO Products \n" +
-                    String.format("VALUES ('%s',%d, %d, %d, '%s');", p.ownerEmail, p.productID, p.packageID, p.price, p.category);
+                    String.format("VALUES ('%s',%d, %d, %d, '%s', '%s');", p.ownerEmail, p.productID, p.packageID, p.price, p.category, p.description);
             st.execute(query);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -222,7 +223,9 @@ public class SqliteDB {
         int package_id = resSet.getInt("package_id");
         int price = resSet.getInt("price");
         String category = resSet.getString("category");
-        return new Product(owner_email, product_id, package_id, price, category);
+        Product product = new Product(owner_email, product_id, package_id, price, category);
+        product.description = resSet.getString("description");
+        return product;
     }
 
     public User getUserByEmail(String email) {

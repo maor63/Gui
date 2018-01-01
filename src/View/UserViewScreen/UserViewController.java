@@ -108,7 +108,7 @@ public class UserViewController implements Initializable
         for (Product product : pack.getProducts()) {
             ProductEntry productEntry = new ProductEntry(product);
             productEntry.setAvailability("All week");
-            productEntry.setDescription("description");
+//            productEntry.setDescription(product.description);
             productEntries.add(productEntry);
         }
     }

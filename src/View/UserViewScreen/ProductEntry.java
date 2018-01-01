@@ -16,7 +16,7 @@ public class ProductEntry
         ownerEmail = p.ownerEmail;
         productID = p.productID;
         packageID = p.packageID;
-
+        description = p.description;
         price = p.price;
         category = p.category;
     }

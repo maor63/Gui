@@ -45,7 +45,7 @@ public class SignUpController implements Initializable {
 
     public void handleAddUser(MouseEvent mouseEvent) {
         User u = new User(first_name.getText(),last_name.getText(), password.getText(), email.getText());
-        if(viewModel.isUserExists(u)) {
+        if(!viewModel.isUserExists(u)) {
             viewModel.addUser(u);
             resetFields(mouseEvent);
         }

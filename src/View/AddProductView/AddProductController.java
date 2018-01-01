@@ -12,6 +12,7 @@ public class AddProductController
 
     public TextField Price;
     public TextField Category;
+    public TextField description;
     private ViewModel viewModel;
     private User user;
 
@@ -20,7 +21,7 @@ public class AddProductController
     }
 
     public void addProduct(MouseEvent mouseEvent) {
-        viewModel.addProductToPackage(Integer.parseInt(Price.getText()), Category.getText());
+        viewModel.addProductToPackage(Integer.parseInt(Price.getText()), Category.getText(), description.getText());
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("New product add to package");

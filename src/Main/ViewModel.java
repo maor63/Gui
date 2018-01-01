@@ -169,8 +169,9 @@ public class ViewModel extends Application
         aPackage = new Package(user.email, 0);
     }
 
-    public void addProductToPackage(int price, String categoryText) {
+    public void addProductToPackage(int price, String categoryText, String description) {
         Product product = new Product(user.email, 0, 0, price, categoryText);
+        product.description = description;
         aPackage.addProduct(product);
     }
 

@@ -6,6 +6,7 @@ public class Product {
     public int packageID;
     public int price;
     public String category;
+    public String description;
 
     public Product(String ownerEmail, int productID, int packageID, int price, String category) {
         this.ownerEmail = ownerEmail;
@@ -13,6 +14,7 @@ public class Product {
         this.packageID = packageID;
         this.price = price;
         this.category = category;
+        description = "";
     }
 
 
