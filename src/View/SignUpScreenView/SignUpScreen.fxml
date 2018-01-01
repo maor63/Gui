@@ -77,7 +77,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <PasswordField prefHeight="31.0" prefWidth="320.0" style="-fx-background-color: #2D3447; -fx-text-inner-color: red;">
+            <PasswordField fx:id="confirm_password" prefHeight="31.0" prefWidth="320.0" style="-fx-background-color: #2D3447; -fx-text-inner-color: red;">
                <effect>
                   <Glow />
                </effect>

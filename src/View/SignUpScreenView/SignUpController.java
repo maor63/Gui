@@ -19,9 +19,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.input.MouseEvent;
-import sun.plugin2.message.Message;
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -37,6 +38,7 @@ public class SignUpController implements Initializable {
     private Label btn_exit;
     public JFXTextField first_name;
     public JFXPasswordField password;
+    public PasswordField confirm_password;
     public JFXTextField last_name;
     public JFXTextField email;
     public JFXButton btn_add_user;
@@ -54,17 +56,38 @@ public class SignUpController implements Initializable {
 
     public void handleAddUser(MouseEvent mouseEvent) {
         User u = new User(first_name.getText(),last_name.getText(), password.getText(), email.getText());
+        if(!formCorrect())
+        {
+            popAlert("One of th field is missing");
+        }
         if(!viewModel.isUserExists(u)) {
-            viewModel.addUser(u);
-            Sendemail(email.getText());
-            resetFields(mouseEvent);
+            try {
+                sendEmail(email.getText());
+                viewModel.addUser(u);
+                resetFields(mouseEvent);
+                viewModel.goToSignIn();
+            }
+            catch (Exception e){
+                popAlert("Email is not well formed");
+            }
         }
         else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("Email is in use");
-            alert.showAndWait();
+            popAlert("Email is in use");
         }
+    }
+
+    private void popAlert(String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(text);
+        alert.showAndWait();
+    }
+
+    private boolean formCorrect() {
+        Boolean name = !first_name.getText().equals("") && !last_name.getText().equals("");
+        Boolean data = !email.getText().equals("") && !password.getText().equals("");
+        Boolean pass = confirm_password.getText().equals(password.getText());
+        return name && data && pass;
     }
 
     public void setViewModel(ViewModel viewModel) {
@@ -80,46 +103,43 @@ public class SignUpController implements Initializable {
         password.setText("");
         last_name.setText("");
         email.setText("");
+        confirm_password.setText("");
     }
 
-    private void Sendemail(String Email){
-        try {
-            String host = "smtp.gmail.com";
-            String user = "everything4rent4@gmail.com";
-            String pass = "nituz123";
-            String to = Email;
-            String from = "everything4rent4@gmail.com";
-            String subject = "Welcome to Everything4Rent";
-            String message = "the sign up succeeded";
-            boolean sessionDebug = false;
+    private void sendEmail(String Email) throws MessagingException {
+        String host = "smtp.gmail.com";
+        String user = "everything4rent4@gmail.com";
+        String pass = "nituz123";
+        String to = Email;
+        String from = "everything4rent4@gmail.com";
+        String subject = "Welcome to Everything4Rent";
+        String message = "You are now a member of Everything4Rent system";
+        boolean sessionDebug = false;
 
 
-            Properties props = System.getProperties();
+        Properties props = System.getProperties();
 
-            props.put("mail.smtp.starttls.enable", "true");
-            props.put("mail.smtp.host", host);
-            props.put("mail.smtp.port", "587");
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.starttls.required", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.required", "true");
 
-            java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-            Session mailSession = Session.getDefaultInstance(props, null);
-            mailSession.setDebug(sessionDebug);
-            Message msg = new MimeMessage(mailSession);
-            msg.setFrom(new InternetAddress(from));
-            InternetAddress[] address = {new InternetAddress(to)};
-            msg.setRecipients(Message.RecipientType.TO, address);
-            msg.setSubject(subject); msg.setSentDate(new Date());
-            msg.setText(message);
+        java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+        Session mailSession = Session.getDefaultInstance(props, null);
+        mailSession.setDebug(sessionDebug);
+        Message msg = new MimeMessage(mailSession);
+        msg.setFrom(new InternetAddress(from));
+        InternetAddress[] address = {new InternetAddress(to)};
+        msg.setRecipients(Message.RecipientType.TO, address);
+        msg.setSubject(subject); msg.setSentDate(new Date());
+        msg.setText(message);
 
-            Transport transport=mailSession.getTransport("smtp");
-            transport.connect(host, user, pass);
-            transport.sendMessage(msg, msg.getAllRecipients());
-            transport.close();
-            System.out.println("message send successfully");
-        }catch(Exception ex)
-        {
-            System.out.println(ex);
-        }
+        Transport transport=mailSession.getTransport("smtp");
+        transport.connect(host, user, pass);
+        transport.sendMessage(msg, msg.getAllRecipients());
+        transport.close();
+        System.out.println("message send successfully");
+
     }
 }

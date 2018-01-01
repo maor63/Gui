@@ -136,7 +136,6 @@ public class ViewModel extends Application
 
     public void addUser(User u) {
         model.addUser(u);
-        goToSignIn();
     }
 
     public void goToSignIn() {
