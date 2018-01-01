@@ -38,7 +38,7 @@ public class SignUpController implements Initializable {
     private Label btn_exit;
     public JFXTextField first_name;
     public JFXPasswordField password;
-    public PasswordField confirm_password;
+    public JFXPasswordField confirm_password;
     public JFXTextField last_name;
     public JFXTextField email;
     public JFXButton btn_add_user;
@@ -58,9 +58,12 @@ public class SignUpController implements Initializable {
         User u = new User(first_name.getText(),last_name.getText(), password.getText(), email.getText());
         if(!formCorrect())
         {
-            popAlert("One of th field is missing");
+            if(password.getText().equals(confirm_password.getText()))
+                popAlert("One of th field is missing");
+            else
+                popAlert("These passwords don't match");
         }
-        if(!viewModel.isUserExists(u)) {
+        else if(!viewModel.isUserExists(u)) {
             try {
                 sendEmail(email.getText());
                 viewModel.addUser(u);

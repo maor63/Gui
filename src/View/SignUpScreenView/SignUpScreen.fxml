@@ -77,11 +77,11 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <PasswordField fx:id="confirm_password" prefHeight="31.0" prefWidth="320.0" style="-fx-background-color: #2D3447; -fx-text-inner-color: red;">
+            <JFXPasswordField fx:id="confirm_password" prefHeight="31.0" prefWidth="320.0" style="-fx-background-color: #2D3447; -fx-text-inner-color: red;">
                <effect>
                   <Glow />
                </effect>
-            </PasswordField>
+            </JFXPasswordField>
          </children>
       </VBox>
       <ImageView fitHeight="210.0" fitWidth="320.0" layoutX="420.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
