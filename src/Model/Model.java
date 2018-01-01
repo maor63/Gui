@@ -36,7 +36,21 @@ public class Model {
         return db.getUserByEmail(u.email);
     }
 
-    public void deleteProduct(String owner_emailText, int packageID, int productID) {
-        db.deleteProduct(new Product(owner_emailText, productID, packageID, 0,"none"));
+    public void deleteProduct(String owner_email, int packageID, int productID) {
+        db.deleteProduct(new Product(owner_email, productID, packageID, 0,"none"));
+        Package aPackage = getPackage(owner_email, packageID);
+        if(aPackage.getProducts().size() == 0)
+            deletePackage(aPackage);
+    }
+
+    public Package getPackage(String ownerEmail, int packageID) {
+        return db.getPackageByOwnerIdAndPackageId(ownerEmail, packageID);
+    }
+
+    public void deletePackage(Package pack) {
+        for (Product p : pack.getProducts()) {
+            db.deleteProduct(p);
+        }
+        db.deletePackage(pack);
     }
 }

@@ -11,6 +11,7 @@ public class ProductEntry
     private String category;
     private String availability;
     private String description;
+    private String address;
 
     public ProductEntry(Product p) {
         ownerEmail = p.ownerEmail;
@@ -19,6 +20,15 @@ public class ProductEntry
         description = p.description;
         price = p.price;
         category = p.category;
+
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getAvailability() {

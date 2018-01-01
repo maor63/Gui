@@ -4,6 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.SepiaTone?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: #2D3447;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ProductDescriptionView.ProductViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: #2D3447;" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ProductDescriptionView.ProductViewController">
    <children>
       <Label layoutY="747.0" prefHeight="21.0" prefWidth="1024.0" style="-fx-background-color: #FF6600;" />
       <Label prefHeight="21.0" prefWidth="1024.0" style="-fx-background-color: #FF6600;" />
@@ -35,16 +36,6 @@
                               <Image url="@../images/icons8_Search_48px.png" />
                            </image>
                         </ImageView>
-                        <Label text="Searchable name:" textFill="WHITE">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="searchable_name" prefHeight="38.0" prefWidth="191.0" textFill="#fc0c0c">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
                      </children>
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
@@ -59,11 +50,11 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label fx:id="category" prefHeight="38.0" prefWidth="191.0" textFill="#fc0c0c">
+                        <TextField fx:id="category" editable="false" prefHeight="38.0" prefWidth="191.0">
                            <font>
                               <Font size="20.0" />
                            </font>
-                        </Label>
+                        </TextField>
                      </children>
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
@@ -78,11 +69,11 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label fx:id="address" prefHeight="38.0" prefWidth="298.0" textFill="#fc0c0c">
+                        <TextField fx:id="address" editable="false" prefHeight="38.0" prefWidth="298.0">
                            <font>
                               <Font size="20.0" />
                            </font>
-                        </Label>
+                        </TextField>
                      </children>
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
@@ -110,11 +101,11 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label fx:id="price" prefHeight="38.0" prefWidth="191.0" textFill="#fc0c0c">
+                        <TextField fx:id="price" editable="false" prefHeight="16.0" prefWidth="191.0">
                            <font>
                               <Font size="20.0" />
                            </font>
-                        </Label>
+                        </TextField>
                      </children>
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
@@ -136,6 +127,9 @@
                      </children>
                   </HBox>
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </VBox>
          </children>
       </AnchorPane>
@@ -160,38 +154,17 @@
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-                  <Label text="Available until:" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </Label>
-                  <Label prefHeight="18.0" prefWidth="301.0" text="N/A" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2">
+                  <TextField fx:id="availability" editable="false" prefHeight="18.0" prefWidth="301.0" text="N/A" GridPane.columnIndex="2">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                      <padding>
                         <Insets left="50.0" />
                      </padding>
-                  </Label>
-                  <Label prefHeight="18.0" prefWidth="301.0" text="N/A" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets left="50.0" />
-                     </padding>
-                  </Label>
+                  </TextField>
                   <ImageView fitHeight="30.0" fitWidth="30.0">
                      <image>
                         <Image url="@../images/icons8_Date_From_48px.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../images/icons8_Date_To_48px.png" />
                      </image>
                   </ImageView>
                </children>
@@ -224,7 +197,17 @@
             </ImageView>
          </children>
       </HBox>
-      <JFXButton layoutX="835.0" layoutY="35.0" onMousePressed="#deleteProduct" prefHeight="50.0" prefWidth="144.0" text="Delete Product" textFill="#e84210">
+      <JFXButton fx:id="delete_btn" layoutX="835.0" layoutY="35.0" onMousePressed="#deleteProduct" prefHeight="50.0" prefWidth="144.0" text="Delete Product" textFill="#e84210">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="update_btn" layoutX="830.0" layoutY="85.0" onMousePressed="#updateProduct" prefHeight="50.0" prefWidth="166.0" text="Update Product" textFill="#e84210">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="save_changes_btn" disable="true" layoutX="547.0" layoutY="384.0" onMousePressed="#saveChanges" prefHeight="50.0" prefWidth="166.0" text="Save Changes" textFill="#e84210">
          <font>
             <Font size="18.0" />
          </font>

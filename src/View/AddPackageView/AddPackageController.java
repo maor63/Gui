@@ -13,11 +13,9 @@ public class AddPackageController
     public TextField address;
 
     private ViewModel viewModel;
-    private User user;
-    private Package aPackage;
 
     public void addNewProduct(MouseEvent mouseEvent) {
-        viewModel.createNewPackage();
+        viewModel.createNewPackage(address.getText(), cancellation_policy.getText());
         viewModel.goToAddProduct();
         System.out.println("Adding new Package");
     }
@@ -33,10 +31,6 @@ public class AddPackageController
 
     public void setViewModel(ViewModel viewModel) {
         this.viewModel = viewModel;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public void addNewPackage(MouseEvent mouseEvent) {

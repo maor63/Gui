@@ -13,6 +13,7 @@ import View.AddPackageView.AddPackageController;
 import View.AddProductView.AddProductController;
 import View.SignInScreenView.SignInController;
 import View.SignUpScreenView.SignUpController;
+import View.UserViewScreen.ProductEntry;
 import View.UserViewScreen.UserViewController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -164,8 +165,10 @@ public class ViewModel extends Application
         model.addPackage(aPackage);
     }
 
-    public void createNewPackage() {
+    public void createNewPackage(String address, String cancellation_policy) {
         aPackage = new Package(user.email, 0);
+        aPackage.setAddress(address);
+        aPackage.setCancellation_policy(cancellation_policy);
     }
 
     public void addProductToPackage(int price, String categoryText, String description) {
@@ -217,5 +220,22 @@ public class ViewModel extends Application
         }
         model.deleteProduct(owner_emailText, packageID, productID);
         userViewController.deleteProductFromTable(owner_emailText, packageID, productID);
+    }
+
+    public void updateProduct(Product prod, String address) {
+        Package pack = model.getPackage(prod.ownerEmail, prod.packageID);
+        model.deletePackage(pack);
+        pack.setAddress(address);
+        for (Product p : pack.getProducts()) {
+            if(p.productID == prod.productID)
+            {
+                p.price = prod.price;
+                p.category = prod.category;
+                p.description = prod.description;
+            }
+        }
+        model.addPackage(pack);
+        userViewController.deletePackageFromTable(pack);
+        userViewController.addToTable(pack);
     }
 }

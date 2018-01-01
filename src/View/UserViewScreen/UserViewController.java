@@ -108,7 +108,7 @@ public class UserViewController implements Initializable
         for (Product product : pack.getProducts()) {
             ProductEntry productEntry = new ProductEntry(product);
             productEntry.setAvailability("All week");
-//            productEntry.setDescription(product.description);
+            productEntry.setAddress(pack.getAddress());
             productEntries.add(productEntry);
         }
     }
@@ -133,6 +133,12 @@ public class UserViewController implements Initializable
                 productEntries.remove(i);
                 break;
             }
+        }
+    }
+
+    public void deletePackageFromTable(Package pack) {
+        for (Product p : pack.getProducts()) {
+            deleteProductFromTable(p.ownerEmail, p.packageID, p.productID);
         }
     }
 }

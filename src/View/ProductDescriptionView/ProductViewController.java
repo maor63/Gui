@@ -1,20 +1,26 @@
 package View.ProductDescriptionView;
 
+import App.Product;
 import View.UserViewScreen.ProductEntry;
 import Main.ViewModel;
+import com.jfoenix.controls.JFXButton;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class ProductViewController
 {
-    public Label searchable_name;
-    public Label category;
-    public Label address;
-    public TextArea description;
-    public Label price;
+    public TextField category;
+    public TextField address;
+    public TextArea  description;
+    public TextField price;
     public Label owner_email;
+    public JFXButton delete_btn;
+    public JFXButton update_btn;
+    public JFXButton save_changes_btn;
+    public TextField availability;
     private ViewModel viewModel;
     private Stage window;
     private int productID;
@@ -31,6 +37,8 @@ public class ProductViewController
         description.setText(clickedRow.getDescription());
         price.setText(Integer.toString(clickedRow.getPrice()));
         owner_email.setText(clickedRow.getOwnerEmail());
+        address.setText(clickedRow.getAddress());
+        availability.setText(clickedRow.getAvailability());
     }
 
     public void deleteProduct(MouseEvent mouseEvent) {
@@ -44,5 +52,26 @@ public class ProductViewController
 
     public void setWindow(Stage window) {
         this.window = window;
+    }
+
+    public void updateProduct(MouseEvent mouseEvent) {
+        delete_btn.setDisable(true);
+        save_changes_btn.setDisable(false);
+        category.setEditable(true);
+        address.setEditable(true);
+        description.setEditable(true);
+        price.setEditable(true);
+    }
+
+    public void saveChanges(MouseEvent mouseEvent) {
+        Product prod = new Product(owner_email.getText(), productID, packageID,Integer.parseInt(price.getText()),category.getText());
+        prod.description = description.getText();
+        viewModel.updateProduct(prod, address.getText());
+        delete_btn.setDisable(false);
+        save_changes_btn.setDisable(true);
+        category.setEditable(false);
+        address.setEditable(false);
+        description.setEditable(false);
+        price.setEditable(false);
     }
 }

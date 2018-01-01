@@ -28,6 +28,7 @@ public class AddProductController
         alert.showAndWait();
         Price.setText("");
         Category.setText("");
+        description.setText("");
     }
 
 
