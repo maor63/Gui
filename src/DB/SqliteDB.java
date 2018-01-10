@@ -25,6 +25,7 @@ public class SqliteDB {
             createUsersTable();
             createRenterTable();
             createTenantTable();
+            createCategoryTable();
 
             System.out.println("db init");
         } catch (Exception e) {
@@ -102,7 +103,43 @@ public class SqliteDB {
                 ";");
     }
 
+    private void createCategoryTable()throws SQLException {
+        execute("CREATE TABLE IF NOT EXISTS Category (\n" +
+                "category varchar(255),\n" +
+                "CONSTRAINT PK_Category PRIMARY KEY (category) \n" +
+                ");");
+        addCategory("Real estate");
+        addCategory("Second hand");
+        addCategory("Vehicle");
+        addCategory("Pets");
+    }
+
     //*******************Add *****************************************
+    public void addCategory(String category){
+        if(!isCategoryExists(category)) {
+            try {
+                String query = "INSERT INTO Category \n" +
+                        "VALUES ('" + category + "') " +
+                        ";";
+                execute(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean isCategoryExists(String category) {
+        String query = "SELECT * FROM Category WHERE category = '" + category + "' ;";
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery(query);
+            String c = resSet.getString("category");
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     private void addUser(String firstName, String lastName, String password, String email) {
         try {
             String query = "INSERT INTO Users \n" +
@@ -203,6 +240,21 @@ public class SqliteDB {
     }
 
     // ******************** Get ********************************
+
+    public List<String> getAllCategories(){
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery("SELECT * FROM Category ;");
+            List<String> categories = new ArrayList<>();
+            while (resSet.next()) {
+                categories.add(resSet.getString("category"));
+            }
+            return categories;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public Product getProductByEmailProductIdAndPackageId(String ownerEmail, int pId, int packageId) {
         try {
