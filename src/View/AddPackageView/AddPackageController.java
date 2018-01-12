@@ -16,9 +16,9 @@ public class AddPackageController
 {
     public TextField address;
     @FXML
-    private DatePicker start_date;
-    @FXML
     private DatePicker end_date;
+    @FXML
+    private DatePicker start_date;
 
 
     @FXML
