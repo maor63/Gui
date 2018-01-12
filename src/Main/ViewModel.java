@@ -11,6 +11,7 @@ import App.User;
 import Model.Model;
 import View.AddPackageView.AddPackageController;
 import View.AddProductView.AddProductController;
+import View.PackageDescriptionView.PackageDescriptionView;
 import View.SignInScreenView.SignInController;
 import View.SignUpScreenView.SignUpController;
 import View.UserViewScreen.ProductEntry;
@@ -66,6 +67,9 @@ public class ViewModel extends Application
         FXMLLoader addProductLoader = new FXMLLoader(getClass().getResource("../View/AddProductView/AddProduct.fxml"));
         Parent addProductRoot = (Parent) addProductLoader.load();
 
+        FXMLLoader PackageDescriptionViewLoader = new FXMLLoader(getClass().getResource("../View/PackageDescriptionView/PackageDescriptionView.fxml"));
+        Parent packageDescriptionRoot = (Parent) PackageDescriptionViewLoader.load();
+
         this.stage = stage;
         this.stage.initStyle(StageStyle.UNDECORATED);
 
@@ -98,8 +102,12 @@ public class ViewModel extends Application
         addProductLoaderController = addProductLoader.getController();
         addProductLoaderController.setViewModel(this);
 
+        PackageDescriptionView p = PackageDescriptionViewLoader.getController();
+        p.setViewModel(this);
+
 
         stage.setScene(signInScene);
+//        stage.setScene(new Scene(packageDescriptionRoot));
         stage.show();
     }
 
