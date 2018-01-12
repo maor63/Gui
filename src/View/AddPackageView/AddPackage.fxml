@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="363.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AddPackageView.AddPackageController">
+<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="363.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AddPackageView.AddPackageController">
     <stylesheets>
     </stylesheets>
    <children>
@@ -34,7 +34,7 @@
             <Label prefHeight="28.0" prefWidth="150.0" text="Address" GridPane.rowIndex="1" />
             <TextField fx:id="cancellation_policy" GridPane.columnIndex="1" />
             <TextField fx:id="address" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" onMousePressed="#addNewProduct" prefHeight="25.0" prefWidth="176.0" text="Add new product to package" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onMousePressed="#addNewProduct" prefHeight="25.0" prefWidth="176.0" text="Add new product to package" GridPane.rowIndex="5" />
          </children>
       </GridPane>
       <Label alignment="CENTER" layoutX="50.0" layoutY="31.0" prefHeight="41.0" prefWidth="226.0" text="Create New Package Of Products" />
