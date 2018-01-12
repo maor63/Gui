@@ -29,21 +29,21 @@ public class SqliteDBTests {
 
     @Test
     public void testAddProduct() {
-        Product p = new Product("email",1, 24, 3000, "realastate");
+        Product p = new Product("email", 1, 24, 3000, "realastate");
         db.addProduct(p);
-        Product resP = db.getProductByEmailProductIdAndPackageId("email",1, 24);
-        Assert.assertEquals(1,resP.productID);
-        Assert.assertEquals(24,resP.packageID);
-        Assert.assertEquals(3000,resP.price);
+        Product resP = db.getProductByEmailProductIdAndPackageId("email", 1, 24);
+        Assert.assertEquals(1, resP.productID);
+        Assert.assertEquals(24, resP.packageID);
+        Assert.assertEquals(3000, resP.price);
         db.close();
     }
 
     @Test
-    public void testAddPackage(){
+    public void testAddPackage() {
         String owner_email = "email@ggg.com";
         db.addUser(new User("msdaor", "r", "123", owner_email));
-        Product p1 = new Product(owner_email,1, 34, 3000, "realastate");
-        Product p2 = new Product(owner_email,4, 34, 1000, "realastate");
+        Product p1 = new Product(owner_email, 1, 34, 3000, "realastate");
+        Product p2 = new Product(owner_email, 4, 34, 1000, "realastate");
         Package pack = new Package(owner_email, 0);
         pack.setCancellation_policy("safe");
         pack.setAddress("BeerSheva");
@@ -58,8 +58,7 @@ public class SqliteDBTests {
     }
 
     @Test
-    public void testUserExists()
-    {
+    public void testUserExists() {
         User user = new User("msdaor", "r", "123", "goole@fgfg.com");
         User user2 = new User("msdaor", "r", "1263", "goole@fgfg.com");
         User user3 = new User("msdfsdr", "sdf", "123", "godfdle@fgfg.com");
@@ -71,8 +70,7 @@ public class SqliteDBTests {
     }
 
     @Test
-    public void testDeleteUser()
-    {
+    public void testDeleteUser() {
         User user = new User("g", "r", "123", "goole@fgfg.com");
         db.addUser(user);
         Assert.assertTrue(db.isUserExists(user));
@@ -82,8 +80,8 @@ public class SqliteDBTests {
     }
 
     @Test
-    public void testDeleteProduct(){
-        Product p = new Product("emails",4, 14, 200, "realastate");
+    public void testDeleteProduct() {
+        Product p = new Product("emails", 4, 14, 200, "realastate");
         db.addProduct(p);
         Assert.assertTrue(db.isProductExists(p));
         db.deleteProduct(p);
@@ -92,12 +90,12 @@ public class SqliteDBTests {
     }
 
     @Test
-    public void testDeletePackage(){
+    public void testDeletePackage() {
         String ownerEmail = "email@ggg.com";
         User user = new User("g", "r", "123", ownerEmail);
         db.addUser(user);
-        Product p1 = new Product(ownerEmail,1, 7, 300, "realastate");
-        Product p2 = new Product(ownerEmail,2, 7, 100, "realastate");
+        Product p1 = new Product(ownerEmail, 1, 7, 300, "realastate");
+        Product p2 = new Product(ownerEmail, 2, 7, 100, "realastate");
         Package pack = new Package(ownerEmail, 7);
         pack.setCancellation_policy("safe");
         pack.setAddress("BeerSheva");
@@ -111,20 +109,19 @@ public class SqliteDBTests {
     }
 
     @Test
-    public void testGetPackagesByOwnerEmail()
-    {
+    public void testGetPackagesByOwnerEmail() {
         String email = "d@fgfg.com";
         User user = new User("d", "r", "123", email);
         int package_id1 = 9;
         Package pack1 = new Package(email, package_id1);
-        Product p1 = new Product(email,1, package_id1, 300, "realastate");
-        Product p2 = new Product(email,2, package_id1, 100, "realastate");
+        Product p1 = new Product(email, 1, package_id1, 300, "realastate");
+        Product p2 = new Product(email, 2, package_id1, 100, "realastate");
         pack1.addProduct(p1);
         pack1.addProduct(p2);
         int package_id2 = 4;
         Package pack2 = new Package(email, package_id2);
-        Product p3 = new Product(email,1, package_id2, 600, "realastate");
-        Product p4 = new Product(email,2, package_id2, 100, "realastate");
+        Product p3 = new Product(email, 1, package_id2, 600, "realastate");
+        Product p4 = new Product(email, 2, package_id2, 100, "realastate");
         pack2.addProduct(p3);
         pack2.addProduct(p4);
         db.addUser(user);
@@ -140,7 +137,7 @@ public class SqliteDBTests {
     }
 
     @Test
-    public void testGetNextPackageId(){
+    public void testGetNextPackageId() {
         String email = "e@fgfg.com";
         User user = new User("d", "r", "123", email);
         db.addUser(user);
@@ -148,8 +145,8 @@ public class SqliteDBTests {
         Assert.assertEquals(nextPackageId, 1);
 
         Package pack1 = new Package(email, nextPackageId);
-        Product p1 = new Product(email,1, nextPackageId, 300, "realastate");
-        Product p2 = new Product(email,2, nextPackageId, 100, "realastate");
+        Product p1 = new Product(email, 1, nextPackageId, 300, "realastate");
+        Product p2 = new Product(email, 2, nextPackageId, 100, "realastate");
         pack1.addProduct(p1);
         pack1.addProduct(p2);
         db.addPackage(pack1);
@@ -159,20 +156,35 @@ public class SqliteDBTests {
     }
 
     @Test
-    public void testGetNextProductIdForPackage()
-    {
+    public void testGetNextProductIdForPackage() {
         String email = "e@fgfg.com";
         User user = new User("d", "r", "123", email);
         db.addUser(user);
         int nextPackageId = db.getNextPackageIdForUser(email);
         Package pack1 = new Package(email, nextPackageId);
         int prod_id = db.getNextProductIdForPackage(email, nextPackageId);
-        Product p1 = new Product(email,prod_id, nextPackageId, 300, "realastate");
+        Product p1 = new Product(email, prod_id, nextPackageId, 300, "realastate");
         pack1.addProduct(p1);
         db.addPackage(pack1);
         Assert.assertEquals(1, prod_id);
         int nextProductId = db.getNextProductIdForPackage(email, nextPackageId);
         Assert.assertEquals(2, nextProductId);
+        db.close();
+    }
+
+    @Test
+    public void testGetAllCancelationPolicies() {
+        List<String> policys = db.getAllCancellationPolicy();
+        String[] expected = {"Safe", "Conservative", "First come first served"};
+        Assert.assertArrayEquals(policys.toArray(), expected);
+        db.close();
+    }
+
+    @Test
+    public void testGetAllCategories() {
+        List<String> categories = db.getAllCategories();
+        String[] expected = {"Real estate", "Second hand", "Vehicle", "Pets"};
+        Assert.assertArrayEquals(categories.toArray(), expected);
         db.close();
     }
 }

@@ -26,6 +26,7 @@ public class SqliteDB {
             createRenterTable();
             createTenantTable();
             createCategoryTable();
+            createCancellationPolicyTable();
 
             System.out.println("db init");
         } catch (Exception e) {
@@ -34,6 +35,8 @@ public class SqliteDB {
     }
 
     //**************** Create Tables **************************
+
+
     private void createTenantTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS Tenant (\n" +
                 "user_email varchar(255),\n" +
@@ -114,7 +117,32 @@ public class SqliteDB {
         addCategory("Pets");
     }
 
+    private void createCancellationPolicyTable() throws SQLException{
+        String sql = "CREATE TABLE IF NOT EXISTS CancellationPolicy (\n" +
+                "cancellation_policy varchar(255),\n" +
+                "CONSTRAINT PK_CancellationPolicy PRIMARY KEY (cancellation_policy)" +
+                ");";
+        execute(sql);
+        addCancellationPolicy("Safe");
+        addCancellationPolicy("Conservative");
+        addCancellationPolicy("First come first served");
+    }
+
     //*******************Add *****************************************
+
+    public void addCancellationPolicy(String policy) {
+        if(!isCancellationPolicyExists(policy)) {
+            try {
+                String query = "INSERT INTO CancellationPolicy \n" +
+                        "VALUES ('" + policy + "') " +
+                        ";";
+                execute(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void addCategory(String category){
         if(!isCategoryExists(category)) {
             try {
@@ -125,18 +153,6 @@ public class SqliteDB {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private boolean isCategoryExists(String category) {
-        String query = "SELECT * FROM Category WHERE category = '" + category + "' ;";
-        try {
-            Statement st = dbConnection.createStatement();
-            ResultSet resSet = st.executeQuery(query);
-            String c = resSet.getString("category");
-            return true;
-        } catch (SQLException e) {
-            return false;
         }
     }
 
@@ -188,6 +204,7 @@ public class SqliteDB {
 
 
     //*************** Delete ******************************
+
     public void deleteUser(User user) {
         try {
             execute("DELETE FROM Users WHERE Users.email = '" + user.email + "' ;");
@@ -195,7 +212,6 @@ public class SqliteDB {
             e.printStackTrace();
         }
     }
-
     public void deletePackage(Package pack) {
         try {
             execute("DELETE FROM Packages WHERE Packages.owner_email = '" + pack.getOwner_email() +
@@ -239,8 +255,8 @@ public class SqliteDB {
         }
     }
 
-    // ******************** Get ********************************
 
+    // ******************** Get ********************************
     public List<String> getAllCategories(){
         try {
             Statement st = dbConnection.createStatement();
@@ -255,6 +271,22 @@ public class SqliteDB {
         }
         return null;
     }
+
+    public List<String> getAllCancellationPolicy(){
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery("SELECT * FROM CancellationPolicy ;");
+            List<String> cancellation_policys = new ArrayList<>();
+            while (resSet.next()) {
+                cancellation_policys.add(resSet.getString("cancellation_policy"));
+            }
+            return cancellation_policys;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public Product getProductByEmailProductIdAndPackageId(String ownerEmail, int pId, int packageId) {
         try {
@@ -380,6 +412,8 @@ public class SqliteDB {
         }
     }
 
+//    ******************** Check if Exists ***********************************
+
     public Boolean isUserExists(User user) {
         String query = "SELECT * FROM Users as u WHERE u.email = '" + user.email + "' ;";
         try {
@@ -400,6 +434,30 @@ public class SqliteDB {
             ResultSet resSet = st.executeQuery(query);
             Product resProduct = getProductFromRow(resSet);
             return p.price == resProduct.price && p.category.equals(resProduct.category);
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    private boolean isCancellationPolicyExists(String policy) {
+        String query = "SELECT * FROM CancellationPolicy WHERE cancellation_policy = '" + policy + "' ;";
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery(query);
+            String c = resSet.getString("cancellation_policy");
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    private boolean isCategoryExists(String category) {
+        String query = "SELECT * FROM Category WHERE category = '" + category + "' ;";
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery(query);
+            String c = resSet.getString("category");
+            return true;
         } catch (SQLException e) {
             return false;
         }
