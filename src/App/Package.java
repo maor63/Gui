@@ -1,5 +1,6 @@
 package App;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ public class Package {
     private int total_price;
     private String cancellation_policy;
     private String address;
+    private LocalDate startDate;
+    private LocalDate Date;
 
     public boolean equals(Package obj) {
         return owner_email.equals(obj.owner_email) && package_id == obj.package_id &&

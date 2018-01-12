@@ -242,4 +242,8 @@ public class ViewModel extends Application
     public List<String> getAllCategories() {
         return model.getAllCategories();
     }
+
+    public List<String> getAllPackageCancelationPoliciy() {
+        return model.getAllPackageCancelationPoliciy();
+    }
 }

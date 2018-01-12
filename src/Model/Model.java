@@ -57,4 +57,8 @@ public class Model {
     public List<String> getAllCategories() {
         return db.getAllCategories();
     }
+
+    public List<String> getAllPackageCancelationPoliciy() {
+        return db.getAllCancellationPolicy();
+    }
 }
