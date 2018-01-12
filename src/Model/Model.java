@@ -53,4 +53,8 @@ public class Model {
         }
         db.deletePackage(pack);
     }
+
+    public List<String> getAllCategories() {
+        return db.getAllCategories();
+    }
 }

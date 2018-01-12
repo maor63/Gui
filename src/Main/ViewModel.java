@@ -238,4 +238,8 @@ public class ViewModel extends Application
         userViewController.deletePackageFromTable(pack);
         userViewController.addToTable(pack);
     }
+
+    public List<String> getAllCategories() {
+        return model.getAllCategories();
+    }
 }

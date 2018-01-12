@@ -2,32 +2,60 @@ package View.AddProductView;
 
 import App.User;
 import Main.ViewModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+//import javafx.collections.FXCollections;
+//import javafx.collections.ObservableList;
 
-public class AddProductController
+
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class AddProductController implements Initializable
 {
 
     public TextField Price;
-    public TextField Category;
+//    public TextField Category;
     public TextField description;
+    public ComboBox<String> categories;
     private ViewModel viewModel;
     private User user;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+//        categories.set
+    }
+
     public void setViewModel(ViewModel viewModel) {
+
         this.viewModel = viewModel;
+
+        initCategories(viewModel);
+    }
+
+    private void initCategories(ViewModel viewModel) {
+        ObservableList<String> categoriesOptions = FXCollections.observableArrayList();
+        List<String> allCategories =  viewModel.getAllCategories();
+        categoriesOptions.addAll(allCategories);
+        categories.setItems(categoriesOptions);
+        categories.getSelectionModel().selectFirst();
     }
 
     public void addProduct(MouseEvent mouseEvent) {
-        viewModel.addProductToPackage(Integer.parseInt(Price.getText()), Category.getText(), description.getText());
+        viewModel.addProductToPackage(Integer.parseInt(Price.getText()), categories.getValue(), description.getText());
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("New product add to package");
         alert.showAndWait();
         Price.setText("");
-        Category.setText("");
+        categories.getSelectionModel().selectFirst();
         description.setText("");
     }
 
