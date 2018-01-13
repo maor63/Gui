@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PackageDescriptionView.PackageDescriptionView">
    <center>
       <TreeTableView fx:id="packageTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
+            <TreeTableColumn fx:id="colOwnerEmail" prefWidth="75.0" text="owner" />
             <TreeTableColumn fx:id="colPackageId" prefWidth="75.0" text="package_id" />
+            <TreeTableColumn fx:id="colPrice" prefWidth="75.0" text="price" />
+            <TreeTableColumn fx:id="colStartDate" prefWidth="75.0" text="start date" />
+            <TreeTableColumn fx:id="colEndDate" prefWidth="75.0" text="end date" />
           <TreeTableColumn fx:id="colProductId" prefWidth="75.0" text="product_id" />
           <TreeTableColumn fx:id="colCategory" prefWidth="75.0" text="category" />
-            <TreeTableColumn fx:id="colAvailability" prefWidth="75.0" text="aveliability" />
             <TreeTableColumn fx:id="colDescription" prefWidth="75.0" text="description" />
-            <TreeTableColumn fx:id="colPrice" prefWidth="75.0" text="price" />
         </columns>
       </TreeTableView>
    </center>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" text="Button" />
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="0.0" prefWidth="60.0" text="Button" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+   </bottom>
 </BorderPane>

@@ -25,20 +25,13 @@ public class PackageDescriptionView implements Initializable{
     public TreeTableColumn<ProductEntry, String> colPackageId;
     public TreeTableColumn<ProductEntry, String> colProductId;
     public TreeTableColumn<ProductEntry, String> colCategory;
-    public TreeTableColumn<ProductEntry, String> colAvailability;
     public TreeTableColumn<ProductEntry, String> colDescription;
     public TreeTableColumn<ProductEntry, String> colPrice;
+    public TreeTableColumn<ProductEntry, String> colStartDate;
+    public TreeTableColumn<ProductEntry, String> colEndDate;
+    public TreeTableColumn<ProductEntry, String> colOwnerEmail;
     private ViewModel viewModel;
     private TreeItem<ProductEntry> root;
-    //    private ObservableList<ProductEntry> productEntries;
-
-//    List<ProductEntry> productEntries = Arrays.<ProductEntry>asList(
-//            new ProductEntry(new Product("mail",2,4,45,"cat")),
-//            new ProductEntry(new Product("mail",2,4,45,"cat")),
-//            new ProductEntry(new Product("mail",2,4,45,"cat")),
-//            new ProductEntry(new Product("mail",2,4,45,"cat")),
-//            new ProductEntry(new Product("mail",2,4,45,"cat")),
-//            new ProductEntry(new Product("mail",2,4,45,"cat")));
 
 
     @Override
@@ -68,9 +61,23 @@ public class PackageDescriptionView implements Initializable{
                         new ReadOnlyStringWrapper(param.getValue().getValue().getDescription())
         );
 
+        colStartDate.setCellValueFactory(
+                (TreeTableColumn.CellDataFeatures<ProductEntry, String> param) ->
+                        new ReadOnlyStringWrapper(param.getValue().getValue().getStartDate())
+        );
+
+        colEndDate.setCellValueFactory(
+                (TreeTableColumn.CellDataFeatures<ProductEntry, String> param) ->
+                        new ReadOnlyStringWrapper(param.getValue().getValue().getEndDate())
+        );
+
+        colOwnerEmail.setCellValueFactory(
+                (TreeTableColumn.CellDataFeatures<ProductEntry, String> param) ->
+                        new ReadOnlyStringWrapper(param.getValue().getValue().getOwnerEmail())
+        );
+
         root = new TreeItem<>(new ProductEntry());
 //        root.setExpanded(true);
-//        productEntries.forEach((productEntry) -> root.getChildren().add(new TreeItem<>(productEntry)));
         packageTable.setRoot(root);
         packageTable.setShowRoot(false);
 
@@ -94,8 +101,11 @@ public class PackageDescriptionView implements Initializable{
 
     private TreeItem<ProductEntry> addPackageToTable(Package pack) {
         ProductEntry packageRoot = new ProductEntry();
+        packageRoot.setOwnerEmail(pack.getOwner_email());
         packageRoot.setPackageID(pack.getPackage_id());
         packageRoot.setPrice(pack.getTotal_price());
+        packageRoot.setStartDate(pack.getStartDateString());
+        packageRoot.setEndDate(pack.getEndDateString());
         TreeItem<ProductEntry> root = new TreeItem<>(packageRoot);
         for (Product product : pack.getProducts()) {
             ProductEntry productEntry = new ProductEntry(product);
