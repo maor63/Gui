@@ -9,8 +9,10 @@ public class Package {
     private String owner_email;
     private int package_id;
     private int total_price;
+    private String description;
     private String cancellation_policy;
     private String address;
+    private String attitude;
 
     public boolean equals(Package obj) {
         return owner_email.equals(obj.owner_email) && package_id == obj.package_id &&
@@ -39,11 +41,15 @@ public class Package {
         return products;
     }
 
-
     public String getOwner_email() {
         return owner_email;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getAttitude(){return attitude;}
 
     public int getPackage_id() {
         return package_id;
