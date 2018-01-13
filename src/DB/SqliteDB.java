@@ -5,8 +5,12 @@ import App.Package;
 
 import java.io.File;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SqliteDB {
     private Connection dbConnection;
@@ -87,6 +91,8 @@ public class SqliteDB {
                 "total_price int,\n" +
                 "cancellation_policy varchar(30),\n" +
                 "address varchar(255) ,\n" +
+                "start_date varchar(255) ,\n" +
+                "end_date varchar(255) ,\n" +
                 "CONSTRAINT PK_Packages PRIMARY KEY (owner_email,package_id), \n" +
                 "CONSTRAINT FK_Packages FOREIGN KEY (owner_email) REFERENCES Users(email)) ;"
                 );
@@ -189,8 +195,13 @@ public class SqliteDB {
             int package_id = getNextPackageIdForUser(owner_id);
             int total_price = pack.getTotal_price();
             String cancellation_policy = pack.getCancellation_policy();
+
+            String startDate = pack.getStartDateString();
+            String endDate = pack.getEndDateString();
+
             String query = String.format("INSERT INTO Packages " +
-                    "VALUES('%s', %d, %d, '%s', '%s')", owner_id, package_id, total_price, cancellation_policy, pack.getAddress());
+                    "VALUES('%s', %d, %d, '%s', '%s', '%s', '%s')", owner_id, package_id, total_price,
+                    cancellation_policy, pack.getAddress(), startDate, endDate);
             execute(query);
             for (Product p : pack.getProducts()) {
                 p.packageID = package_id;
@@ -377,7 +388,13 @@ public class SqliteDB {
     private Package getPackageFromRow(ResultSet resSet) throws SQLException {
         String owner_email = resSet.getString("owner_email");
         int package_id = resSet.getInt("package_id");
-        Package p = new Package(owner_email, package_id);
+        String startDateString = resSet.getString("start_date");
+        String endDateString = resSet.getString("end_date");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate startDate = LocalDate.parse(startDateString, formatter);
+        LocalDate endDate = LocalDate.parse(endDateString, formatter);;
+        Package p = new Package(owner_email, package_id, startDate, endDate);
         String cancellation_policy = resSet.getString("cancellation_policy");
         p.setCancellation_policy(cancellation_policy);
         String address = resSet.getString("address");

@@ -20,10 +20,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,8 +180,8 @@ public class ViewModel extends Application
         model.addPackage(aPackage);
     }
 
-    public void createNewPackage(String address, String cancellation_policy) {
-        aPackage = new Package(user.email, 0);
+    public void createNewPackage(String address, String cancellation_policy, LocalDate startDate, LocalDate endDate) {
+        aPackage = new Package(user.email, 0, startDate, endDate);
         aPackage.setAddress(address);
         aPackage.setCancellation_policy(cancellation_policy);
     }
@@ -255,7 +258,8 @@ public class ViewModel extends Application
         return model.getAllCategories();
     }
 
-    public List<String> getAllPackageCancelationPoliciy() {
+    public List<String> getAllPackageCancellationPolicy() {
         return model.getAllPackageCancelationPoliciy();
     }
+
 }
