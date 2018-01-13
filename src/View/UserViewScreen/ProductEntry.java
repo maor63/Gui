@@ -23,6 +23,10 @@ public class ProductEntry
 
     }
 
+    public ProductEntry() {
+
+    }
+
     public String getAddress() {
         return address;
     }

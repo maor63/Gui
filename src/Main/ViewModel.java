@@ -14,7 +14,6 @@ import View.AddProductView.AddProductController;
 import View.PackageDescriptionView.PackageDescriptionView;
 import View.SignInScreenView.SignInController;
 import View.SignUpScreenView.SignUpController;
-import View.UserViewScreen.ProductEntry;
 import View.UserViewScreen.UserViewController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -49,6 +48,8 @@ public class ViewModel extends Application
     private Scene addProductScene;
     private User user;
     private Package aPackage;
+    private Scene PackageDescriptionView;
+    private PackageDescriptionView packageDescriptionViewController;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -102,12 +103,14 @@ public class ViewModel extends Application
         addProductLoaderController = addProductLoader.getController();
         addProductLoaderController.setViewModel(this);
 
-        PackageDescriptionView p = PackageDescriptionViewLoader.getController();
+        packageDescriptionViewController = PackageDescriptionViewLoader.getController();
+        PackageDescriptionView p = packageDescriptionViewController;
         p.setViewModel(this);
 
 
         stage.setScene(signInScene);
-//        stage.setScene(new Scene(packageDescriptionRoot));
+        PackageDescriptionView = new Scene(packageDescriptionRoot);
+//        stage.setScene(PackageDescriptionView);
         stage.show();
     }
 
@@ -159,6 +162,7 @@ public class ViewModel extends Application
         userViewController.loadUserData(user);
         userViewController.setUser(user);
         stage.setScene(userViewScene);
+
     }
 
     public void goToAddPackage() {

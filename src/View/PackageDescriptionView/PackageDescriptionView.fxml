@@ -13,6 +13,7 @@
           <TreeTableColumn fx:id="colCategory" prefWidth="75.0" text="category" />
             <TreeTableColumn fx:id="colAvailability" prefWidth="75.0" text="aveliability" />
             <TreeTableColumn fx:id="colDescription" prefWidth="75.0" text="description" />
+            <TreeTableColumn fx:id="colPrice" prefWidth="75.0" text="price" />
         </columns>
       </TreeTableView>
    </center>
