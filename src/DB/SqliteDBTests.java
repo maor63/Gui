@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class SqliteDBTests {
@@ -44,7 +45,9 @@ public class SqliteDBTests {
         db.addUser(new User("msdaor", "r", "123", owner_email));
         Product p1 = new Product(owner_email, 1, 34, 3000, "realastate");
         Product p2 = new Product(owner_email, 4, 34, 1000, "realastate");
-        Package pack = new Package(owner_email, 0);
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = LocalDate.now();
+        Package pack = new Package(owner_email, 0, startDate, endDate);
         pack.setCancellation_policy("safe");
         pack.setAddress("BeerSheva");
         pack.addProduct(p1);
@@ -96,7 +99,9 @@ public class SqliteDBTests {
         db.addUser(user);
         Product p1 = new Product(ownerEmail, 1, 7, 300, "realastate");
         Product p2 = new Product(ownerEmail, 2, 7, 100, "realastate");
-        Package pack = new Package(ownerEmail, 7);
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = LocalDate.now();
+        Package pack = new Package(ownerEmail, 7, startDate, endDate);
         pack.setCancellation_policy("safe");
         pack.setAddress("BeerSheva");
         pack.addProduct(p1);
@@ -113,13 +118,15 @@ public class SqliteDBTests {
         String email = "d@fgfg.com";
         User user = new User("d", "r", "123", email);
         int package_id1 = 9;
-        Package pack1 = new Package(email, package_id1);
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = LocalDate.now();
+        Package pack1 = new Package(email, package_id1, startDate, endDate);
         Product p1 = new Product(email, 1, package_id1, 300, "realastate");
         Product p2 = new Product(email, 2, package_id1, 100, "realastate");
         pack1.addProduct(p1);
         pack1.addProduct(p2);
         int package_id2 = 4;
-        Package pack2 = new Package(email, package_id2);
+        Package pack2 = new Package(email, package_id2, startDate, endDate);
         Product p3 = new Product(email, 1, package_id2, 600, "realastate");
         Product p4 = new Product(email, 2, package_id2, 100, "realastate");
         pack2.addProduct(p3);
@@ -144,7 +151,9 @@ public class SqliteDBTests {
         int nextPackageId = db.getNextPackageIdForUser(email);
         Assert.assertEquals(nextPackageId, 1);
 
-        Package pack1 = new Package(email, nextPackageId);
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = LocalDate.now();
+        Package pack1 = new Package(email, nextPackageId, startDate, endDate);
         Product p1 = new Product(email, 1, nextPackageId, 300, "realastate");
         Product p2 = new Product(email, 2, nextPackageId, 100, "realastate");
         pack1.addProduct(p1);
@@ -161,7 +170,9 @@ public class SqliteDBTests {
         User user = new User("d", "r", "123", email);
         db.addUser(user);
         int nextPackageId = db.getNextPackageIdForUser(email);
-        Package pack1 = new Package(email, nextPackageId);
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = LocalDate.now();
+        Package pack1 = new Package(email, nextPackageId, startDate, endDate);
         int prod_id = db.getNextProductIdForPackage(email, nextPackageId);
         Product p1 = new Product(email, prod_id, nextPackageId, 300, "realastate");
         pack1.addProduct(p1);

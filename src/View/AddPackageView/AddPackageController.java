@@ -5,21 +5,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
+import java.time.LocalDate;
 import java.util.List;
 
-public class AddPackageController
-{
+public class AddPackageController {
     public TextField address;
     @FXML
     private DatePicker end_date;
     @FXML
     private DatePicker start_date;
-
 
     @FXML
     ComboBox<String> package_cancelation_policiy;
@@ -27,10 +27,31 @@ public class AddPackageController
     private ViewModel viewModel;
 
     public void addNewProduct(MouseEvent mouseEvent) {
+        if (!IsInputLegal()) {
+            return;
+        }
+
         String cancellationPolicy = package_cancelation_policiy.getValue();
-        viewModel.createNewPackage(address.getText(), cancellationPolicy);
+        viewModel.createNewPackage(address.getText(), cancellationPolicy, end_date.getValue(), start_date.getValue());
         viewModel.goToAddProduct();
         System.out.println("Adding new Package");
+    }
+
+    private boolean IsInputLegal() {
+        if (!isAddressExist() || !isEndDayLegal() || !isStartDayLegal()) {
+            if (!isStartDayLegal()) {
+                this.printMessageToUser("Start day is not legal. it most be not before today");
+                return false;
+            } else if (!isEndDayLegal()) {
+                this.printMessageToUser("End day is not legal. it most be after start day");
+                return false;
+            } else if (!isAddressExist()) {
+                this.printMessageToUser("The address is not exist.");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void quitOption(ActionEvent actionEvent) {
@@ -50,7 +71,7 @@ public class AddPackageController
 
     private void initCancellationPolicy(ViewModel viewModel) {
         ObservableList<String> packageCancelationPolicy = FXCollections.observableArrayList();
-        List<String> allPolicies =  viewModel.getAllPackageCancelationPoliciy();
+        List<String> allPolicies = viewModel.getAllPackageCancellationPolicy();
         packageCancelationPolicy.addAll(allPolicies);
         package_cancelation_policiy.setItems(packageCancelationPolicy);
         package_cancelation_policiy.getSelectionModel().selectFirst();
@@ -59,5 +80,26 @@ public class AddPackageController
     public void addNewPackage(MouseEvent mouseEvent) {
         viewModel.savePackage();
         viewModel.goToUserView();
+    }
+
+    private boolean isEndDayLegal() {
+        return this.end_date.getValue() != null && this.end_date.getValue().isAfter(this.start_date.getValue());
+    }
+
+    private boolean isStartDayLegal() {
+        return this.end_date.getValue() != null && this.end_date.getValue() != null &&
+                this.start_date.getValue().isAfter(LocalDate.now().minusDays(1));
+    }
+
+    private void printMessageToUser(String messageContent) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Warning");
+        alert.setHeaderText("Something went wrong");
+        alert.setContentText(messageContent);
+        alert.showAndWait();
+    }
+
+    private boolean isAddressExist() {
+        return !this.address.getText().isEmpty();
     }
 }
