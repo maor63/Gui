@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -12,7 +14,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="363.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AddPackageView.AddPackageController">
+<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="363.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AddPackageView.AddPackageController">
     <stylesheets>
     </stylesheets>
    <children>
@@ -32,9 +34,13 @@
          <children>
             <Label prefHeight="30.0" prefWidth="157.0" text="Package cancellation policy" />
             <Label prefHeight="28.0" prefWidth="150.0" text="Address" GridPane.rowIndex="1" />
-            <TextField fx:id="cancellation_policy" GridPane.columnIndex="1" />
             <TextField fx:id="address" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" onMousePressed="#addNewProduct" prefHeight="25.0" prefWidth="176.0" text="Add new product to package" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onMousePressed="#addNewProduct" prefHeight="25.0" prefWidth="176.0" text="Add new product to package" GridPane.rowIndex="5" />
+            <DatePicker fx:id="start_date" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <DatePicker fx:id="end_date" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Start date" GridPane.rowIndex="2" />
+            <Label text="End date" GridPane.rowIndex="3" />
+            <ComboBox fx:id="package_cancelation_policiy" prefWidth="150.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <Label alignment="CENTER" layoutX="50.0" layoutY="31.0" prefHeight="41.0" prefWidth="226.0" text="Create New Package Of Products" />

@@ -11,19 +11,22 @@ import App.User;
 import Model.Model;
 import View.AddPackageView.AddPackageController;
 import View.AddProductView.AddProductController;
+import View.PackageDescriptionView.PackageDescriptionView;
 import View.SignInScreenView.SignInController;
 import View.SignUpScreenView.SignUpController;
-import View.UserViewScreen.ProductEntry;
 import View.UserViewScreen.UserViewController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +51,8 @@ public class ViewModel extends Application
     private Scene addProductScene;
     private User user;
     private Package aPackage;
+    private Scene PackageDescriptionView;
+    private PackageDescriptionView packageDescriptionViewController;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -65,6 +70,9 @@ public class ViewModel extends Application
 
         FXMLLoader addProductLoader = new FXMLLoader(getClass().getResource("../View/AddProductView/AddProduct.fxml"));
         Parent addProductRoot = (Parent) addProductLoader.load();
+
+        FXMLLoader PackageDescriptionViewLoader = new FXMLLoader(getClass().getResource("../View/PackageDescriptionView/PackageDescriptionView.fxml"));
+        Parent packageDescriptionRoot = (Parent) PackageDescriptionViewLoader.load();
 
         this.stage = stage;
         this.stage.initStyle(StageStyle.UNDECORATED);
@@ -98,8 +106,14 @@ public class ViewModel extends Application
         addProductLoaderController = addProductLoader.getController();
         addProductLoaderController.setViewModel(this);
 
+        packageDescriptionViewController = PackageDescriptionViewLoader.getController();
+        PackageDescriptionView p = packageDescriptionViewController;
+        p.setViewModel(this);
+
 
         stage.setScene(signInScene);
+        PackageDescriptionView = new Scene(packageDescriptionRoot);
+//        stage.setScene(PackageDescriptionView);
         stage.show();
     }
 
@@ -151,6 +165,7 @@ public class ViewModel extends Application
         userViewController.loadUserData(user);
         userViewController.setUser(user);
         stage.setScene(userViewScene);
+
     }
 
     public void goToAddPackage() {
@@ -165,8 +180,8 @@ public class ViewModel extends Application
         model.addPackage(aPackage);
     }
 
-    public void createNewPackage(String address, String cancellation_policy) {
-        aPackage = new Package(user.email, 0);
+    public void createNewPackage(String address, String cancellation_policy, LocalDate startDate, LocalDate endDate) {
+        aPackage = new Package(user.email, 0, startDate, endDate);
         aPackage.setAddress(address);
         aPackage.setCancellation_policy(cancellation_policy);
     }
@@ -238,4 +253,13 @@ public class ViewModel extends Application
         userViewController.deletePackageFromTable(pack);
         userViewController.addToTable(pack);
     }
+
+    public List<String> getAllCategories() {
+        return model.getAllCategories();
+    }
+
+    public List<String> getAllPackageCancellationPolicy() {
+        return model.getAllPackageCancelationPoliciy();
+    }
+
 }

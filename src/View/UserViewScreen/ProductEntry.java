@@ -2,6 +2,7 @@ package View.UserViewScreen;
 
 import App.Product;
 
+
 public class ProductEntry
 {
     private String ownerEmail;
@@ -12,6 +13,8 @@ public class ProductEntry
     private String availability;
     private String description;
     private String address;
+    private String startDate;
+    private String endDate;
 
     public ProductEntry(Product p) {
         ownerEmail = p.ownerEmail;
@@ -20,6 +23,26 @@ public class ProductEntry
         description = p.description;
         price = p.price;
         category = p.category;
+
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public ProductEntry() {
 
     }
 

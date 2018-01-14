@@ -5,8 +5,12 @@ import App.Package;
 
 import java.io.File;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SqliteDB {
     private Connection dbConnection;
@@ -26,6 +30,7 @@ public class SqliteDB {
             createRenterTable();
             createTenantTable();
             createCategoryTable();
+            createCancellationPolicyTable();
 
             System.out.println("db init");
         } catch (Exception e) {
@@ -34,6 +39,8 @@ public class SqliteDB {
     }
 
     //**************** Create Tables **************************
+
+
     private void createTenantTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS Tenant (\n" +
                 "user_email varchar(255),\n" +
@@ -58,15 +65,22 @@ public class SqliteDB {
 
     private void createOrdersTable() throws SQLException {
         execute("CREATE TABLE IF NOT EXISTS Orders (\n" +
-                "tenant_id int ,\n" +
-                "renter_id int ,\n" +
+                "tenant_email varchar(255) ,\n" +
+                "renter_email varchar(255) ,\n" +
                 "start_date DATETIME,\n" +
                 "end_date DATETIME,\n" +
                 "total_price int,\n" +
-                "colPackageId int,\n" +
+                "package_id int,\n" +
                 "status varchar(255),\n" +
-                "CONSTRAINT PK_Orders PRIMARY KEY (tenant_id,renter_id,start_date));");
+                "CONSTRAINT PK_Orders PRIMARY KEY (tenant_email,renter_email,start_date));");
     }
+
+//    public void addOrder(int tenant_id,int renter_id,LocalDate start_date) throws SQLException {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+//        String date = start_date.format(formatter);
+//        String sql = String.format("INSERT INTO Orders(tenant_id,renter_id,start_date) VALUES(%d, %d, '%s');", tenant_id, renter_id, date);
+//        execute(sql);
+//    }
 
     private void createUsersTable() throws SQLException {
         execute("CREATE TABLE IF NOT EXISTS Users (\n" +
@@ -84,6 +98,8 @@ public class SqliteDB {
                 "total_price int,\n" +
                 "cancellation_policy varchar(30),\n" +
                 "address varchar(255) ,\n" +
+                "start_date DATETIME ,\n" +
+                "end_date DATETIME ,\n" +
                 "CONSTRAINT PK_Packages PRIMARY KEY (owner_email,package_id), \n" +
                 "CONSTRAINT FK_Packages FOREIGN KEY (owner_email) REFERENCES Users(email)) ;"
                 );
@@ -114,7 +130,32 @@ public class SqliteDB {
         addCategory("Pets");
     }
 
+    private void createCancellationPolicyTable() throws SQLException{
+        String sql = "CREATE TABLE IF NOT EXISTS CancellationPolicy (\n" +
+                "cancellation_policy varchar(255),\n" +
+                "CONSTRAINT PK_CancellationPolicy PRIMARY KEY (cancellation_policy)" +
+                ");";
+        execute(sql);
+        addCancellationPolicy("Safe");
+        addCancellationPolicy("Conservative");
+        addCancellationPolicy("First come first served");
+    }
+
     //*******************Add *****************************************
+
+    public void addCancellationPolicy(String policy) {
+        if(!isCancellationPolicyExists(policy)) {
+            try {
+                String query = "INSERT INTO CancellationPolicy \n" +
+                        "VALUES ('" + policy + "') " +
+                        ";";
+                execute(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void addCategory(String category){
         if(!isCategoryExists(category)) {
             try {
@@ -125,18 +166,6 @@ public class SqliteDB {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private boolean isCategoryExists(String category) {
-        String query = "SELECT * FROM Category WHERE category = '" + category + "' ;";
-        try {
-            Statement st = dbConnection.createStatement();
-            ResultSet resSet = st.executeQuery(query);
-            String c = resSet.getString("category");
-            return true;
-        } catch (SQLException e) {
-            return false;
         }
     }
 
@@ -173,8 +202,13 @@ public class SqliteDB {
             int package_id = getNextPackageIdForUser(owner_id);
             int total_price = pack.getTotal_price();
             String cancellation_policy = pack.getCancellation_policy();
+
+            String startDate = pack.getStartDateString();
+            String endDate = pack.getEndDateString();
+
             String query = String.format("INSERT INTO Packages " +
-                    "VALUES('%s', %d, %d, '%s', '%s')", owner_id, package_id, total_price, cancellation_policy, pack.getAddress());
+                    "VALUES('%s', %d, %d, '%s', '%s', '%s', '%s')", owner_id, package_id, total_price,
+                    cancellation_policy, pack.getAddress(), startDate, endDate);
             execute(query);
             for (Product p : pack.getProducts()) {
                 p.packageID = package_id;
@@ -188,6 +222,7 @@ public class SqliteDB {
 
 
     //*************** Delete ******************************
+
     public void deleteUser(User user) {
         try {
             execute("DELETE FROM Users WHERE Users.email = '" + user.email + "' ;");
@@ -195,7 +230,6 @@ public class SqliteDB {
             e.printStackTrace();
         }
     }
-
     public void deletePackage(Package pack) {
         try {
             execute("DELETE FROM Packages WHERE Packages.owner_email = '" + pack.getOwner_email() +
@@ -239,8 +273,8 @@ public class SqliteDB {
         }
     }
 
-    // ******************** Get ********************************
 
+    // ******************** Get ********************************
     public List<String> getAllCategories(){
         try {
             Statement st = dbConnection.createStatement();
@@ -255,6 +289,22 @@ public class SqliteDB {
         }
         return null;
     }
+
+    public List<String> getAllCancellationPolicy(){
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery("SELECT * FROM CancellationPolicy ;");
+            List<String> cancellation_policys = new ArrayList<>();
+            while (resSet.next()) {
+                cancellation_policys.add(resSet.getString("cancellation_policy"));
+            }
+            return cancellation_policys;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public Product getProductByEmailProductIdAndPackageId(String ownerEmail, int pId, int packageId) {
         try {
@@ -345,7 +395,13 @@ public class SqliteDB {
     private Package getPackageFromRow(ResultSet resSet) throws SQLException {
         String owner_email = resSet.getString("owner_email");
         int package_id = resSet.getInt("package_id");
-        Package p = new Package(owner_email, package_id);
+        String startDateString = resSet.getString("start_date");
+        String endDateString = resSet.getString("end_date");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate startDate = LocalDate.parse(startDateString, formatter);
+        LocalDate endDate = LocalDate.parse(endDateString, formatter);;
+        Package p = new Package(owner_email, package_id, startDate, endDate);
         String cancellation_policy = resSet.getString("cancellation_policy");
         p.setCancellation_policy(cancellation_policy);
         String address = resSet.getString("address");
@@ -380,6 +436,8 @@ public class SqliteDB {
         }
     }
 
+//    ******************** Check if Exists ***********************************
+
     public Boolean isUserExists(User user) {
         String query = "SELECT * FROM Users as u WHERE u.email = '" + user.email + "' ;";
         try {
@@ -400,6 +458,30 @@ public class SqliteDB {
             ResultSet resSet = st.executeQuery(query);
             Product resProduct = getProductFromRow(resSet);
             return p.price == resProduct.price && p.category.equals(resProduct.category);
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    private boolean isCancellationPolicyExists(String policy) {
+        String query = "SELECT * FROM CancellationPolicy WHERE cancellation_policy = '" + policy + "' ;";
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery(query);
+            String c = resSet.getString("cancellation_policy");
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    private boolean isCategoryExists(String category) {
+        String query = "SELECT * FROM Category WHERE category = '" + category + "' ;";
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery(query);
+            String c = resSet.getString("category");
+            return true;
         } catch (SQLException e) {
             return false;
         }
@@ -429,6 +511,17 @@ public class SqliteDB {
     private void execute(String sql) throws SQLException {
         Statement st = dbConnection.createStatement();
         st.execute(sql);
+    }
+
+    public void addOrder(Order o) throws SQLException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String start_date = o.getStart_date().format(formatter);
+        String end_date = o.getEnd_date().format(formatter);
+        String sql = String.format("INSERT INTO Orders" +
+                " VALUES('%s', '%s', %s, %s, %d, %d, '%s');",
+                o.getTenant_email(), o.getRenter_email(), o.getStart_date(), o.getEnd_date(), o.getTotal_price(),
+                o.getPackage_id(), o.getStatus());
+        execute(sql);
     }
 }
 
