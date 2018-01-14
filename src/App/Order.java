@@ -1,56 +1,57 @@
 package App;
-
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Order {
 
-    private int tenant_id;
-    private int renter_id;
-    private Date start_date;
-    private Date end_date;
+    private String tenant_email;
+    private String renter_email;
+    private LocalDate start_date;
+    private LocalDate end_date;
     private int total_price;
     private int package_id;
     private String status;
 
-    public Order(int tenant_id, int renter_id, Date start_date, Date end_date, int total_price, int package_id, String status) {
-        this.tenant_id = tenant_id;
-        this.renter_id = renter_id;
+    public Order(String tenant_email, String renter_email, LocalDate start_date, LocalDate end_date, int total_price, int package_id, String status) {
+        this.tenant_email = tenant_email;
+        this.renter_email = renter_email;
         this.start_date = start_date;
+
         this.end_date = end_date;
         this.total_price = total_price;
         this.package_id = package_id;
         this.status = status;
     }
 
-    public int getTenant_id() {
-        return tenant_id;
+    public String getTenant_email() {
+        return tenant_email;
     }
 
-    public void setTenant_id(int tenant_id) {
-        this.tenant_id = tenant_id;
+    public void setTenant_email(String tenant_email) {
+        this.tenant_email = tenant_email;
     }
 
-    public int getRenter_id() {
-        return renter_id;
+    public String getRenter_email() {
+        return renter_email;
     }
 
-    public void setRenter_id(int renter_id) {
-        this.renter_id = renter_id;
+    public void setRenter_email(String renter_email) {
+        this.renter_email = renter_email;
     }
 
-    public Date getStart_date() {
+    public LocalDate getStart_date() {
         return start_date;
     }
 
-    public void setStart_date(Date start_date) {
+    public void setStart_date(LocalDate start_date) {
         this.start_date = start_date;
     }
 
-    public Date getEnd_date() {
+    public LocalDate getEnd_date() {
         return end_date;
     }
 
-    public void setEnd_date(Date end_date) {
+    public void setEnd_date(LocalDate end_date) {
         this.end_date = end_date;
     }
 

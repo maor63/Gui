@@ -15,9 +15,9 @@ public class PackageEntry
     public PackageEntry(Package p) {
         owner_email = p.getOwner_email();
         total_price = p.getTotal_price();
-        description = p.getDescription();
+//        description = p.getDescription();
         cancellation_policy = p.getCancellation_policy();
-        attitude = p.getAttitude();
+//        attitude = p.getAttitude();
 
     }
 

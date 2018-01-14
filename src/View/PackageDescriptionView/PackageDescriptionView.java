@@ -9,10 +9,9 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -75,6 +74,24 @@ public class PackageDescriptionView implements Initializable{
                 (TreeTableColumn.CellDataFeatures<ProductEntry, String> param) ->
                         new ReadOnlyStringWrapper(param.getValue().getValue().getOwnerEmail())
         );
+
+        packageTable.setRowFactory(tv -> {
+            TreeTableRow<ProductEntry> row = new TreeTableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                    System.out.println("double clicked");
+//                    ProductEntry clickedRow = row.getItem();
+//                    showProduct(clickedRow);
+                }
+                else if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
+                    System.out.println("one clicked");
+//                    ProductEntry clickedRow = row.getItem();
+//                    showProduct(clickedRow);
+                }
+
+            });
+            return row;
+        });
 
         root = new TreeItem<>(new ProductEntry());
 //        root.setExpanded(true);

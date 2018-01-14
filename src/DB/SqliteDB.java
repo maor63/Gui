@@ -65,22 +65,22 @@ public class SqliteDB {
 
     private void createOrdersTable() throws SQLException {
         execute("CREATE TABLE IF NOT EXISTS Orders (\n" +
-                "tenant_id int ,\n" +
-                "renter_id int ,\n" +
+                "tenant_email varchar(255) ,\n" +
+                "renter_email varchar(255) ,\n" +
                 "start_date DATETIME,\n" +
                 "end_date DATETIME,\n" +
                 "total_price int,\n" +
-                "colPackageId int,\n" +
+                "package_id int,\n" +
                 "status varchar(255),\n" +
-                "CONSTRAINT PK_Orders PRIMARY KEY (tenant_id,renter_id,start_date));");
+                "CONSTRAINT PK_Orders PRIMARY KEY (tenant_email,renter_email,start_date));");
     }
 
-    public void addOrder(int tenant_id,int renter_id,LocalDate start_date) throws SQLException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        String date = start_date.format(formatter);
-        String sql = String.format("INSERT INTO Orders(tenant_id,renter_id,start_date) VALUES(%d, %d, '%s');", tenant_id, renter_id, date);
-        execute(sql);
-    }
+//    public void addOrder(int tenant_id,int renter_id,LocalDate start_date) throws SQLException {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+//        String date = start_date.format(formatter);
+//        String sql = String.format("INSERT INTO Orders(tenant_id,renter_id,start_date) VALUES(%d, %d, '%s');", tenant_id, renter_id, date);
+//        execute(sql);
+//    }
 
     private void createUsersTable() throws SQLException {
         execute("CREATE TABLE IF NOT EXISTS Users (\n" +
@@ -511,6 +511,17 @@ public class SqliteDB {
     private void execute(String sql) throws SQLException {
         Statement st = dbConnection.createStatement();
         st.execute(sql);
+    }
+
+    public void addOrder(Order o) throws SQLException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String start_date = o.getStart_date().format(formatter);
+        String end_date = o.getEnd_date().format(formatter);
+        String sql = String.format("INSERT INTO Orders" +
+                " VALUES('%s', '%s', %s, %s, %d, %d, '%s');",
+                o.getTenant_email(), o.getRenter_email(), o.getStart_date(), o.getEnd_date(), o.getTotal_price(),
+                o.getPackage_id(), o.getStatus());
+        execute(sql);
     }
 }
 

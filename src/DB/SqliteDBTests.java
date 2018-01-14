@@ -1,5 +1,6 @@
 package DB;
 
+import App.Order;
 import App.Product;
 import App.User;
 import App.Package;
@@ -205,7 +206,9 @@ public class SqliteDBTests {
     public void testInsertOrder() throws SQLException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDate startDate = LocalDate.parse("2016/06/02", formatter);
-        db.addOrder(4,5, startDate);
+        LocalDate endDate = LocalDate.parse("2016/07/02", formatter);
+        Order o = new Order("tenant","renter",startDate,endDate,1000,45,"Rented");
+        db.addOrder(o);
     }
 
 }
