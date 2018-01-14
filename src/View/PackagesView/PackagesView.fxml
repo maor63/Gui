@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<Pane id="AnchorPane" prefHeight="457.0" prefWidth="780.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PackagesView.PackagesViewController">
+    <stylesheets>
+    </stylesheets>
+    <children>
+        <VBox>
+            <children>
+                <TableView fx:id="packages_table" style="-fx-background-color: lightblue;">
+                    <columns>
+                        <TableColumn fx:id="colOwnerEmail" prefWidth="105.0" text="owner email" />
+                        <TableColumn fx:id="colTotalPrice" prefWidth="105.0" text="total price" />
+                        <TableColumn fx:id="colAttitude" prefWidth="105.0" text="attitude" />
+                        <TableColumn fx:id="colAvailability" prefWidth="105.0" text="availability" />
+                        <TableColumn fx:id="colDescription" prefWidth="353.0" text="description" />
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+        <JFXButton layoutX="49.0" layoutY="418.0" onMousePressed="#lendPackage" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #48A5EA;" text="Lend" textFill="WHITE" />
+        <JFXButton layoutX="180.0" layoutY="418.0" onMousePressed="#switchPackage" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #48A5EA;" text="Switch" textFill="WHITE" />
+        <JFXButton layoutX="600.0" layoutY="418.0" onMousePressed="#closeWindow" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #48A5EA;" text="Close" textFill="WHITE" />
+    </children>
+
+</Pane>
