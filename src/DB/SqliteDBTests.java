@@ -7,7 +7,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class SqliteDBTests {
@@ -198,4 +200,12 @@ public class SqliteDBTests {
         Assert.assertArrayEquals(categories.toArray(), expected);
         db.close();
     }
+
+    @Test
+    public void testInsertOrder() throws SQLException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate startDate = LocalDate.parse("2016/06/02", formatter);
+        db.addOrder(4,5, startDate);
+    }
+
 }

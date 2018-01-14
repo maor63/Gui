@@ -75,6 +75,13 @@ public class SqliteDB {
                 "CONSTRAINT PK_Orders PRIMARY KEY (tenant_id,renter_id,start_date));");
     }
 
+    public void addOrder(int tenant_id,int renter_id,LocalDate start_date) throws SQLException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String date = start_date.format(formatter);
+        String sql = String.format("INSERT INTO Orders(tenant_id,renter_id,start_date) VALUES(%d, %d, '%s');", tenant_id, renter_id, date);
+        execute(sql);
+    }
+
     private void createUsersTable() throws SQLException {
         execute("CREATE TABLE IF NOT EXISTS Users (\n" +
                 "first_name varchar(255),\n" +
@@ -91,8 +98,8 @@ public class SqliteDB {
                 "total_price int,\n" +
                 "cancellation_policy varchar(30),\n" +
                 "address varchar(255) ,\n" +
-                "start_date varchar(255) ,\n" +
-                "end_date varchar(255) ,\n" +
+                "start_date DATETIME ,\n" +
+                "end_date DATETIME ,\n" +
                 "CONSTRAINT PK_Packages PRIMARY KEY (owner_email,package_id), \n" +
                 "CONSTRAINT FK_Packages FOREIGN KEY (owner_email) REFERENCES Users(email)) ;"
                 );
