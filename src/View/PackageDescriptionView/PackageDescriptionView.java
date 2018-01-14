@@ -3,16 +3,22 @@ package View.PackageDescriptionView;
 import App.Package;
 import App.Product;
 import Main.ViewModel;
+import View.ProductDescriptionView.ProductViewController;
 import View.UserViewScreen.ProductEntry;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,8 +86,8 @@ public class PackageDescriptionView implements Initializable{
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     System.out.println("double clicked");
-//                    ProductEntry clickedRow = row.getItem();
-//                    showProduct(clickedRow);
+                    ProductEntry clickedRow = row.getItem();
+                    showProduct(clickedRow);
                 }
                 else if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                     System.out.println("one clicked");
@@ -98,6 +104,24 @@ public class PackageDescriptionView implements Initializable{
         packageTable.setRoot(root);
         packageTable.setShowRoot(false);
 
+    }
+
+    private void showProduct(ProductEntry clickedRow) {
+        try {
+            Stage productWindow = new Stage();
+            FXMLLoader productViewLoader = new FXMLLoader(getClass().getResource("../ProductDescriptionView/ProductView.fxml"));
+            Parent productViewRoot = productViewLoader.load();
+            ProductViewController controller = productViewLoader.getController();
+            controller.setDataFromRow(clickedRow);
+            controller.setViewModel(viewModel);
+            controller.setWindow(productWindow);
+            viewModel.setDraggable(productWindow, productViewRoot);
+            Scene productViewScene = new Scene(productViewRoot);
+            productWindow.setScene(productViewScene);
+            productWindow.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setViewModel(ViewModel viewModel) {
