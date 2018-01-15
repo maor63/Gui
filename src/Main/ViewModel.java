@@ -5,6 +5,8 @@
  */
 package Main;
 
+import App.Order;
+import App.Address;
 import App.Package;
 import App.Product;
 import App.User;
@@ -12,8 +14,10 @@ import Model.Model;
 import View.AddPackageView.AddPackageController;
 import View.AddProductView.AddProductController;
 import View.PackageDescriptionView.PackageDescriptionView;
+import View.SearchView.SearchViewController;
 import View.SignInScreenView.SignInController;
 import View.SignUpScreenView.SignUpController;
+import View.UserViewScreen.ProductEntry;
 import View.UserViewScreen.UserViewController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -27,6 +31,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +58,8 @@ public class ViewModel extends Application
     private Package aPackage;
     private Scene PackageDescriptionView;
     private PackageDescriptionView packageDescriptionViewController;
+    private Scene searchView;
+    private SearchViewController searchViewController;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -74,6 +81,9 @@ public class ViewModel extends Application
         FXMLLoader PackageDescriptionViewLoader = new FXMLLoader(getClass().getResource("../View/PackageDescriptionView/PackageDescriptionView.fxml"));
         Parent packageDescriptionRoot = (Parent) PackageDescriptionViewLoader.load();
 
+        FXMLLoader searchViewLoader = new FXMLLoader(getClass().getResource("../View/SearchView/SearchScreen.fxml"));
+        Parent searchViewRoot = (Parent) searchViewLoader.load();
+
         this.stage = stage;
         this.stage.initStyle(StageStyle.UNDECORATED);
 
@@ -83,12 +93,17 @@ public class ViewModel extends Application
         setDraggable(stage, userViewRoot);
         setDraggable(stage, addPackageRoot);
         setDraggable(stage, addProductRoot);
+        setDraggable(stage, packageDescriptionRoot);
+        setDraggable(stage, searchViewRoot);
 
         signUpScene = new Scene(signUpRoot);
         signInScene = new Scene(signInRoot);
         userViewScene = new Scene(userViewRoot);
         addPackageScene = new Scene(addPackageRoot);
         addProductScene = new Scene(addProductRoot);
+        PackageDescriptionView = new Scene(packageDescriptionRoot);
+        searchView = new Scene(searchViewRoot);
+
         Model model = new Model();
         setModel(model);
         SignUpController controller = signUpLoader.getController();
@@ -107,13 +122,13 @@ public class ViewModel extends Application
         addProductLoaderController.setViewModel(this);
 
         packageDescriptionViewController = PackageDescriptionViewLoader.getController();
-        PackageDescriptionView p = packageDescriptionViewController;
-        p.setViewModel(this);
+        packageDescriptionViewController.setViewModel(this);
 
+        searchViewController = searchViewLoader.getController();
+        searchViewController.setViewModel(this);
 
-        stage.setScene(signInScene);
-        PackageDescriptionView = new Scene(packageDescriptionRoot);
-//        stage.setScene(PackageDescriptionView);
+//        stage.setScene(signInScene);
+        stage.setScene(searchView);
         stage.show();
     }
 
@@ -180,7 +195,7 @@ public class ViewModel extends Application
         model.addPackage(aPackage);
     }
 
-    public void createNewPackage(String address, String cancellation_policy, LocalDate startDate, LocalDate endDate) {
+    public void createNewPackage(Address address, String cancellation_policy, LocalDate startDate, LocalDate endDate) {
         aPackage = new Package(user.email, 0, startDate, endDate);
         aPackage.setAddress(address);
         aPackage.setCancellation_policy(cancellation_policy);
@@ -237,7 +252,7 @@ public class ViewModel extends Application
         userViewController.deleteProductFromTable(owner_emailText, packageID, productID);
     }
 
-    public void updateProduct(Product prod, String address) {
+    public void updateProduct(Product prod, Address address) {
         Package pack = model.getPackage(prod.ownerEmail, prod.packageID);
         model.deletePackage(pack);
         pack.setAddress(address);
@@ -262,4 +277,33 @@ public class ViewModel extends Application
         return model.getAllPackageCancelationPoliciy();
     }
 
+    public void searchPackagesBy(LocalDate startDateValue, LocalDate endDateValue) {
+        List<Package> packagesList = model.getPackagesBy(startDateValue, endDateValue);
+        packageDescriptionViewController.addPackagesToTable(packagesList);
+        if(user != null)
+            packageDescriptionViewController.setUserLoggedIn();
+        else
+            packageDescriptionViewController.setUserLoggedOut();
+        stage.setScene(PackageDescriptionView);
+    }
+
+    public void goToSearchView() {
+        stage.setScene(searchView);
+    }
+
+    public void goToPackageDescriptionView() {
+        stage.setScene(PackageDescriptionView);
+    }
+
+    public void loguotUser() {
+        user = null;
+    }
+
+    public void addRentOrder(ProductEntry clickedProductRow) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate startDate = LocalDate.parse(clickedProductRow.getStartDate(), formatter);
+        LocalDate endDate = LocalDate.parse(clickedProductRow.getEndDate(), formatter);
+        Order o = new Order(clickedProductRow.getOwnerEmail(), user.email,startDate,endDate,clickedProductRow.getPrice(),clickedProductRow.getPackageID(),"Rented");
+        model.addOrder(o);
+    }
 }

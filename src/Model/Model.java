@@ -1,10 +1,13 @@
 package Model;
 
+import App.Order;
 import App.Package;
 import App.Product;
 import App.User;
 import DB.SqliteDB;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class Model {
@@ -60,5 +63,18 @@ public class Model {
 
     public List<String> getAllPackageCancelationPoliciy() {
         return db.getAllCancellationPolicy();
+    }
+
+    public List<Package> getPackagesBy(LocalDate startDateValue, LocalDate endDateValue) {
+        List<Package> packageList = db.getPackagesBy(startDateValue, endDateValue);
+        return packageList;
+    }
+
+    public void addOrder(Order o) {
+        try {
+            db.addOrder(o);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

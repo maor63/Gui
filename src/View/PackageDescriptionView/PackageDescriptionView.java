@@ -3,19 +3,20 @@ package View.PackageDescriptionView;
 import App.Package;
 import App.Product;
 import Main.ViewModel;
+import View.ProductDescriptionView.ProductViewController;
 import View.UserViewScreen.ProductEntry;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -29,12 +30,18 @@ public class PackageDescriptionView implements Initializable{
     public TreeTableColumn<ProductEntry, String> colStartDate;
     public TreeTableColumn<ProductEntry, String> colEndDate;
     public TreeTableColumn<ProductEntry, String> colOwnerEmail;
+    public Button rentBtn;
+    public Button tradeBtn;
+    public Button loginBtn;
+    public Button userViewBtn;
     private ViewModel viewModel;
     private TreeItem<ProductEntry> root;
+    private ProductEntry clickedProductRow;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setUserLoggedOut();
         colPackageId.setCellValueFactory(
                 (TreeTableColumn.CellDataFeatures<ProductEntry, String> param) ->
                         new ReadOnlyStringWrapper(Integer.toString(param.getValue().getValue().getPackageID()))
@@ -80,13 +87,12 @@ public class PackageDescriptionView implements Initializable{
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     System.out.println("double clicked");
-//                    ProductEntry clickedRow = row.getItem();
-//                    showProduct(clickedRow);
+                    ProductEntry clickedRow = row.getItem();
+                    showProduct(clickedRow);
                 }
                 else if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                     System.out.println("one clicked");
-//                    ProductEntry clickedRow = row.getItem();
-//                    showProduct(clickedRow);
+                    clickedProductRow = row.getItem();
                 }
 
             });
@@ -100,12 +106,34 @@ public class PackageDescriptionView implements Initializable{
 
     }
 
+    private void showProduct(ProductEntry clickedRow) {
+        try {
+            Stage productWindow = new Stage();
+            FXMLLoader productViewLoader = new FXMLLoader(getClass().getResource("../ProductDescriptionView/ProductView.fxml"));
+            Parent productViewRoot = productViewLoader.load();
+            ProductViewController controller = productViewLoader.getController();
+            controller.setDataFromRow(clickedRow);
+            controller.setViewModel(viewModel);
+            controller.setWindow(productWindow);
+            viewModel.setDraggable(productWindow, productViewRoot);
+            Scene productViewScene = new Scene(productViewRoot);
+            productWindow.setScene(productViewScene);
+            productWindow.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setViewModel(ViewModel viewModel) {
         this.viewModel = viewModel;
 
     }
 
     public void addPackagesToTable(List<Package> packages){
+        root = new TreeItem<>(new ProductEntry());
+//        root.setExpanded(true);
+        packageTable.setShowRoot(false);
+        packageTable.setRoot(root);
         for (Package p: packages) {
             root.getChildren().add(addPackageToTable(p));
         }
@@ -131,5 +159,49 @@ public class PackageDescriptionView implements Initializable{
             root.getChildren().add(new TreeItem<>(productEntry));
         }
         return root;
+    }
+
+    public void rentPackage(MouseEvent mouseEvent) {
+        deleteOrderedPackageFromTable();
+        viewModel.addRentOrder(clickedProductRow);
+    }
+
+    public void tradePackage(MouseEvent mouseEvent) {
+//        deleteOrderedPackageFromTable();
+//        Stage productWindow = new Stage();
+//
+//
+//        viewModel.addTradeOrder(clickedProductRow);
+    }
+
+    private void deleteOrderedPackageFromTable() {
+        int i = 0;
+        for (TreeItem<ProductEntry> p: root.getChildren()) {
+            if(p.getValue().getOwnerEmail().equals(clickedProductRow.getOwnerEmail()) && p.getValue().getPackageID() == clickedProductRow.getPackageID())
+                break;
+            i++;
+        }
+        root.getChildren().remove(i);
+    }
+
+    public void logIn(MouseEvent mouseEvent) {
+        viewModel.goToSignIn();
+    }
+    public void setUserLoggedIn(){
+        rentBtn.setDisable(false);
+        tradeBtn.setDisable(false);
+        userViewBtn.setDisable(false);
+        loginBtn.setDisable(true);
+    }
+
+    public void setUserLoggedOut(){
+        rentBtn.setDisable(true);
+        tradeBtn.setDisable(true);
+        userViewBtn.setDisable(true);
+        loginBtn.setDisable(false);
+    }
+
+    public void goToUserView(MouseEvent mouseEvent) {
+        viewModel.goToUserView();
     }
 }
