@@ -25,8 +25,10 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Rent" />
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="0.0" prefWidth="60.0" text="Trade" />
+            <Button fx:id="rentBtn" mnemonicParsing="false" onMousePressed="#rentPackage" text="Rent" />
+            <Button fx:id="tradeBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMousePressed="#tradePackage" prefHeight="0.0" prefWidth="60.0" text="Trade" />
+            <Button fx:id="loginBtn" mnemonicParsing="false" onMousePressed="#logIn" text="LogIn" />
+            <Button fx:id="userViewBtn" onMousePressed="#goToUserView" mnemonicParsing="false" text="UserView" />
          </children>
          <opaqueInsets>
             <Insets />

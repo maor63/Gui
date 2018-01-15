@@ -56,6 +56,7 @@ public class ViewModel extends Application
     private Scene PackageDescriptionView;
     private PackageDescriptionView packageDescriptionViewController;
     private Scene searchView;
+    private SearchViewController searchViewController;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -120,7 +121,7 @@ public class ViewModel extends Application
         packageDescriptionViewController = PackageDescriptionViewLoader.getController();
         packageDescriptionViewController.setViewModel(this);
 
-        SearchViewController searchViewController = searchViewLoader.getController();
+        searchViewController = searchViewLoader.getController();
         searchViewController.setViewModel(this);
 
 //        stage.setScene(signInScene);
@@ -276,6 +277,22 @@ public class ViewModel extends Application
     public void searchPackagesBy(LocalDate startDateValue, LocalDate endDateValue) {
         List<Package> packagesList = model.getPackagesBy(startDateValue, endDateValue);
         packageDescriptionViewController.addPackagesToTable(packagesList);
+        if(user != null)
+            packageDescriptionViewController.setUserLoggedIn();
+        else
+            packageDescriptionViewController.setUserLoggedOut();
         stage.setScene(PackageDescriptionView);
+    }
+
+    public void goToSearchView() {
+        stage.setScene(searchView);
+    }
+
+    public void goToPackageDescriptionView() {
+        stage.setScene(PackageDescriptionView);
+    }
+
+    public void loguotUser() {
+        user = null;
     }
 }
