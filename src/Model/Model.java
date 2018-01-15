@@ -77,4 +77,8 @@ public class Model {
             e.printStackTrace();
         }
     }
+
+    public List<Package> getUnOrderedUserPackages(String email) {
+        return db.getUnOrderedPackageByOwnerEmail(email);
+    }
 }

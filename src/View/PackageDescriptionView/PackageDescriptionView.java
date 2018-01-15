@@ -5,7 +5,9 @@ import App.Product;
 import Main.ViewModel;
 import View.ProductDescriptionView.ProductViewController;
 import View.UserViewScreen.ProductEntry;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -37,6 +39,9 @@ public class PackageDescriptionView implements Initializable{
     private ViewModel viewModel;
     private TreeItem<ProductEntry> root;
     private ProductEntry clickedProductRow;
+    private ProductEntry renterPackage;
+    private ObservableList<TreeItem<ProductEntry>> items;
+    private Boolean chooseRow = false;
 
 
     @Override
@@ -94,7 +99,7 @@ public class PackageDescriptionView implements Initializable{
                     System.out.println("one clicked");
                     clickedProductRow = row.getItem();
                 }
-
+                chooseRow = true;
             });
             return row;
         });
@@ -141,7 +146,7 @@ public class PackageDescriptionView implements Initializable{
 
     public void showUserPackages()
     {
-        addPackagesToTable(viewModel.getPackagesOfUser());
+        addPackagesToTable(viewModel.getUnOrderdPackagesOfUser());
     }
 
     private TreeItem<ProductEntry> addPackageToTable(Package pack) {
@@ -162,22 +167,58 @@ public class PackageDescriptionView implements Initializable{
     }
 
     public void rentPackage(MouseEvent mouseEvent) {
-        deleteOrderedPackageFromTable();
-        viewModel.addRentOrder(clickedProductRow);
+        if(!chooseRow){
+            viewModel.popAlert("You need to pick package");
+        }
+        else if(viewModel.getUser().email.equals(clickedProductRow.getOwnerEmail()))
+            viewModel.popAlert("You cant rent your package");
+        else {
+            deleteOrderedPackageFromTable(clickedProductRow);
+            viewModel.addRentOrder(clickedProductRow);
+        }
     }
 
     public void tradePackage(MouseEvent mouseEvent) {
-//        deleteOrderedPackageFromTable();
-//        Stage productWindow = new Stage();
-//
-//
-//        viewModel.addTradeOrder(clickedProductRow);
+//        showUserPackages();
+        List<Package> unOrderdPackagesOfUser = viewModel.getUnOrderdPackagesOfUser();
+        if(!chooseRow){
+            viewModel.popAlert("You need to pick package");
+        }
+        else if(unOrderdPackagesOfUser.size() > 0 && viewModel.getUser().email.equals(clickedProductRow.getOwnerEmail())) {
+            chooseRow = false;
+            items = root.getChildren();
+            deleteOrderedPackageFromTable(clickedProductRow);
+            renterPackage = clickedProductRow;
+            addPackagesToTable(unOrderdPackagesOfUser);
+            tradeBtn.setOnMousePressed(this::approveTrade);
+            rentBtn.setDisable(true);
+            userViewBtn.setDisable(true);
+        }
+        else {
+            if(viewModel.getUser().email.equals(clickedProductRow.getOwnerEmail()))
+                viewModel.popAlert("You cant trade with yourself");
+            else
+                viewModel.popAlert("You have no packages");
+        }
     }
 
-    private void deleteOrderedPackageFromTable() {
+    protected void approveTrade(MouseEvent mouseEvent){
+        viewModel.addTradeOrder(clickedProductRow);
+        viewModel.addTradeOrder(renterPackage);
+        root.getChildren().removeAll();
+        root.getChildren().addAll(items);
+        deleteOrderedPackageFromTable(clickedProductRow);
+        renterPackage = null;
+        items = null;
+        rentBtn.setDisable(false);
+        userViewBtn.setDisable(false);
+        tradeBtn.setOnMousePressed(this::tradePackage);
+    }
+
+    private void deleteOrderedPackageFromTable(ProductEntry clickedProductRow) {
         int i = 0;
         for (TreeItem<ProductEntry> p: root.getChildren()) {
-            if(p.getValue().getOwnerEmail().equals(clickedProductRow.getOwnerEmail()) && p.getValue().getPackageID() == clickedProductRow.getPackageID())
+            if(p.getValue().getOwnerEmail().equals(clickedProductRow.getOwnerEmail()) && p.getValue().getPackageID() == this.clickedProductRow.getPackageID())
                 break;
             i++;
         }

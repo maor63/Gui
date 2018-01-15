@@ -576,6 +576,32 @@ public class SqliteDB {
                 o.getPackage_id(), o.getStatus());
         execute(sql);
     }
+
+    public List<Package> getUnOrderedPackageByOwnerEmail(String email) {
+        String sql = "SELECT p.package_id FROM Packages as p WHERE p.owner_email = '%s' " +
+                "AND NOT EXISTS (" +
+                "                SELECT * FROM Orders as o WHERE " +
+                "                o.package_id = p.package_id AND o.tenant_email = p.owner_email" +
+                "                );";
+        String query = String.format(sql,email);
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery(query);
+            ArrayList<Integer> packages_ids = new ArrayList<Integer>();
+            while (resSet.next()) {
+                packages_ids.add(resSet.getInt("package_id"));
+            }
+            ArrayList<Package> packages = new ArrayList<Package>();
+            for (int pack_id : packages_ids) {
+                packages.add(getPackageByOwnerIdAndPackageId(email, pack_id));
+            }
+            return packages;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
 
 

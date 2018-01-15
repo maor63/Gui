@@ -306,4 +306,27 @@ public class ViewModel extends Application
         Order o = new Order(clickedProductRow.getOwnerEmail(), user.email,startDate,endDate,clickedProductRow.getPrice(),clickedProductRow.getPackageID(),"Rented");
         model.addOrder(o);
     }
+
+    public void addTradeOrder(ProductEntry clickedProductRow) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate startDate = LocalDate.parse(clickedProductRow.getStartDate(), formatter);
+        LocalDate endDate = LocalDate.parse(clickedProductRow.getEndDate(), formatter);
+        Order o = new Order(clickedProductRow.getOwnerEmail(), user.email,startDate,endDate,clickedProductRow.getPrice(),clickedProductRow.getPackageID(),"Traded");
+        model.addOrder(o);
+    }
+
+    public List<Package> getUnOrderdPackagesOfUser() {
+        return model.getUnOrderedUserPackages(user.email);
+    }
+
+    public void popAlert(String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(text);
+        alert.showAndWait();
+    }
+
+    public User getUser() {
+        return user;
+    }
 }
