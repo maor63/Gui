@@ -1,6 +1,7 @@
 package View.AddPackageView;
 
 import Main.ViewModel;
+import View.AbstractController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,7 +15,7 @@ import javafx.scene.input.MouseEvent;
 import java.time.LocalDate;
 import java.util.List;
 
-public class AddPackageController {
+public class AddPackageController extends AbstractController{
     public TextField address;
     @FXML
     private DatePicker end_date;
