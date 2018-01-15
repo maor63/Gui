@@ -1,5 +1,6 @@
 package View.AddPackageView;
 
+import App.Address;
 import Main.ViewModel;
 import View.AbstractController;
 import javafx.collections.FXCollections;
@@ -11,12 +12,16 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import sun.font.TextRecord;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class AddPackageController extends AbstractController{
-    public TextField address;
+public class AddPackageController {
+    //    public TextField address;
+    public TextField city;
+    public TextField neighborhood;
+    public TextField street;
     @FXML
     private DatePicker end_date;
     @FXML
@@ -33,7 +38,7 @@ public class AddPackageController extends AbstractController{
         }
 
         String cancellationPolicy = package_cancelation_policiy.getValue();
-        viewModel.createNewPackage(address.getText(), cancellationPolicy, start_date.getValue(), end_date.getValue());
+        viewModel.createNewPackage(new Address(city.getText(),neighborhood.getText(),street.getText()), cancellationPolicy, end_date.getValue(), start_date.getValue());
         viewModel.goToAddProduct();
         System.out.println("Adding new Package");
     }
@@ -100,7 +105,10 @@ public class AddPackageController extends AbstractController{
         alert.showAndWait();
     }
 
+    //    private boolean isAddressExist() {
+//        return !this.address.getText().isEmpty();
+//    }
     private boolean isAddressExist() {
-        return !this.address.getText().isEmpty();
+        return !this.city.getText().isEmpty()&&!this.neighborhood.getText().isEmpty()&&!this.street.getText().isEmpty();
     }
 }

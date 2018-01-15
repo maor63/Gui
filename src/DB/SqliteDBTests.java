@@ -1,8 +1,6 @@
 package DB;
 
-import App.Order;
-import App.Product;
-import App.User;
+import App.*;
 import App.Package;
 import org.junit.Assert;
 import org.junit.Before;
@@ -52,7 +50,7 @@ public class SqliteDBTests {
         LocalDate endDate = LocalDate.now();
         Package pack = new Package(owner_email, 0, startDate, endDate);
         pack.setCancellation_policy("safe");
-        pack.setAddress("BeerSheva");
+        pack.setAddress(new Address("Tel-Aviv", "haTikva", "haShalom"));
         pack.addProduct(p1);
         pack.addProduct(p2);
         db.addPackage(pack);
@@ -106,7 +104,7 @@ public class SqliteDBTests {
         LocalDate endDate = LocalDate.now();
         Package pack = new Package(ownerEmail, 7, startDate, endDate);
         pack.setCancellation_policy("safe");
-        pack.setAddress("BeerSheva");
+        pack.setAddress(new Address("Tel-Aviv", "haTikva", "haShalom"));
         pack.addProduct(p1);
         pack.addProduct(p2);
         db.addPackage(pack);
