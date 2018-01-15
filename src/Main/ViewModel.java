@@ -5,6 +5,7 @@
  */
 package Main;
 
+import App.Address;
 import App.Package;
 import App.Product;
 import App.User;
@@ -122,8 +123,8 @@ public class ViewModel extends Application
         SearchViewController searchViewController = searchViewLoader.getController();
         searchViewController.setViewModel(this);
 
-        stage.setScene(signInScene);
-//        stage.setScene(searchView);
+//        stage.setScene(signInScene);
+        stage.setScene(searchView);
         stage.show();
     }
 
@@ -190,7 +191,7 @@ public class ViewModel extends Application
         model.addPackage(aPackage);
     }
 
-    public void createNewPackage(String address, String cancellation_policy, LocalDate startDate, LocalDate endDate) {
+    public void createNewPackage(Address address, String cancellation_policy, LocalDate startDate, LocalDate endDate) {
         aPackage = new Package(user.email, 0, startDate, endDate);
         aPackage.setAddress(address);
         aPackage.setCancellation_policy(cancellation_policy);
@@ -247,7 +248,7 @@ public class ViewModel extends Application
         userViewController.deleteProductFromTable(owner_emailText, packageID, productID);
     }
 
-    public void updateProduct(Product prod, String address) {
+    public void updateProduct(Product prod, Address address) {
         Package pack = model.getPackage(prod.ownerEmail, prod.packageID);
         model.deletePackage(pack);
         pack.setAddress(address);

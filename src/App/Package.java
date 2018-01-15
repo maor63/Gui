@@ -12,7 +12,7 @@ public class Package {
     private int package_id;
     private int total_price;
     private String cancellation_policy;
-    private String address;
+    private Address address;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -27,7 +27,7 @@ public class Package {
         this.package_id = package_id;
         this.total_price = 0;
         this.cancellation_policy = "No Policy";
-        address = "No Address";
+        address = new Address("","","");
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -38,18 +38,18 @@ public class Package {
         this.package_id = package_id;
         this.total_price = 0;
         this.cancellation_policy = "No Policy";
-        address = "No Address";
+        address = new Address("","","");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         this.startDate = LocalDate.parse(startDate, formatter);
         this.endDate = LocalDate.parse(endDate, formatter);;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
