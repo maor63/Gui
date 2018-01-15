@@ -17,7 +17,7 @@ import sun.font.TextRecord;
 import java.time.LocalDate;
 import java.util.List;
 
-public class AddPackageController {
+public class AddPackageController extends AbstractController{
     //    public TextField address;
     public TextField city;
     public TextField neighborhood;
@@ -38,13 +38,14 @@ public class AddPackageController {
         }
 
         String cancellationPolicy = package_cancelation_policiy.getValue();
-        viewModel.createNewPackage(new Address(city.getText(),neighborhood.getText(),street.getText()), cancellationPolicy, end_date.getValue(), start_date.getValue());
+        Address address = new Address(city.getText(), neighborhood.getText(), street.getText());
+        viewModel.createNewPackage(address, cancellationPolicy, start_date.getValue(), end_date.getValue());
         viewModel.goToAddProduct();
         System.out.println("Adding new Package");
     }
 
     private boolean IsInputLegal() {
-        if (!isAddressExist() || !isEndDayLegal() || !isStartDayLegal()) {
+        if (!isEndDayLegal() || !isStartDayLegal()) {
             if (!isStartDayLegal()) {
                 this.printMessageToUser("Start day is not legal. it most be not before today");
                 return false;

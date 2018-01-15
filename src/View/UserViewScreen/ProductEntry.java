@@ -14,7 +14,10 @@ public class ProductEntry
     private String availability;
     private String description;
     //    private String address;
-    private Address address;
+//    private Address address;
+    private String neighborhood;
+    private String city;
+    private String street;
     private String startDate;
     private String endDate;
 
@@ -25,7 +28,9 @@ public class ProductEntry
         description = p.description;
         price = p.price;
         category = p.category;
-
+        neighborhood = "";
+        city = "";
+        street = "";
     }
 
     public String getStartDate() {
@@ -45,15 +50,44 @@ public class ProductEntry
     }
 
     public ProductEntry() {
+        category ="";
+        neighborhood = "";
+        city = "";
+        street = "";
+    }
 
+    public String getNeighborhood() {
+        return neighborhood;
+    }
+
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public Address getAddress() {
-        return address;
+        return new Address(city, neighborhood, street);
     }
 
     public void setAddress(Address address) {
-        this.address = address;
+        city = address.getCity();
+        neighborhood = address.getNeighborhood();
+        street = address.getStreet();
     }
 
     public String getAvailability() {

@@ -52,18 +52,18 @@
                            <Image url="@../images/icons8_Location_40px.png"/>
                         </image>
                      </ImageView>
-                     <TextField fx:id="address" editable="false" prefHeight="38.0" prefWidth="298.0" promptText="City">
+                     <TextField fx:id="city" editable="false" prefHeight="38.0" prefWidth="298.0" promptText="City">
                         <font>
                            <Font size="20.0"/>
                         </font>
                      </TextField>
-                     <TextField fx:id="address2" editable="false" prefHeight="38.0" prefWidth="298.0"
+                     <TextField fx:id="neighborhood" editable="false" prefHeight="38.0" prefWidth="298.0"
                                 promptText="Neighborhood">
                         <font>
                            <Font size="20.0"/>
                         </font>
                      </TextField>
-                     <TextField fx:id="address3" editable="false" prefHeight="38.0" prefWidth="322.0"
+                     <TextField fx:id="street" editable="false" prefHeight="38.0" prefWidth="322.0"
                                 promptText="Street">
                         <font>
                            <Font size="20.0"/>
