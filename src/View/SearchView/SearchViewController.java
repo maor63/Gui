@@ -31,7 +31,7 @@ public class SearchViewController extends AbstractController {
     }
 
     private boolean inValidInput() {
-        return start_date == null || end_date == null || City.getText().isEmpty();
+        return start_date == null || end_date == null;
     }
 
     private void showMessage(String message)
