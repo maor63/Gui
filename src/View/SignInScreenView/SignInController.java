@@ -56,7 +56,8 @@ public class SignInController implements Initializable {
 
     public void goToUserView(MouseEvent mouseEvent) {
         if(viewModel.loadUser(email.getText(), password.getText())) {
-            viewModel.goToUserView();
+//            viewModel.goToUserView();
+            viewModel.goToSearchView();
         }
         else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

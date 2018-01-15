@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,12 +36,17 @@ public class PackageDescriptionView implements Initializable{
     public TreeTableColumn<ProductEntry, String> colStartDate;
     public TreeTableColumn<ProductEntry, String> colEndDate;
     public TreeTableColumn<ProductEntry, String> colOwnerEmail;
+    public Button rentBtn;
+    public Button tradeBtn;
+    public Button loginBtn;
+    public Button userViewBtn;
     private ViewModel viewModel;
     private TreeItem<ProductEntry> root;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setUserLoggedOut();
         colPackageId.setCellValueFactory(
                 (TreeTableColumn.CellDataFeatures<ProductEntry, String> param) ->
                         new ReadOnlyStringWrapper(Integer.toString(param.getValue().getValue().getPackageID()))
@@ -130,6 +136,10 @@ public class PackageDescriptionView implements Initializable{
     }
 
     public void addPackagesToTable(List<Package> packages){
+        root = new TreeItem<>(new ProductEntry());
+//        root.setExpanded(true);
+        packageTable.setShowRoot(false);
+        packageTable.setRoot(root);
         for (Package p: packages) {
             root.getChildren().add(addPackageToTable(p));
         }
@@ -155,5 +165,34 @@ public class PackageDescriptionView implements Initializable{
             root.getChildren().add(new TreeItem<>(productEntry));
         }
         return root;
+    }
+
+    public void rentPackage(MouseEvent mouseEvent) {
+
+    }
+
+    public void tradePackage(MouseEvent mouseEvent) {
+
+    }
+
+    public void logIn(MouseEvent mouseEvent) {
+        viewModel.goToSignIn();
+    }
+    public void setUserLoggedIn(){
+        rentBtn.setDisable(false);
+        tradeBtn.setDisable(false);
+        userViewBtn.setDisable(false);
+        loginBtn.setDisable(true);
+    }
+
+    public void setUserLoggedOut(){
+        rentBtn.setDisable(true);
+        tradeBtn.setDisable(true);
+        userViewBtn.setDisable(true);
+        loginBtn.setDisable(false);
+    }
+
+    public void goToUserView(MouseEvent mouseEvent) {
+        viewModel.goToUserView();
     }
 }

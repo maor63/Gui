@@ -122,7 +122,9 @@ public class UserViewController implements Initializable
         this.user = null;
         productEntries = FXCollections.observableArrayList();
         product_table.setItems(productEntries);
-        viewModel.goToSignIn();
+//        viewModel.goToSignIn();
+        viewModel.loguotUser();
+        viewModel.goToSearchView();
     }
 
     public void deleteProductFromTable(String owner_email, int packageID, int productID) {
@@ -140,5 +142,9 @@ public class UserViewController implements Initializable
         for (Product p : pack.getProducts()) {
             deleteProductFromTable(p.ownerEmail, p.packageID, p.productID);
         }
+    }
+
+    public void goToSearchView(MouseEvent mouseEvent) {
+        viewModel.goToSearchView();
     }
 }
