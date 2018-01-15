@@ -1,5 +1,6 @@
 package View.ProductDescriptionView;
 
+import App.Address;
 import App.Product;
 import View.UserViewScreen.ProductEntry;
 import Main.ViewModel;
@@ -13,7 +14,9 @@ import javafx.stage.Stage;
 public class ProductViewController
 {
     public TextField category;
-    public TextField address;
+    public TextField city;
+    public TextField neighborhood;
+    public TextField street;
     public TextArea  description;
     public TextField price;
     public Label owner_email;
@@ -37,7 +40,9 @@ public class ProductViewController
         description.setText(clickedRow.getDescription());
         price.setText(Integer.toString(clickedRow.getPrice()));
         owner_email.setText(clickedRow.getOwnerEmail());
-        address.setText(clickedRow.getAddress());
+        city.setText(clickedRow.getAddress().getCity());
+        neighborhood.setText(clickedRow.getAddress().getNeighborhood());
+        street.setText(clickedRow.getAddress().getStreet());
         availability.setText(clickedRow.getAvailability());
     }
 
@@ -58,7 +63,9 @@ public class ProductViewController
         delete_btn.setDisable(true);
         save_changes_btn.setDisable(false);
         category.setEditable(true);
-        address.setEditable(true);
+        city.setEditable(true);
+        neighborhood.setEditable(true);
+        street.setEditable(true);
         description.setEditable(true);
         price.setEditable(true);
     }
@@ -66,11 +73,14 @@ public class ProductViewController
     public void saveChanges(MouseEvent mouseEvent) {
         Product prod = new Product(owner_email.getText(), productID, packageID,Integer.parseInt(price.getText()),category.getText());
         prod.description = description.getText();
-        viewModel.updateProduct(prod, address.getText());
+//        viewModel.updateProduct(prod, address.getText());
+        viewModel.updateProduct(prod, new Address(city.getText(), neighborhood.getText(),street.getText()));
         delete_btn.setDisable(false);
         save_changes_btn.setDisable(true);
         category.setEditable(false);
-        address.setEditable(false);
+        city.setEditable(false);
+        neighborhood.setEditable(false);
+        street.setEditable(false);
         description.setEditable(false);
         price.setEditable(false);
     }

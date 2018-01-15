@@ -31,6 +31,7 @@ public class SqliteDB {
             createTenantTable();
             createCategoryTable();
             createCancellationPolicyTable();
+            createSearchTable();
 
             System.out.println("db init");
         } catch (Exception e) {
@@ -47,6 +48,15 @@ public class SqliteDB {
                 "colPackageId int,\n" +
                 "CONSTRAINT PK_Tenant PRIMARY KEY (user_email,colPackageId));";
         execute(sql);
+    }
+
+    private void createSearchTable() throws SQLException {
+        String sql = "CREATE TABLE IF NOT EXISTS Search (\n" +
+                "colPackageId int,\n" +
+                "numberOfSearches,\n" +
+                "CONSTRAINT PK_Search PRIMARY KEY (colPackageId));";
+        execute(sql);
+
     }
 
     private void createRenterTable() throws SQLException {
@@ -97,12 +107,12 @@ public class SqliteDB {
                 "package_id int ,\n" +
                 "total_price int,\n" +
                 "cancellation_policy varchar(30),\n" +
-                "address varchar(255) ,\n" +
+                "city varchar(255) ,\n" + "neighborhood varchar(255) ,\n" + "street varchar(255) ,\n" +
                 "start_date DATETIME ,\n" +
                 "end_date DATETIME ,\n" +
                 "CONSTRAINT PK_Packages PRIMARY KEY (owner_email,package_id), \n" +
                 "CONSTRAINT FK_Packages FOREIGN KEY (owner_email) REFERENCES Users(email)) ;"
-                );
+        );
     }
 
     private void createProductsTable() throws SQLException {
@@ -207,8 +217,8 @@ public class SqliteDB {
             String endDate = pack.getEndDateString();
 
             String query = String.format("INSERT INTO Packages " +
-                    "VALUES('%s', %d, %d, '%s', '%s', '%s', '%s')", owner_id, package_id, total_price,
-                    cancellation_policy, pack.getAddress(), startDate, endDate);
+                            "VALUES('%s', %d, %d, '%s', '%s', '%s', '%s', '%s', '%s')", owner_id, package_id, total_price,
+                    cancellation_policy, pack.getAddress().getCity(), pack.getAddress().getNeighborhood(), pack.getAddress().getStreet(), startDate, endDate);
             execute(query);
             for (Product p : pack.getProducts()) {
                 p.packageID = package_id;
@@ -304,6 +314,21 @@ public class SqliteDB {
                 packages.add(getPackageByOwnerIdAndPackageId(p.getOwner_email(), p.getPackage_id()));
             }
             return packages;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<String> getAllSearches(){
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery("SELECT * FROM Search ;");
+            List<String> searches = new ArrayList<>();
+            while (resSet.next()) {
+                searches.add(resSet.getString("colPackageId"));
+            }
+            return searches;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -424,8 +449,12 @@ public class SqliteDB {
         Package p = new Package(owner_email, package_id, startDate, endDate);
         String cancellation_policy = resSet.getString("cancellation_policy");
         p.setCancellation_policy(cancellation_policy);
-        String address = resSet.getString("address");
-        p.setAddress(address);
+//        String address = resSet.getString("address");
+//        p.setAddress(address);
+        String city = resSet.getString("city");
+        String neighborhood = resSet.getString("neighborhood");
+        String street = resSet.getString("street");
+        p.setAddress(new Address(city,neighborhood,street));
         return p;
     }
 
@@ -538,11 +567,12 @@ public class SqliteDB {
         String start_date = o.getStart_date().format(formatter);
         String end_date = o.getEnd_date().format(formatter);
         String sql = String.format("INSERT INTO Orders" +
-                " VALUES('%s', '%s', %s, %s, %d, %d, '%s');",
+                        " VALUES('%s', '%s', %s, %s, %d, %d, '%s');",
                 o.getTenant_email(), o.getRenter_email(), o.getStart_date(), o.getEnd_date(), o.getTotal_price(),
                 o.getPackage_id(), o.getStatus());
         execute(sql);
     }
+
 }
 
 

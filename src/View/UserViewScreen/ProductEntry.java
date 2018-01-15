@@ -1,5 +1,6 @@
 package View.UserViewScreen;
 
+import App.Address;
 import App.Product;
 
 
@@ -12,7 +13,8 @@ public class ProductEntry
     private String category;
     private String availability;
     private String description;
-    private String address;
+    //    private String address;
+    private Address address;
     private String startDate;
     private String endDate;
 
@@ -46,11 +48,11 @@ public class ProductEntry
 
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
