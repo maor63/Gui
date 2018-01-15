@@ -5,24 +5,18 @@ import App.Product;
 import Main.ViewModel;
 import View.ProductDescriptionView.ProductViewController;
 import View.UserViewScreen.ProductEntry;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -99,7 +93,6 @@ public class PackageDescriptionView implements Initializable{
                 else if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                     System.out.println("one clicked");
                     clickedProductRow = row.getItem();
-//                    showProduct(clickedRow);
                 }
 
             });
@@ -169,6 +162,19 @@ public class PackageDescriptionView implements Initializable{
     }
 
     public void rentPackage(MouseEvent mouseEvent) {
+        deleteOrderedPackageFromTable();
+        viewModel.addRentOrder(clickedProductRow);
+    }
+
+    public void tradePackage(MouseEvent mouseEvent) {
+//        deleteOrderedPackageFromTable();
+//        Stage productWindow = new Stage();
+//
+//
+//        viewModel.addTradeOrder(clickedProductRow);
+    }
+
+    private void deleteOrderedPackageFromTable() {
         int i = 0;
         for (TreeItem<ProductEntry> p: root.getChildren()) {
             if(p.getValue().getOwnerEmail().equals(clickedProductRow.getOwnerEmail()) && p.getValue().getPackageID() == clickedProductRow.getPackageID())
@@ -176,11 +182,6 @@ public class PackageDescriptionView implements Initializable{
             i++;
         }
         root.getChildren().remove(i);
-        viewModel.addRentOrder(clickedProductRow);
-    }
-
-    public void tradePackage(MouseEvent mouseEvent) {
-
     }
 
     public void logIn(MouseEvent mouseEvent) {
