@@ -122,8 +122,8 @@ public class ViewModel extends Application
         SearchViewController searchViewController = searchViewLoader.getController();
         searchViewController.setViewModel(this);
 
-//        stage.setScene(signInScene);
-        stage.setScene(searchView);
+        stage.setScene(signInScene);
+//        stage.setScene(searchView);
         stage.show();
     }
 
