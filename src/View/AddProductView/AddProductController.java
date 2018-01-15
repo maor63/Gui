@@ -2,6 +2,7 @@ package View.AddProductView;
 
 import App.User;
 import Main.ViewModel;
+import View.AbstractController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,7 +19,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AddProductController implements Initializable
+public class AddProductController extends AbstractController implements Initializable
 {
 
     public TextField Price;
