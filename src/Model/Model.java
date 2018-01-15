@@ -5,6 +5,7 @@ import App.Product;
 import App.User;
 import DB.SqliteDB;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Model {
@@ -60,5 +61,10 @@ public class Model {
 
     public List<String> getAllPackageCancelationPoliciy() {
         return db.getAllCancellationPolicy();
+    }
+
+    public List<Package> getPackagesBy(LocalDate startDateValue, LocalDate endDateValue) {
+        List<Package> packageList = db.getPackagesBy(startDateValue, endDateValue);
+        return packageList;
     }
 }

@@ -290,6 +290,26 @@ public class SqliteDB {
         return null;
     }
 
+    public List<Package> getPackagesBy(LocalDate startDateValue, LocalDate endDateValue) {
+        try {
+            Statement st = dbConnection.createStatement();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            String sql = "SELECT * FROM Packages " +
+                    "WHERE start_date <= '" + startDateValue.format(formatter) + "' " +
+                    "AND end_date >= '" + endDateValue.format(formatter) + "' ;";
+            ResultSet resSet = st.executeQuery(sql);
+            List<Package> packages = new ArrayList<>();
+            while (resSet.next()) {
+                Package p = getPackageFromRow(resSet);
+                packages.add(getPackageByOwnerIdAndPackageId(p.getOwner_email(), p.getPackage_id()));
+            }
+            return packages;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<String> getAllCancellationPolicy(){
         try {
             Statement st = dbConnection.createStatement();
@@ -523,7 +543,6 @@ public class SqliteDB {
                 o.getPackage_id(), o.getStatus());
         execute(sql);
     }
-
 }
 
 

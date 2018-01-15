@@ -32,7 +32,7 @@ public class AddPackageController {
         }
 
         String cancellationPolicy = package_cancelation_policiy.getValue();
-        viewModel.createNewPackage(address.getText(), cancellationPolicy, end_date.getValue(), start_date.getValue());
+        viewModel.createNewPackage(address.getText(), cancellationPolicy, start_date.getValue(), end_date.getValue());
         viewModel.goToAddProduct();
         System.out.println("Adding new Package");
     }

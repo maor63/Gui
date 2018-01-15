@@ -12,6 +12,7 @@ import Model.Model;
 import View.AddPackageView.AddPackageController;
 import View.AddProductView.AddProductController;
 import View.PackageDescriptionView.PackageDescriptionView;
+import View.SearchView.SearchViewController;
 import View.SignInScreenView.SignInController;
 import View.SignUpScreenView.SignUpController;
 import View.UserViewScreen.UserViewController;
@@ -53,6 +54,7 @@ public class ViewModel extends Application
     private Package aPackage;
     private Scene PackageDescriptionView;
     private PackageDescriptionView packageDescriptionViewController;
+    private Scene searchView;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -74,6 +76,9 @@ public class ViewModel extends Application
         FXMLLoader PackageDescriptionViewLoader = new FXMLLoader(getClass().getResource("../View/PackageDescriptionView/PackageDescriptionView.fxml"));
         Parent packageDescriptionRoot = (Parent) PackageDescriptionViewLoader.load();
 
+        FXMLLoader searchViewLoader = new FXMLLoader(getClass().getResource("../View/SearchView/SearchScreen.fxml"));
+        Parent searchViewRoot = (Parent) searchViewLoader.load();
+
         this.stage = stage;
         this.stage.initStyle(StageStyle.UNDECORATED);
 
@@ -83,12 +88,17 @@ public class ViewModel extends Application
         setDraggable(stage, userViewRoot);
         setDraggable(stage, addPackageRoot);
         setDraggable(stage, addProductRoot);
+        setDraggable(stage, packageDescriptionRoot);
+        setDraggable(stage, searchViewRoot);
 
         signUpScene = new Scene(signUpRoot);
         signInScene = new Scene(signInRoot);
         userViewScene = new Scene(userViewRoot);
         addPackageScene = new Scene(addPackageRoot);
         addProductScene = new Scene(addProductRoot);
+        PackageDescriptionView = new Scene(packageDescriptionRoot);
+        searchView = new Scene(searchViewRoot);
+
         Model model = new Model();
         setModel(model);
         SignUpController controller = signUpLoader.getController();
@@ -107,13 +117,13 @@ public class ViewModel extends Application
         addProductLoaderController.setViewModel(this);
 
         packageDescriptionViewController = PackageDescriptionViewLoader.getController();
-        PackageDescriptionView p = packageDescriptionViewController;
-        p.setViewModel(this);
+        packageDescriptionViewController.setViewModel(this);
 
+        SearchViewController searchViewController = searchViewLoader.getController();
+        searchViewController.setViewModel(this);
 
-        stage.setScene(signInScene);
-        PackageDescriptionView = new Scene(packageDescriptionRoot);
-//        stage.setScene(PackageDescriptionView);
+//        stage.setScene(signInScene);
+        stage.setScene(searchView);
         stage.show();
     }
 
@@ -262,4 +272,9 @@ public class ViewModel extends Application
         return model.getAllPackageCancelationPoliciy();
     }
 
+    public void searchPackagesBy(LocalDate startDateValue, LocalDate endDateValue) {
+        List<Package> packagesList = model.getPackagesBy(startDateValue, endDateValue);
+        packageDescriptionViewController.addPackagesToTable(packagesList);
+        stage.setScene(PackageDescriptionView);
+    }
 }

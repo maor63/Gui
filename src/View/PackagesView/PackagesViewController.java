@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PackagesViewController implements Initializable
+public class PackagesViewController extends View.AbstractController implements Initializable
 {
     public TableView<PackageEntry> packages_table;
     public TableColumn<PackageEntry, Integer> colTotalPrice;
@@ -23,15 +23,10 @@ public class PackagesViewController implements Initializable
     public TableColumn<PackageEntry, Integer> colAttitude;
     public TableColumn<PackageEntry, Integer> colAvailability;
     public TableColumn<PackageEntry, Integer> colDescription;
-    private ViewModel viewModel;
     private ObservableList<PackageEntry> packageEntries;
     private User user;
     private Stage window;
 
-
-    public void setViewModel(ViewModel viewModel) {
-        this.viewModel = viewModel;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
