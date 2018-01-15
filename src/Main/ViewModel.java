@@ -5,6 +5,7 @@
  */
 package Main;
 
+import App.Order;
 import App.Package;
 import App.Product;
 import App.User;
@@ -15,6 +16,7 @@ import View.PackageDescriptionView.PackageDescriptionView;
 import View.SearchView.SearchViewController;
 import View.SignInScreenView.SignInController;
 import View.SignUpScreenView.SignUpController;
+import View.UserViewScreen.ProductEntry;
 import View.UserViewScreen.UserViewController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -28,6 +30,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -293,5 +296,13 @@ public class ViewModel extends Application
 
     public void loguotUser() {
         user = null;
+    }
+
+    public void addRentOrder(ProductEntry clickedProductRow) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate startDate = LocalDate.parse(clickedProductRow.getStartDate(), formatter);
+        LocalDate endDate = LocalDate.parse(clickedProductRow.getEndDate(), formatter);
+        Order o = new Order(clickedProductRow.getOwnerEmail(), user.email,startDate,endDate,clickedProductRow.getPrice(),clickedProductRow.getPackageID(),"Rented");
+        model.addOrder(o);
     }
 }

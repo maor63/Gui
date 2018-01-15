@@ -42,6 +42,7 @@ public class PackageDescriptionView implements Initializable{
     public Button userViewBtn;
     private ViewModel viewModel;
     private TreeItem<ProductEntry> root;
+    private ProductEntry clickedProductRow;
 
 
     @Override
@@ -97,7 +98,7 @@ public class PackageDescriptionView implements Initializable{
                 }
                 else if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                     System.out.println("one clicked");
-//                    ProductEntry clickedRow = row.getItem();
+                    clickedProductRow = row.getItem();
 //                    showProduct(clickedRow);
                 }
 
@@ -168,7 +169,14 @@ public class PackageDescriptionView implements Initializable{
     }
 
     public void rentPackage(MouseEvent mouseEvent) {
-
+        int i = 0;
+        for (TreeItem<ProductEntry> p: root.getChildren()) {
+            if(p.getValue().getOwnerEmail().equals(clickedProductRow.getOwnerEmail()) && p.getValue().getPackageID() == clickedProductRow.getPackageID())
+                break;
+            i++;
+        }
+        root.getChildren().remove(i);
+        viewModel.addRentOrder(clickedProductRow);
     }
 
     public void tradePackage(MouseEvent mouseEvent) {

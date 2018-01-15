@@ -294,9 +294,13 @@ public class SqliteDB {
         try {
             Statement st = dbConnection.createStatement();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-            String sql = "SELECT * FROM Packages " +
-                    "WHERE start_date <= '" + startDateValue.format(formatter) + "' " +
-                    "AND end_date >= '" + endDateValue.format(formatter) + "' ;";
+            String sql = "SELECT * FROM Packages as p " +
+                    "WHERE p.start_date <= '" + startDateValue.format(formatter) + "' " +
+                    "AND p.end_date >= '" + endDateValue.format(formatter) + "' " +
+                    "AND NOT EXISTS (" +
+                    "SELECT * FROM Orders as o WHERE " +
+                    "o.package_id = p.package_id AND o.tenant_email = p.owner_email" +
+                    ");";
             ResultSet resSet = st.executeQuery(sql);
             List<Package> packages = new ArrayList<>();
             while (resSet.next()) {
@@ -538,7 +542,7 @@ public class SqliteDB {
         String start_date = o.getStart_date().format(formatter);
         String end_date = o.getEnd_date().format(formatter);
         String sql = String.format("INSERT INTO Orders" +
-                " VALUES('%s', '%s', %s, %s, %d, %d, '%s');",
+                " VALUES('%s', '%s', '%s', '%s', %d, %d, '%s');",
                 o.getTenant_email(), o.getRenter_email(), o.getStart_date(), o.getEnd_date(), o.getTotal_price(),
                 o.getPackage_id(), o.getStatus());
         execute(sql);
