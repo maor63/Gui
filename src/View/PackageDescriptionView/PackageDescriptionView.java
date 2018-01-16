@@ -215,6 +215,8 @@ public class PackageDescriptionView implements Initializable{
 
     protected void approveTrade(MouseEvent mouseEvent){
         try {
+//            root.getChildren().removeAll();
+//            root.getChildren().addAll(items);
             rentBtn.setDisable(false);
             userViewBtn.setDisable(false);
             tradeBtn.setOnMousePressed(this::tradePackage);
@@ -225,6 +227,7 @@ public class PackageDescriptionView implements Initializable{
             deleteOrderedPackageFromTable(renterPackage);
             items = null;
             renterPackage = null;
+            viewModel.goToSearchView();
         }
         catch (Exception e)
         {
@@ -233,13 +236,14 @@ public class PackageDescriptionView implements Initializable{
     }
 
     private void deleteOrderedPackageFromTable(ProductEntry clickedProductRow) {
-        int i = 0;
+        int i = -1;
         for (TreeItem<ProductEntry> p: root.getChildren()) {
             if(p.getValue().getOwnerEmail().equals(clickedProductRow.getOwnerEmail()) && p.getValue().getPackageID() == this.clickedProductRow.getPackageID())
                 break;
             i++;
         }
-        root.getChildren().remove(i);
+        if(i != -1)
+            root.getChildren().remove(i);
     }
 
     public void logIn(MouseEvent mouseEvent) {
