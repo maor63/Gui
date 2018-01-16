@@ -93,7 +93,8 @@ public class PackageDescriptionView implements Initializable{
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     System.out.println("double clicked");
                     ProductEntry clickedRow = row.getItem();
-                    showProduct(clickedRow);
+                    if(clickedRow.getCategory().equals(""))
+                        showProduct(clickedRow);
                 }
                 else if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                     System.out.println("one clicked");
@@ -167,52 +168,66 @@ public class PackageDescriptionView implements Initializable{
     }
 
     public void rentPackage(MouseEvent mouseEvent) {
-        if(!chooseRow){
-            viewModel.popAlert("You need to pick package");
+        try {
+            if (!chooseRow) {
+                viewModel.popAlert("You need to pick package");
+            } else if (viewModel.getUser().email.equals(clickedProductRow.getOwnerEmail()))
+                viewModel.popAlert("You cant rent your package");
+            else {
+                viewModel.addRentOrder(clickedProductRow);
+                deleteOrderedPackageFromTable(clickedProductRow);
+            }
         }
-        else if(viewModel.getUser().email.equals(clickedProductRow.getOwnerEmail()))
-            viewModel.popAlert("You cant rent your package");
-        else {
-            deleteOrderedPackageFromTable(clickedProductRow);
-            viewModel.addRentOrder(clickedProductRow);
+        catch (Exception e){
+            viewModel.popAlert("You need to pick package not a product");
         }
     }
 
     public void tradePackage(MouseEvent mouseEvent) {
-//        showUserPackages();
-        List<Package> unOrderdPackagesOfUser = viewModel.getUnOrderdPackagesOfUser();
-        if(!chooseRow){
-            viewModel.popAlert("You need to pick package");
+        try {
+            List<Package> unOrderdPackagesOfUser = viewModel.getUnOrderdPackagesOfUser();
+            if (!chooseRow) {
+                viewModel.popAlert("You need to pick package");
+            } else if (unOrderdPackagesOfUser.size() > 0 && viewModel.getUser().email.equals(clickedProductRow.getOwnerEmail())) {
+                chooseRow = false;
+                items = root.getChildren();
+                renterPackage = clickedProductRow;
+                addPackagesToTable(unOrderdPackagesOfUser);
+                tradeBtn.setOnMousePressed(this::approveTrade);
+                tradeBtn.setText("Approve");
+                deleteOrderedPackageFromTable(clickedProductRow);
+                rentBtn.setDisable(true);
+                userViewBtn.setDisable(true);
+            } else {
+                if (viewModel.getUser().email.equals(clickedProductRow.getOwnerEmail()))
+                    viewModel.popAlert("You cant trade with yourself");
+                else
+                    viewModel.popAlert("You have no packages");
+            }
         }
-        else if(unOrderdPackagesOfUser.size() > 0 && viewModel.getUser().email.equals(clickedProductRow.getOwnerEmail())) {
-            chooseRow = false;
-            items = root.getChildren();
-            deleteOrderedPackageFromTable(clickedProductRow);
-            renterPackage = clickedProductRow;
-            addPackagesToTable(unOrderdPackagesOfUser);
-            tradeBtn.setOnMousePressed(this::approveTrade);
-            rentBtn.setDisable(true);
-            userViewBtn.setDisable(true);
-        }
-        else {
-            if(viewModel.getUser().email.equals(clickedProductRow.getOwnerEmail()))
-                viewModel.popAlert("You cant trade with yourself");
-            else
-                viewModel.popAlert("You have no packages");
+        catch (Exception e){
+            viewModel.popAlert("You need to pick package not a product");
         }
     }
 
     protected void approveTrade(MouseEvent mouseEvent){
-        viewModel.addTradeOrder(clickedProductRow);
-        viewModel.addTradeOrder(renterPackage);
-        root.getChildren().removeAll();
-        root.getChildren().addAll(items);
-        deleteOrderedPackageFromTable(clickedProductRow);
-        renterPackage = null;
-        items = null;
-        rentBtn.setDisable(false);
-        userViewBtn.setDisable(false);
-        tradeBtn.setOnMousePressed(this::tradePackage);
+        try {
+            root.getChildren().removeAll();
+            root.getChildren().addAll(items);
+            renterPackage = null;
+            items = null;
+            rentBtn.setDisable(false);
+            userViewBtn.setDisable(false);
+            tradeBtn.setOnMousePressed(this::tradePackage);
+            tradeBtn.setText("Trade");
+            viewModel.addTradeOrder(clickedProductRow);
+            viewModel.addTradeOrder(renterPackage);
+            deleteOrderedPackageFromTable(clickedProductRow);
+        }
+        catch (Exception e)
+        {
+            viewModel.popAlert("You need to pick package not a product");
+        }
     }
 
     private void deleteOrderedPackageFromTable(ProductEntry clickedProductRow) {
