@@ -339,4 +339,14 @@ public class ViewModel extends Application
     public User getUser() {
         return user;
     }
+
+    public void getPackagesByAddress(String city, String neighborhood, String street) {
+        List<Package> packagesList = model.getPackagesByAddress(new Address(city, neighborhood,street));
+        packageDescriptionViewController.addPackagesToTable(packagesList);
+        if(user != null)
+            packageDescriptionViewController.setUserLoggedIn();
+        else
+            packageDescriptionViewController.setUserLoggedOut();
+        stage.setScene(PackageDescriptionView);
+    }
 }

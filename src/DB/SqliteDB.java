@@ -630,8 +630,7 @@ public class SqliteDB {
         String street = address.getStreet();
 
 
-        String query = "SELECT * FROM Packages as p " +
-                "WHERE p.city = '" + city + "' AND p.neighborhood = " + neighborhood +  "' AND p.street = " + street + ";";
+        String query = "SELECT p.package_id FROM Packages as p WHERE p.city = '" + city + "' AND p.neighborhood = '" + neighborhood +  "' AND p.street = '" + street + "' ;";
         try {
             Statement st = dbConnection.createStatement();
             ResultSet resSet = st.executeQuery(query);
@@ -655,8 +654,7 @@ public class SqliteDB {
     public Package getPackageByPackageId(int pack_id){
         try {
             Statement st = dbConnection.createStatement();
-            ResultSet resSet = st.executeQuery("SELECT * FROM Packages as p " +
-                    "' AND p.package_id = " + pack_id + ";");
+            ResultSet resSet = st.executeQuery("SELECT * FROM Packages as p WHERE  p.package_id = " + pack_id + ";");
             Package p = getPackageFromRow(resSet);
             return p;
         } catch (SQLException e) {
