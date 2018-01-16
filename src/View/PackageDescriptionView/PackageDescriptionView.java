@@ -93,7 +93,7 @@ public class PackageDescriptionView implements Initializable{
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     System.out.println("double clicked");
                     ProductEntry clickedRow = row.getItem();
-                    if(clickedRow.getCategory().equals(""))
+                    if(!clickedRow.getCategory().equals(""))
                         showProduct(clickedRow);
                 }
                 else if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
@@ -118,6 +118,7 @@ public class PackageDescriptionView implements Initializable{
             FXMLLoader productViewLoader = new FXMLLoader(getClass().getResource("../ProductDescriptionView/ProductView.fxml"));
             Parent productViewRoot = productViewLoader.load();
             ProductViewController controller = productViewLoader.getController();
+            controller.setForViewOnly();
             controller.setDataFromRow(clickedRow);
             controller.setViewModel(viewModel);
             controller.setWindow(productWindow);

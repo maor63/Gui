@@ -59,4 +59,8 @@ public class SearchViewController extends AbstractController {
         Categories.setItems(categoriesOptions);
         Categories.getSelectionModel().selectFirst();
     }
+
+    public void goToLogIn(MouseEvent mouseEvent) {
+        viewModel.goToSignIn();
+    }
 }

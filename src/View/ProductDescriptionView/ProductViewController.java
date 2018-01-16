@@ -66,7 +66,7 @@ public class ProductViewController
         city.setEditable(true);
         neighborhood.setEditable(true);
         street.setEditable(true);
-        description.setEditable(true);
+//        description.setEditable(true);
         price.setEditable(true);
     }
 
@@ -77,6 +77,21 @@ public class ProductViewController
         viewModel.updateProduct(prod, new Address(city.getText(), neighborhood.getText(),street.getText()));
         delete_btn.setDisable(false);
         save_changes_btn.setDisable(true);
+        category.setEditable(false);
+        city.setEditable(false);
+        neighborhood.setEditable(false);
+        street.setEditable(false);
+        description.setEditable(false);
+        price.setEditable(false);
+    }
+
+    public void setForViewOnly() {
+        delete_btn.setDisable(true);
+        delete_btn.setStyle("-fx-text-fill: #2D3447");
+        save_changes_btn.setDisable(true);
+        save_changes_btn.setStyle("-fx-text-fill: #2D3447");
+        update_btn.setDisable(true);
+        update_btn.setStyle("-fx-text-fill: #2D3447");
         category.setEditable(false);
         city.setEditable(false);
         neighborhood.setEditable(false);
