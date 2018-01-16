@@ -31,7 +31,8 @@ public class UserViewController implements Initializable
     public TableColumn<ProductEntry, Integer> colPackageId;
     public TableColumn<ProductEntry, Integer> colProductId;
     public TableColumn<ProductEntry, Integer> colCategory;
-    public TableColumn<ProductEntry, Integer> colAvailability;
+    public TableColumn<ProductEntry, Integer> colEnd;
+    public TableColumn<ProductEntry, Integer> colStart;
     public TableColumn<ProductEntry, Integer> colDescription;
     private ViewModel viewModel;
     private ObservableList<ProductEntry> productEntries;
@@ -53,7 +54,8 @@ public class UserViewController implements Initializable
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
 
-        colAvailability.setCellValueFactory(new PropertyValueFactory<>("availability"));
+        colStart.setCellValueFactory(new PropertyValueFactory<>("start"));
+        colEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
 
         productEntries = FXCollections.observableArrayList();

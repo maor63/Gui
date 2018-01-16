@@ -23,7 +23,8 @@ public class ProductViewController
     public JFXButton delete_btn;
     public JFXButton update_btn;
     public JFXButton save_changes_btn;
-    public TextField availability;
+    public TextField startDate;
+    public TextField endDate;
     private ViewModel viewModel;
     private Stage window;
     private int productID;
@@ -43,7 +44,8 @@ public class ProductViewController
         city.setText(clickedRow.getAddress().getCity());
         neighborhood.setText(clickedRow.getAddress().getNeighborhood());
         street.setText(clickedRow.getAddress().getStreet());
-        availability.setText(clickedRow.getAvailability());
+        startDate.setText(clickedRow.getStartDate());
+        endDate.setText(clickedRow.getEndDate());
     }
 
     public void deleteProduct(MouseEvent mouseEvent) {
