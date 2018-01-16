@@ -8,9 +8,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class SqliteDB {
     private Connection dbConnection;
@@ -83,7 +81,7 @@ public class SqliteDB {
                 "total_price int,\n" +
                 "package_id int,\n" +
                 "status varchar(255),\n" +
-                "CONSTRAINT PK_Orders PRIMARY KEY (tenant_email,renter_email,start_date));");
+                "CONSTRAINT PK_Orders PRIMARY KEY (tenant_email,renter_email,start_date, package_id));");
     }
 
 
@@ -331,12 +329,22 @@ public class SqliteDB {
             Statement st = dbConnection.createStatement();
             String sql = "SELECT DISTINCT * FROM Packages " +
                     "INNER JOIN Products ON Packages.package_id=Products.package_id AND Packages.owner_email=Products.owner_email " +
-                    "WHERE Products.category=" + "'" +  category + "'";
+                    "WHERE Products.category=" + "'" +  category + "'" +
+                    "AND NOT EXISTS ( " +
+                    "                    SELECT * FROM Orders as o WHERE " +
+                    "                    o.package_id = Packages.package_id AND o.tenant_email = Packages.owner_email " +
+                    "                    );";
             ResultSet resSet = st.executeQuery(sql);
             List<Package> packages = new ArrayList<>();
+            Set<String> seen = new HashSet<>();
             while (resSet.next()) {
                 Package p = getPackageFromRow(resSet);
-                packages.add(getPackageByOwnerIdAndPackageId(p.getOwner_email(), p.getPackage_id()));
+                String o = p.getOwner_email() + p.getPackage_id();
+                if(!seen.contains(o)) {
+                    packages.add(getPackageByOwnerIdAndPackageId(p.getOwner_email(), p.getPackage_id()));
+                    seen.add(o);
+                }
+
             }
             return packages;
         } catch (SQLException e) {
@@ -658,7 +666,11 @@ public class SqliteDB {
         String query = "SELECT p.package_id FROM Packages as p WHERE " +
                 "p.city = '" + city + "' " +
                 "AND p.neighborhood = '" + neighborhood +  "' " +
-                "AND p.street = '" + street + "' ;";
+                "AND p.street = '" + street + "' " +
+                "AND NOT EXISTS (" +
+                        "SELECT * FROM Orders as o WHERE " +
+                        "o.package_id = p.package_id AND o.tenant_email = p.owner_email" +
+                ");";
         try {
             Statement st = dbConnection.createStatement();
             ResultSet resSet = st.executeQuery(query);

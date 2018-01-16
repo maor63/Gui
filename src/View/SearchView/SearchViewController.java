@@ -76,9 +76,21 @@ public class SearchViewController extends AbstractController {
 
     private List<Package> intersect(List<Package> A, List<Package> B) {
         List<Package> rtnList = new LinkedList<>();
+//        for(int i = 0; i < A.size(); i++){
+//            for(int j = i + 1; j < B.size(); j++){
+//                if (A.get(i).getPackage_id() == B.get(j).getPackage_id() && A.get(i).getOwner_email().equals(B.get(j).getOwner_email()))
+//                {
+//                    rtnList.add(B.get(j));
+////                    break;
+//                }
+//            }
+//        }
+
+
+
         for(Package a : A) {
             for(Package b : B) {
-                if (a.getPackage_id() == b.getPackage_id() && a.getOwner_email() == b.getOwner_email())
+                if (a.getPackage_id() == b.getPackage_id() && a.getOwner_email().equals(b.getOwner_email()))
                 {
                     rtnList.add(b);
                     break;

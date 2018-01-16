@@ -195,7 +195,7 @@ public class PackageDescriptionView implements Initializable{
                 chooseRow = false;
                 items = root.getChildren();
                 renterPackage = clickedProductRow;
-                deleteOrderedPackageFromTable(clickedProductRow);
+//                deleteOrderedPackageFromTable(clickedProductRow);
                 addPackagesToTable(unOrderdPackagesOfUser);
                 tradeBtn.setOnMousePressed(this::approveTrade);
                 tradeBtn.setText("Approve");
@@ -215,8 +215,6 @@ public class PackageDescriptionView implements Initializable{
 
     protected void approveTrade(MouseEvent mouseEvent){
         try {
-            root.getChildren().removeAll();
-            root.getChildren().addAll(items);
             rentBtn.setDisable(false);
             userViewBtn.setDisable(false);
             tradeBtn.setOnMousePressed(this::tradePackage);
@@ -224,6 +222,7 @@ public class PackageDescriptionView implements Initializable{
             viewModel.addTradeOrder(clickedProductRow);
             viewModel.addTradeOrder(renterPackage);
             deleteOrderedPackageFromTable(clickedProductRow);
+            deleteOrderedPackageFromTable(renterPackage);
             items = null;
             renterPackage = null;
         }
