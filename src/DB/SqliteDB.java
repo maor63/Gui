@@ -300,26 +300,6 @@ public class SqliteDB {
         return null;
     }
 
-    public List<Package> getPackagesByCategory(String category) {
-        try {
-            Statement st = dbConnection.createStatement();
-            String sql = "SELECT DISTINCT * FROM Packages " +
-                    "INNER JOIN Products ON Packages.package_id=Products.package_id AND Packages.owner_email=Products.owner_email " +
-                    "WHERE Products.category=" + "'" +  category + "'";
-            ResultSet resSet = st.executeQuery(sql);
-            List<Package> packages = new ArrayList<>();
-            while (resSet.next()) {
-                Package p = getPackageFromRow(resSet);
-                packages.add(getPackageByOwnerIdAndPackageId(p.getOwner_email(), p.getPackage_id()));
-            }
-            return packages;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
     public List<Package> getPackagesBy(LocalDate startDateValue, LocalDate endDateValue) {
         try {
             Statement st = dbConnection.createStatement();
@@ -621,6 +601,48 @@ public class SqliteDB {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<Package> getPackageByAddress(Address address) {
+        String city = address.getCity();
+        String neighborhood = address.getNeighborhood();
+        String street = address.getStreet();
+
+
+        String query = "SELECT * FROM Packages as p " +
+                    "WHERE p.city = '" + city + "' AND p.neighborhood = " + neighborhood +  "' AND p.street = " + street + ";";
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery(query);
+            ArrayList<Integer> packages_ids = new ArrayList<Integer>();
+            while (resSet.next()) {
+                packages_ids.add(resSet.getInt("package_id"));
+            }
+            ArrayList<Package> packages = new ArrayList<Package>();
+            for (int pack_id : packages_ids) {
+                packages.add(getPackageByPackageId(pack_id));
+            }
+
+            return packages;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Package getPackageByPackageId(int pack_id){
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery("SELECT * FROM Packages as p " +
+                     "' AND p.package_id = " + pack_id + ";");
+            Package p = getPackageFromRow(resSet);
+            return p;
+        } catch (SQLException e) {
+//            e.printStackTrace();
+            System.out.println(String.format("There is no package  %d", pack_id));
+        }
+        return null;
     }
 }
 
