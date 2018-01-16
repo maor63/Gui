@@ -27,8 +27,8 @@ public class SqliteDB {
             createOrdersTable();
             createWorkDaysTable();
             createUsersTable();
-            createRenterTable();
-            createTenantTable();
+//            createRenterTable();
+//            createTenantTable();
             createCategoryTable();
             createCancellationPolicyTable();
             createSearchTable();
@@ -45,16 +45,17 @@ public class SqliteDB {
     private void createTenantTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS Tenant (\n" +
                 "user_email varchar(255),\n" +
-                "colPackageId int,\n" +
-                "CONSTRAINT PK_Tenant PRIMARY KEY (user_email,colPackageId));";
+                "package_id int,\n" +
+                "CONSTRAINT PK_Tenant PRIMARY KEY (user_email,package_id));";
         execute(sql);
     }
 
     private void createSearchTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS Search (\n" +
-                "colPackageId int,\n" +
-                "numberOfSearches,\n" +
-                "CONSTRAINT PK_Search PRIMARY KEY (colPackageId));";
+                "owner_email varchar(255), \n" +
+                "package_id int,\n" +
+                "numberOfSearches int,\n" +
+                "CONSTRAINT PK_Search PRIMARY KEY (package_id, owner_email));";
         execute(sql);
 
     }
@@ -85,12 +86,6 @@ public class SqliteDB {
                 "CONSTRAINT PK_Orders PRIMARY KEY (tenant_email,renter_email,start_date));");
     }
 
-//    public void addOrder(int tenant_id,int renter_id,LocalDate start_date) throws SQLException {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-//        String date = start_date.format(formatter);
-//        String sql = String.format("INSERT INTO Orders(tenant_id,renter_id,start_date) VALUES(%d, %d, '%s');", tenant_id, renter_id, date);
-//        execute(sql);
-//    }
 
     private void createUsersTable() throws SQLException {
         execute("CREATE TABLE IF NOT EXISTS Users (\n" +
@@ -152,6 +147,36 @@ public class SqliteDB {
     }
 
     //*******************Add *****************************************
+
+    public void addSearch(String owner_email, int package_id) throws SQLException {
+        String sql = "IF EXISTS(SELECT * FROM Search as s WHERE s.owner_email = '"+owner_email+"' AND s.package_id = "+package_id+" )\n" +
+                     "   UPDATE Search SET s.numberOfSearches = s.numberOfSearches + 1 \n" +
+                     "ELSE\n" +
+                     "   insert into Search values('"+owner_email+"', "+package_id+", 0);";
+
+        if(isSearchExsits(owner_email,package_id))
+        {
+            sql =  "UPDATE Search \n" +
+                    "SET numberOfSearches = numberOfSearches + 1\n" +
+                    "WHERE owner_email = '"+owner_email+"' AND package_id = "+package_id+"";
+        }
+        else {
+            sql =  "INSERT INTO Search values('"+owner_email+"', "+package_id+", 1);";
+        }
+        execute(sql);
+    }
+
+    private boolean isSearchExsits(String owner_email, int package_id) {
+        String query = "SELECT * FROM Search as s WHERE s.owner_email = '"+owner_email+"'  AND s.package_id = "+package_id+" ;";
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery(query);
+            String c = resSet.getString("owner_email");
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
 
     public void addCancellationPolicy(String policy) {
         if(!isCancellationPolicyExists(policy)) {

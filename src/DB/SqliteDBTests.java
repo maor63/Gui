@@ -209,4 +209,11 @@ public class SqliteDBTests {
         db.addOrder(o);
     }
 
+    @Test
+    public void testAddSearch() throws SQLException {
+        db.addSearch("maor", 3);
+        db.addSearch("maor", 3);
+        db.addSearch("maor", 3);
+    }
+
 }
