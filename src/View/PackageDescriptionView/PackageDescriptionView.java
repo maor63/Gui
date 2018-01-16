@@ -189,14 +189,14 @@ public class PackageDescriptionView implements Initializable{
             List<Package> unOrderdPackagesOfUser = viewModel.getUnOrderdPackagesOfUser();
             if (!chooseRow) {
                 viewModel.popAlert("You need to pick package");
-            } else if (unOrderdPackagesOfUser.size() > 0 && viewModel.getUser().email.equals(clickedProductRow.getOwnerEmail())) {
+            } else if (unOrderdPackagesOfUser.size() > 0 && !viewModel.getUser().email.equals(clickedProductRow.getOwnerEmail())) {
                 chooseRow = false;
                 items = root.getChildren();
                 renterPackage = clickedProductRow;
+                deleteOrderedPackageFromTable(clickedProductRow);
                 addPackagesToTable(unOrderdPackagesOfUser);
                 tradeBtn.setOnMousePressed(this::approveTrade);
                 tradeBtn.setText("Approve");
-                deleteOrderedPackageFromTable(clickedProductRow);
                 rentBtn.setDisable(true);
                 userViewBtn.setDisable(true);
             } else {
@@ -215,8 +215,6 @@ public class PackageDescriptionView implements Initializable{
         try {
             root.getChildren().removeAll();
             root.getChildren().addAll(items);
-            renterPackage = null;
-            items = null;
             rentBtn.setDisable(false);
             userViewBtn.setDisable(false);
             tradeBtn.setOnMousePressed(this::tradePackage);
@@ -224,6 +222,8 @@ public class PackageDescriptionView implements Initializable{
             viewModel.addTradeOrder(clickedProductRow);
             viewModel.addTradeOrder(renterPackage);
             deleteOrderedPackageFromTable(clickedProductRow);
+            items = null;
+            renterPackage = null;
         }
         catch (Exception e)
         {

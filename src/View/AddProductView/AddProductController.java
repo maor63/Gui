@@ -50,14 +50,19 @@ public class AddProductController extends AbstractController implements Initiali
     }
 
     public void addProduct(MouseEvent mouseEvent) {
-        viewModel.addProductToPackage(Integer.parseInt(Price.getText()), categories.getValue(), description.getText());
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("New product add to package");
-        alert.showAndWait();
-        Price.setText("");
-        categories.getSelectionModel().selectFirst();
-        description.setText("");
+        try {
+            viewModel.addProductToPackage(Integer.parseInt(Price.getText()), categories.getValue(), description.getText());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("New product add to package");
+            alert.showAndWait();
+            Price.setText("");
+            categories.getSelectionModel().selectFirst();
+            description.setText("");
+        }
+        catch (Exception e){
+            viewModel.popAlert("Price must be integer");
+        }
     }
 
 
