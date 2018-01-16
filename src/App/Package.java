@@ -67,7 +67,6 @@ public class Package {
         return package_id;
     }
 
-
     public int getTotal_price() {
         return total_price;
     }
