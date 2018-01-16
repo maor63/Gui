@@ -78,7 +78,7 @@ public class SearchViewController extends AbstractController {
         List<Package> rtnList = new LinkedList<>();
         for(Package a : A) {
             for(Package b : B) {
-                if (a.getPackage_id() == b.getPackage_id())
+                if (a.getPackage_id() == b.getPackage_id() && a.getOwner_email() == b.getOwner_email())
                 {
                     rtnList.add(b);
                     break;
