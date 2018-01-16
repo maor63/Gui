@@ -1,9 +1,7 @@
 package Model;
 
-import App.Order;
+import App.*;
 import App.Package;
-import App.Product;
-import App.User;
 import DB.SqliteDB;
 
 import java.sql.SQLException;
@@ -85,5 +83,10 @@ public class Model {
 
     public List<Package> getUnOrderedUserPackages(String email) {
         return db.getUnOrderedPackageByOwnerEmail(email);
+    }
+
+    public List<Package> getPackagesByAddress(Address address) {
+        List<Package> packageList = db.getPackageByAddress(address);
+        return packageList;
     }
 }

@@ -348,6 +348,16 @@ public class ViewModel extends Application
         return user;
     }
 
+    public void getPackagesByAddress(String city, String neighborhood, String street) {
+        List<Package> packagesList = model.getPackagesByAddress(new Address(city, neighborhood,street));
+        packageDescriptionViewController.addPackagesToTable(packagesList);
+        if(user != null)
+            packageDescriptionViewController.setUserLoggedIn();
+        else
+            packageDescriptionViewController.setUserLoggedOut();
+        stage.setScene(PackageDescriptionView);
+    }
+
     public void sendEmail(String Email) throws MessagingException {
         String host = "smtp.gmail.com";
         String user = "everything4rent4@gmail.com";

@@ -32,11 +32,17 @@ public class SearchViewController extends AbstractController {
 
         Set setA = new HashSet();
 
+        String city = City.getText();
+        String neighborhood = Neighborhood.getText();
+        String street = Street.getText();
+
+
         LocalDate startDateValue = start_date.getValue();
         LocalDate endDateValue = end_date.getValue();
         String category = Categories.getSelectionModel().getSelectedItem().toString();
 //        viewModel.searchPackagesBy(startDateValue, endDateValue);
-        viewModel.getPackagesByCategory(category);
+//        viewModel.getPackagesByCategory(category);
+        viewModel.getPackagesByAddress(city, neighborhood, street);
     }
 
     private boolean inValidInput() {
