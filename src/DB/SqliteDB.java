@@ -623,6 +623,48 @@ public class SqliteDB {
             return null;
         }
     }
+
+    public List<Package> getPackageByAddress(Address address) {
+        String city = address.getCity();
+        String neighborhood = address.getNeighborhood();
+        String street = address.getStreet();
+
+
+        String query = "SELECT * FROM Packages as p " +
+                "WHERE p.city = '" + city + "' AND p.neighborhood = " + neighborhood +  "' AND p.street = " + street + ";";
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery(query);
+            ArrayList<Integer> packages_ids = new ArrayList<Integer>();
+            while (resSet.next()) {
+                packages_ids.add(resSet.getInt("package_id"));
+            }
+            ArrayList<Package> packages = new ArrayList<Package>();
+            for (int pack_id : packages_ids) {
+                packages.add(getPackageByPackageId(pack_id));
+            }
+
+            return packages;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Package getPackageByPackageId(int pack_id){
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet resSet = st.executeQuery("SELECT * FROM Packages as p " +
+                    "' AND p.package_id = " + pack_id + ";");
+            Package p = getPackageFromRow(resSet);
+            return p;
+        } catch (SQLException e) {
+//            e.printStackTrace();
+            System.out.println(String.format("There is no package  %d", pack_id));
+        }
+        return null;
+    }
 }
 
 
