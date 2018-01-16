@@ -91,7 +91,7 @@ public class ProductEntry
     }
 
     public String getAvailability() {
-        return availability;
+        return startDate + "-" + endDate;
     }
 
     public void setAvailability(String availability) {
