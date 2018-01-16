@@ -163,6 +163,8 @@ public class PackageDescriptionView implements Initializable{
             ProductEntry productEntry = new ProductEntry(product);
             productEntry.setAvailability("All week");
             productEntry.setAddress(pack.getAddress());
+            productEntry.setStartDate(pack.getStartDateString());
+            productEntry.setEndDate(pack.getEndDateString());
             root.getChildren().add(new TreeItem<>(productEntry));
         }
         return root;
