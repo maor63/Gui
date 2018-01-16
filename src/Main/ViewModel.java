@@ -285,8 +285,7 @@ public class ViewModel extends Application
         return model.getAllPackageCancelationPoliciy();
     }
 
-    public void searchPackagesBy(LocalDate startDateValue, LocalDate endDateValue) {
-        List<Package> packagesList = model.getPackagesBy(startDateValue, endDateValue);
+    public void searchPackagesBy(List<Package> packagesList) {
         packageDescriptionViewController.addPackagesToTable(packagesList);
         if(user != null)
             packageDescriptionViewController.setUserLoggedIn();
@@ -295,14 +294,12 @@ public class ViewModel extends Application
         stage.setScene(PackageDescriptionView);
     }
 
-    public void getPackagesByCategory(String category) {
-        List<Package> packagesList = model.getPackagesByCategory(category);
-        packageDescriptionViewController.addPackagesToTable(packagesList);
-        if(user != null)
-            packageDescriptionViewController.setUserLoggedIn();
-        else
-            packageDescriptionViewController.setUserLoggedOut();
-        stage.setScene(PackageDescriptionView);
+    public List<Package> searchPackagesByDate(LocalDate startDateValue, LocalDate endDateValue) {
+        return model.getPackagesBy(startDateValue, endDateValue);
+    }
+
+    public List<Package> getPackagesByCategory(String category) {
+        return model.getPackagesByCategory(category);
     }
 
     public void goToSearchView() {
@@ -348,14 +345,8 @@ public class ViewModel extends Application
         return user;
     }
 
-    public void getPackagesByAddress(String city, String neighborhood, String street) {
-        List<Package> packagesList = model.getPackagesByAddress(new Address(city, neighborhood,street));
-        packageDescriptionViewController.addPackagesToTable(packagesList);
-        if(user != null)
-            packageDescriptionViewController.setUserLoggedIn();
-        else
-            packageDescriptionViewController.setUserLoggedOut();
-        stage.setScene(PackageDescriptionView);
+    public List<Package> getPackagesByAddress(String city, String neighborhood, String street) {
+        return model.getPackagesByAddress(new Address(city, neighborhood,street));
     }
 
     public void sendEmail(String Email) throws MessagingException {

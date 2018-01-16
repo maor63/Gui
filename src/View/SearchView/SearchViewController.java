@@ -1,5 +1,6 @@
 package View.SearchView;
 
+import App.Package;
 import View.AbstractController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,9 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class SearchViewController extends AbstractController {
 
@@ -24,33 +23,78 @@ public class SearchViewController extends AbstractController {
     public TextField Street;
 
     public void serachProducts(MouseEvent mouseEvent) {
-        if(inValidInput())
-        {
+        if (inValidInput()) {
             showMessage("Invalid input");
             return;
         }
 
-        Set setA = new HashSet();
+        List<Package> listAddress = new ArrayList<>();
+        List<Package> listDate = new ArrayList<>();
+        List<Package> listCategories = new ArrayList<>();
+        List<Package> packages = new ArrayList<>();
 
-        String city = City.getText();
-        String neighborhood = Neighborhood.getText();
-        String street = Street.getText();
+        if (City != null && Neighborhood != null && Street != null) {
+            String city = City.getText();
+            String neighborhood = Neighborhood.getText();
+            String street = Street.getText();
 
+            listAddress = viewModel.getPackagesByAddress(city, neighborhood, street);
 
-        LocalDate startDateValue = start_date.getValue();
-        LocalDate endDateValue = end_date.getValue();
-        String category = Categories.getSelectionModel().getSelectedItem().toString();
-//        viewModel.searchPackagesBy(startDateValue, endDateValue);
+            packages = listAddress;
+        }
+
+        if (start_date != null && end_date != null) {
+            LocalDate startDateValue = start_date.getValue();
+            LocalDate endDateValue = end_date.getValue();
+
+            listDate = viewModel.searchPackagesByDate(startDateValue, endDateValue);
+
+            packages = listDate;
+
+        }
+
+        if (Categories != null) {
+            String category = Categories.getSelectionModel().getSelectedItem().toString();
+
+            listCategories = viewModel.getPackagesByCategory(category);
+
+            packages = listCategories;
+
+        }
+
+        if (listAddress.size() > 0)
+            packages = intersect(packages, listAddress);
+        if (listDate.size() > 0)
+            packages = intersect(packages, listDate);
+        if (listCategories.size() > 0)
+            packages = intersect(packages, listCategories);
+
+        viewModel.searchPackagesBy(packages);
+
+//        viewModel.searchPackagesByDate(startDateValue, endDateValue);
 //        viewModel.getPackagesByCategory(category);
-        viewModel.getPackagesByAddress(city, neighborhood, street);
+//        viewModel.getPackagesByAddress(city, neighborhood, street);
+    }
+
+    private List<Package> intersect(List<Package> A, List<Package> B) {
+        List<Package> rtnList = new LinkedList<>();
+        for(Package a : A) {
+            for(Package b : B) {
+                if (a.getPackage_id() == b.getPackage_id())
+                {
+                    rtnList.add(b);
+                    break;
+                }
+            }
+        }
+        return rtnList;
     }
 
     private boolean inValidInput() {
         return start_date == null || end_date == null;
     }
 
-    private void showMessage(String message)
-    {
+    private void showMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText(message);
@@ -60,7 +104,7 @@ public class SearchViewController extends AbstractController {
 
     public void showCategories(MouseEvent mouseEvent) {
         ObservableList<String> categoriesOptions = FXCollections.observableArrayList();
-        List<String> allCategories =  viewModel.getAllCategories();
+        List<String> allCategories = viewModel.getAllCategories();
         categoriesOptions.addAll(allCategories);
         Categories.setItems(categoriesOptions);
         Categories.getSelectionModel().selectFirst();

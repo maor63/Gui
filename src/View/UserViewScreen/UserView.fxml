@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane id="AnchorPane" prefHeight="457.0" prefWidth="780.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.UserViewScreen.UserViewController">
+<Pane id="AnchorPane" prefHeight="457.0" prefWidth="780.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.UserViewScreen.UserViewController">
     <stylesheets>
     </stylesheets>
    <children>
@@ -19,8 +19,9 @@
                   <TableColumn fx:id="colPrice" prefWidth="75.0" text="price" />
                   <TableColumn fx:id="colProductId" prefWidth="75.0" text="product id" />
                   <TableColumn fx:id="colCategory" prefWidth="125.0" text="category" />
-                  <TableColumn fx:id="colAvailability" prefWidth="75.0" text="availability" />
-                  <TableColumn fx:id="colDescription" prefWidth="353.0" text="description" />
+                  <TableColumn fx:id="colStart" prefWidth="89.0" text="available from" />
+                   <TableColumn fx:id="colEnd" prefWidth="84.0" text="available until" />
+                   <TableColumn fx:id="colDescription" prefWidth="330.0" text="description" />
                </columns>
             </TableView>
            </children>
