@@ -70,6 +70,11 @@ public class Model {
         return packageList;
     }
 
+    public List<Package> getPackagesByCategory(String category) {
+        List<Package> packageList = db.getPackagesByCategory(category);
+        return packageList;
+    }
+
     public void addOrder(Order o) {
         try {
             db.addOrder(o);

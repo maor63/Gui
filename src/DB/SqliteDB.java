@@ -300,6 +300,26 @@ public class SqliteDB {
         return null;
     }
 
+    public List<Package> getPackagesByCategory(String category) {
+        try {
+            Statement st = dbConnection.createStatement();
+            String sql = "SELECT DISTINCT * FROM Packages " +
+                    "INNER JOIN Products ON Packages.package_id=Products.package_id AND Packages.owner_email=Products.owner_email " +
+                    "WHERE Products.category=" + "'" +  category + "'";
+            ResultSet resSet = st.executeQuery(sql);
+            List<Package> packages = new ArrayList<>();
+            while (resSet.next()) {
+                Package p = getPackageFromRow(resSet);
+                packages.add(getPackageByOwnerIdAndPackageId(p.getOwner_email(), p.getPackage_id()));
+            }
+            return packages;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
     public List<Package> getPackagesBy(LocalDate startDateValue, LocalDate endDateValue) {
         try {
             Statement st = dbConnection.createStatement();

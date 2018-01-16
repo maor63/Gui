@@ -287,6 +287,16 @@ public class ViewModel extends Application
         stage.setScene(PackageDescriptionView);
     }
 
+    public void getPackagesByCategory(String category) {
+        List<Package> packagesList = model.getPackagesByCategory(category);
+        packageDescriptionViewController.addPackagesToTable(packagesList);
+        if(user != null)
+            packageDescriptionViewController.setUserLoggedIn();
+        else
+            packageDescriptionViewController.setUserLoggedOut();
+        stage.setScene(PackageDescriptionView);
+    }
+
     public void goToSearchView() {
         stage.setScene(searchView);
     }
