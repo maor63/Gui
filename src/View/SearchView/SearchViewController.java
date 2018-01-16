@@ -72,10 +72,6 @@ public class SearchViewController extends AbstractController {
             packages = intersect(packages, listCategories);
 
         viewModel.searchPackagesBy(packages);
-
-//        viewModel.searchPackagesByDate(startDateValue, endDateValue);
-//        viewModel.getPackagesByCategory(category);
-//        viewModel.getPackagesByAddress(city, neighborhood, street);
     }
 
     private List<Package> intersect(List<Package> A, List<Package> B) {
