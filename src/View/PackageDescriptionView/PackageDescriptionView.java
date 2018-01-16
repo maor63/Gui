@@ -260,4 +260,8 @@ public class PackageDescriptionView implements Initializable{
     public void goToUserView(MouseEvent mouseEvent) {
         viewModel.goToUserView();
     }
+
+    public void Backtosearch(MouseEvent mouseEvent) {
+        viewModel.goToSearchView();
+    }
 }
