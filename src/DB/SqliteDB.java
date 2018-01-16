@@ -302,6 +302,7 @@ public class SqliteDB {
 
     public List<Package> getPackagesByCategory(String category) {
         try {
+//            Statement st = dbConnection.createStatement();
             Statement st = dbConnection.createStatement();
             String sql = "SELECT DISTINCT * FROM Packages " +
                     "INNER JOIN Products ON Packages.package_id=Products.package_id AND Packages.owner_email=Products.owner_email " +
