@@ -4,12 +4,14 @@ import App.Package;
 import View.AbstractController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -33,7 +35,7 @@ public class SearchViewController extends AbstractController {
         List<Package> listCategories = new ArrayList<>();
         List<Package> packages = new ArrayList<>();
 
-        if (City != null && Neighborhood != null && Street != null) {
+        if (!City.getText().equals("") && !Neighborhood.getText().equals("") && !Street.getText().equals("")) {
             String city = City.getText();
             String neighborhood = Neighborhood.getText();
             String street = Street.getText();
@@ -43,7 +45,7 @@ public class SearchViewController extends AbstractController {
             packages = listAddress;
         }
 
-        if (start_date != null && end_date != null) {
+        if (start_date.getValue() != null && end_date.getValue() != null) {
             LocalDate startDateValue = start_date.getValue();
             LocalDate endDateValue = end_date.getValue();
 
@@ -53,7 +55,7 @@ public class SearchViewController extends AbstractController {
 
         }
 
-        if (Categories != null) {
+        if (Categories.getSelectionModel().getSelectedItem() != null) {
             String category = Categories.getSelectionModel().getSelectedItem().toString();
 
             listCategories = viewModel.getPackagesByCategory(category);
@@ -70,10 +72,6 @@ public class SearchViewController extends AbstractController {
             packages = intersect(packages, listCategories);
 
         viewModel.searchPackagesBy(packages);
-
-//        viewModel.searchPackagesByDate(startDateValue, endDateValue);
-//        viewModel.getPackagesByCategory(category);
-//        viewModel.getPackagesByAddress(city, neighborhood, street);
     }
 
     private List<Package> intersect(List<Package> A, List<Package> B) {
@@ -109,4 +107,10 @@ public class SearchViewController extends AbstractController {
         Categories.setItems(categoriesOptions);
         Categories.getSelectionModel().selectFirst();
     }
+
+    public void goToLogIn(MouseEvent mouseEvent) {
+        viewModel.goToSignIn();
+    }
+
+
 }

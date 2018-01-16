@@ -8,6 +8,7 @@ package View.SignInScreenView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import App.User;
 import Main.ViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,12 +19,14 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
+import javax.mail.MessagingException;
+
 /**
  *
  * @author danml
  */
 public class SignInController implements Initializable {
-
+    private int trailsForConnections = 0;
     public Label btn_exit;
     public TextField email;
     public PasswordField password;
@@ -57,14 +60,22 @@ public class SignInController implements Initializable {
     public void goToUserView(MouseEvent mouseEvent) {
         if(viewModel.loadUser(email.getText(), password.getText())) {
 //            viewModel.goToUserView();
+            trailsForConnections = 0;
             viewModel.goToSearchView();
         }
         else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("Email or password are incorrect");
-            alert.setContentText("You can sign up it free!");
-            alert.showAndWait();
+            trailsForConnections++;
+            if(trailsForConnections >= 3) {
+                viewModel.popAlert("Email for retriving your password has been sent");
+                trailsForConnections = 0;
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText("Email or password are incorrect");
+                alert.setContentText("You can sign up it free!");
+                alert.showAndWait();
+            }
         }
     }
 }
