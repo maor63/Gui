@@ -177,6 +177,7 @@ public class ViewModel extends Application
     }
 
     public void goToSignIn() {
+        user = null;
         stage.setScene(signInScene);
     }
 

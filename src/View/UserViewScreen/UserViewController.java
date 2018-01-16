@@ -54,8 +54,8 @@ public class UserViewController implements Initializable
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
 
-        colStart.setCellValueFactory(new PropertyValueFactory<>("start"));
-        colEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
+        colStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        colEnd.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
 
         productEntries = FXCollections.observableArrayList();
@@ -111,6 +111,8 @@ public class UserViewController implements Initializable
             ProductEntry productEntry = new ProductEntry(product);
             productEntry.setAvailability("All week");
             productEntry.setAddress(pack.getAddress());
+            productEntry.setStartDate(pack.getStartDateString());
+            productEntry.setEndDate(pack.getEndDateString());
             productEntries.add(productEntry);
         }
     }
