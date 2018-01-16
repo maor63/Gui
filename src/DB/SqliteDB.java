@@ -655,7 +655,10 @@ public class SqliteDB {
         String street = address.getStreet();
 
 
-        String query = "SELECT p.package_id FROM Packages as p WHERE p.city = '" + city + "' AND p.neighborhood = '" + neighborhood +  "' AND p.street = '" + street + "' ;";
+        String query = "SELECT p.package_id FROM Packages as p WHERE " +
+                "p.city = '" + city + "' " +
+                "AND p.neighborhood = '" + neighborhood +  "' " +
+                "AND p.street = '" + street + "' ;";
         try {
             Statement st = dbConnection.createStatement();
             ResultSet resSet = st.executeQuery(query);
@@ -688,6 +691,7 @@ public class SqliteDB {
         }
         return null;
     }
+
 }
 
 
